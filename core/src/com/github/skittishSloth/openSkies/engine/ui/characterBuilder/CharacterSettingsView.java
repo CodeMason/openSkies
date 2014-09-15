@@ -7,6 +7,7 @@ package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.github.skittishSloth.openSkies.engine.player.Gender;
@@ -28,7 +30,7 @@ import java.util.Collection;
  */
 public class CharacterSettingsView extends Table {
 
-    private static final int PRESET_BTNS_PER_ROW = 4;
+    private static final int PRESET_BTNS_PER_ROW = 3;
 
     public CharacterSettingsView(final Skin skin, final CharacterBuildTable parent) {
         super(skin);
@@ -48,7 +50,7 @@ public class CharacterSettingsView extends Table {
 
         actionsTree.add(buildRaceNode());
 
-        presetColorsNode = buildPresetColorNode(null);
+        presetColorsNode = buildPresetColorNode(null, null);
 
         actionsTree.add(presetColorsNode);
         add(scrollPane);
@@ -63,11 +65,11 @@ public class CharacterSettingsView extends Table {
         scrollPane.setHeight(getHeight());
     }
 
-    public void setAvailableColors(final Collection<Color> colors) {
-        buildPresetColorNode(colors);
+    public void setAvailableColors(final Collection<Color> colors, final Color activeColor) {
+        buildPresetColorNode(colors, activeColor);
     }
 
-    public void update() {
+    public void update(final Color activeColor) {
         final Collection<Color> colors = parent.getAvailableColors();
         boolean differentColors = false;
         if (availableColors == null) {
@@ -85,7 +87,7 @@ public class CharacterSettingsView extends Table {
         if (differentColors) {
             Gdx.app.log(getClass().getSimpleName(), "Colors was different :/");
             availableColors = colors;
-            setAvailableColors(availableColors);
+            setAvailableColors(availableColors, activeColor);
         }
     }
 
@@ -131,7 +133,7 @@ public class CharacterSettingsView extends Table {
         return genderNode;
     }
 
-    private Tree.Node buildPresetColorNode(final Collection<Color> availableColors) {
+    private Tree.Node buildPresetColorNode(final Collection<Color> availableColors, final Color activeColor) {
         if (presetColorsNode == null) {
             final Label colorsLabel = new Label("Preset Colors", skin);
             presetColorsNode = new Tree.Node(colorsLabel);
@@ -152,12 +154,25 @@ public class CharacterSettingsView extends Table {
                 presetColorGroup.remove(btn);
             }
         }
+        
         for (final Color c : availableColors) {
             final Button btn = new Button(skin, "colored");
             final CheckBox cb = new CheckBox("", skin);
             presetColorGroup.add(cb);
             btn.setColor(c);
             btn.setSize(32f, 32f);
+            if (c == activeColor) {
+                cb.setChecked(true);
+            }
+            cb.addListener(new ChangeListener() {
+
+                @Override
+                public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                    if (cb.isChecked()) {
+                        parent.setCharacterColor(c);
+                    }
+                }
+            });
             
             btn.addListener(new ClickListener() {
                 @Override

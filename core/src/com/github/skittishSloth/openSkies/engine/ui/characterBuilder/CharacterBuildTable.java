@@ -39,7 +39,7 @@ public class CharacterBuildTable extends Table {
     }
     
     public void setAvailableColors(final Collection<Color> colors) {
-        settings.setAvailableColors(colors);
+        settings.setAvailableColors(colors, null);
     } 
     
     public Collection<Color> getAvailableColors() {
@@ -62,7 +62,8 @@ public class CharacterBuildTable extends Table {
     
     public void updateSettings() {
         Gdx.app.log(getClass().getSimpleName(), "Updating settings view.");
-        settings.update();
+        final Color activeColor = view.getActiveColor();
+        settings.update(activeColor);
     }
     
     private final CharacterSettingsView settings;

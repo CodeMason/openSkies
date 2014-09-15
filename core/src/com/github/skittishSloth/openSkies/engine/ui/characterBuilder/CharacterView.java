@@ -86,17 +86,25 @@ public final class CharacterView extends Table {
 
     public void setRace(final Race race) {
         this.activeRace = race;
-        if (!getAvailableColors().contains(activeColor)) {
-            activeColor = null;
-        }
         updateCurrentSprite();
         parent.updateSettings();
+    }
+    
+    public Color getActiveColor() {
+        return activeColor;
     }
 
     private void updateCurrentSprite() {
         final UniversalDirectionalSprite sprite;
         if ((activeGender != null) && (activeRace != null) && (activeColor != null)) {
-            final SpriteListDetails details = sprites.get(activeGender).get(activeRace).get(activeColor);
+            final Map<Color, SpriteListDetails> colorMap = sprites.get(activeGender).get(activeRace);
+            if (!colorMap.containsKey(activeColor)) {
+                for (final Color color : colorMap.keySet()) {
+                    activeColor = color;
+                    break;
+                }
+            }
+            final SpriteListDetails details = colorMap.get(activeColor);
             if (details == null) {
                 sprite = null;
             } else {
