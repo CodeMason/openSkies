@@ -33,6 +33,10 @@ public class UDSActor extends Actor {
             throw new IllegalStateException("Sprite has not been initialized yet.");
         }
         sprite.setAnimationState(state);
+        
+        if (eyeSprite != null) {
+            eyeSprite.setAnimationState(state);
+        }
     }
     
     public void changeDirection(final Direction direction) {
@@ -40,10 +44,26 @@ public class UDSActor extends Actor {
             throw new IllegalStateException("Sprite has not been initialized yet.");
         }
         sprite.setCurrentDirection(direction);
+        
+        if (eyeSprite != null) {
+            eyeSprite.setCurrentDirection(direction);
+        }
     }
     
     public void setSprite(final UniversalDirectionalSprite sprite) {
         this.sprite = sprite;
+    }
+    
+    public void setEyeSprite(final UniversalDirectionalSprite eyeSprite) {
+        this.eyeSprite = eyeSprite;
+    }
+    
+    public void setEarSprite(final UniversalDirectionalSprite earSprite) {
+        this.earSprite = earSprite;
+    }
+    
+    public void setNoseSprite(final UniversalDirectionalSprite noseSprite) {
+        this.noseSprite = noseSprite;
     }
 
     @Override
@@ -53,13 +73,20 @@ public class UDSActor extends Actor {
 
     @Override
     public void draw(final Batch batch, final float parentAlpha) {
-        if (sprite != null) {
-            final TextureRegion region = sprite.getTextureRegion(deltaTime);
+        safeDraw(batch, sprite);
+        safeDraw(batch, eyeSprite);
+        safeDraw(batch, earSprite);
+        safeDraw(batch, noseSprite);
+    }
+    
+    private void safeDraw(final Batch batch, final UniversalDirectionalSprite spriteToDraw) {
+        if (spriteToDraw != null) {
+            final TextureRegion region = spriteToDraw.getTextureRegion(deltaTime);
             batch.draw(region, getX(), getY());
         }
     }
     
     private float deltaTime = 0f;
-    private UniversalDirectionalSprite sprite;
+    private UniversalDirectionalSprite sprite, eyeSprite, earSprite, noseSprite;
     
 }

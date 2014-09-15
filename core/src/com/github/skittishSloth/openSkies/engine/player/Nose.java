@@ -10,7 +10,9 @@ package com.github.skittishSloth.openSkies.engine.player;
  *
  * @author mcory01
  */
-public enum Race {
-    HUMAN,
-    ELF;
+public enum Nose {
+    NONE,
+    BIG,
+    BUTTON,
+    STRAIGHT;
 }

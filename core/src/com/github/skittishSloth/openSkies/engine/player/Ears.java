@@ -10,7 +10,8 @@ package com.github.skittishSloth.openSkies.engine.player;
  *
  * @author mcory01
  */
-public enum Race {
-    HUMAN,
-    ELF;
+public enum Ears {
+    DEFAULT,
+    BIG,
+    ELVEN;
 }

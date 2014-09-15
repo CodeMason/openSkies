@@ -1,0 +1,10 @@
+Human
+  Light:    fdd5b7
+  Dark:     ba8454
+  Dark 2:   9c663e
+  Tanned:   fdd082
+  Tanned 2: ecc479
+
+Elf
+  Dark:     aeb3ca
+  Dark 2:   c9d0ee
