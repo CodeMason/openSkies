@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.github.skittishSloth.openSkies.engine.player;
+package com.github.skittishSloth.openSkies.engine.player.details;
 
 /**
  *

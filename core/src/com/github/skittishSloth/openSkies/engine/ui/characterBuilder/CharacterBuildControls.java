@@ -9,12 +9,13 @@ package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  *
  * @author mcory01
  */
-public class CharacterBuildControls extends Table {
+public class CharacterBuildControls extends Table implements Disposable {
 
     public CharacterBuildControls(final Skin skin) {
         super();
@@ -24,6 +25,11 @@ public class CharacterBuildControls extends Table {
         
         add(cancelButton).padRight(10f);
         add(createButton);
+    }
+    
+    @Override
+    public void dispose() {
+        
     }
     
     private final TextButton cancelButton, createButton;

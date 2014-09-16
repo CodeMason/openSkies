@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package com.github.skittishSloth.openSkies.engine.player;
+package com.github.skittishSloth.openSkies.engine.player.details;
 
+import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -23,13 +24,19 @@ public enum Eye {
     YELLOW("d9bf46");
     
     private final String colorString;
+    private final Color color;
     
     private Eye(final String colorString) {
         this.colorString = colorString;
+        this.color = Color.valueOf(this.colorString);
     }
     
     public String getColorString() {
         return colorString;
+    }
+    
+    public Color getColor() {
+        return color;
     }
     
     public static Eye getByColorString(final String colorString) {

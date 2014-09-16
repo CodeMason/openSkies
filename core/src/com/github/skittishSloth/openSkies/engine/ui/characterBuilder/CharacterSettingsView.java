@@ -5,8 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
 
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EyeListDetails;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -21,13 +21,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.github.skittishSloth.openSkies.engine.player.Ears;
-import com.github.skittishSloth.openSkies.engine.player.Eye;
-import com.github.skittishSloth.openSkies.engine.player.Gender;
-import com.github.skittishSloth.openSkies.engine.player.Nose;
-import com.github.skittishSloth.openSkies.engine.player.Race;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EarListDetails;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.NoseListDetails;
+import com.badlogic.gdx.utils.Disposable;
+import com.github.skittishSloth.openSkies.engine.player.details.Ears;
+import com.github.skittishSloth.openSkies.engine.player.details.Eye;
+import com.github.skittishSloth.openSkies.engine.player.details.Gender;
+import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
+import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
+import com.github.skittishSloth.openSkies.engine.player.details.Nose;
+import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
+import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EyeListDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -38,17 +41,19 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author mcory01
  */
-public class CharacterSettingsView extends Table {
+public class CharacterSettingsView extends Table implements Disposable {
 
     private static final int PRESET_BTNS_PER_ROW = 3;
 
-    public CharacterSettingsView(final Skin skin, final CharacterBuildTable parent) {
+    public CharacterSettingsView(final Skin skin, final CharacterBuildTable parent, final CharacterBuilderAssets assets) {
         super(skin);
         this.skin = skin;
 
         actionsTree = new Tree(skin);
         scrollPane = new ScrollPane(actionsTree, skin, "no-bg");
         this.parent = parent;
+
+        this.assets = assets;
 
         genderButtonGroup = new ButtonGroup();
         raceButtonGroup = new ButtonGroup();
@@ -71,13 +76,16 @@ public class CharacterSettingsView extends Table {
 
         eyesNode = buildEyesNode(null, null);
         actionsTree.add(eyesNode);
-        
+
         earsNode = buildEarsNode(null, null);
         actionsTree.add(earsNode);
-        
+
         noseNode = buildNoseNode(null, null);
         actionsTree.add(noseNode);
-        
+
+        hairNode = buildHairNode(null, null, null, null);
+        actionsTree.add(hairNode);
+
         add(scrollPane);
         scrollPane.setFillParent(true);
     }
@@ -89,30 +97,34 @@ public class CharacterSettingsView extends Table {
         scrollPane.setHeight(getHeight());
     }
 
-    public void setAvailableColors(final Collection<Color> colors, final Color activeColor) {
+    public void setAvailableColors(final Collection<SkinColor> colors, final SkinColor activeColor) {
         buildPresetColorNode(colors, activeColor);
     }
-    
+
     public void setAvailableEyes(final Collection<EyeListDetails> availableEyes, final Eye activeEye) {
         buildEyesNode(availableEyes, activeEye);
     }
-    
-    public void setAvailableEars(final Collection<EarListDetails> availableEars, final Ears activeEars) {
+
+    public void setAvailableEars(final Collection<Ears> availableEars, final Ears activeEars) {
         buildEarsNode(availableEars, activeEars);
     }
-    
-    public void setAvailableNoses(final Collection<NoseListDetails> availableNoses, final Nose activeNose) {
+
+    public void setAvailableNoses(final Collection<Nose> availableNoses, final Nose activeNose) {
         buildNoseNode(availableNoses, activeNose);
     }
 
-    public void update(final Color activeColor, final Eye activeEye, final Ears activeEars, final Nose activeNose) {
-        final Collection<Color> colors = parent.getAvailableColors();
+    public void setAvailableHairStyles(final Collection<HairStyles> availableHairStyles, final Collection<HairColors> availableHairColors, final HairStyles activeStyle, final HairColors activeHairColor) {
+        buildHairNode(availableHairStyles, availableHairColors, activeStyle, activeHairColor);
+    }
+
+    public void update(final SkinColor activeColor, final Eye activeEye, final Ears activeEars, final Nose activeNose, final HairStyles activeHairStyle, final HairColors activeHairColor) {
+        final Collection<SkinColor> colors = parent.getAvailableColors();
         boolean differentColors = false;
         if (availableColors == null) {
             availableColors = colors;
             differentColors = true;
         } else {
-            for (final Color c : colors) {
+            for (final SkinColor c : colors) {
                 if (!availableColors.contains(c)) {
                     differentColors = true;
                     break;
@@ -124,49 +136,99 @@ public class CharacterSettingsView extends Table {
             availableColors = colors;
             setAvailableColors(availableColors, activeColor);
         }
-        
+
         if (availableEyes == null) {
             availableEyes = parent.getAvailableEyes();
             setAvailableEyes(availableEyes, activeEye);
         }
-        
+
         boolean differentEars = false;
-        final Collection<EarListDetails> ears = parent.getAvailableEars();
+        final Collection<Ears> ears = parent.getAvailableEars();
         if (availableEars == null) {
             availableEars = ears;
             differentEars = true;
         } else {
-            for (final EarListDetails eld : ears) {
-                if (!availableEars.contains(eld)) {
+            for (final Ears ear : ears) {
+                if (!availableEars.contains(ear)) {
                     differentEars = true;
                     break;
                 }
             }
         }
-        
+
         if (differentEars) {
             availableEars = ears;
             setAvailableEars(availableEars, activeEars);
         }
-        
+
         boolean differentNoses = false;
-        final Collection<NoseListDetails> noses = parent.getAvailableNoses();
+        final Collection<Nose> noses = parent.getAvailableNoses();
         if (availableNoses == null) {
             availableNoses = noses;
             differentNoses = true;
         } else {
-            for (final NoseListDetails nld : noses) {
-                if (!availableNoses.contains(nld)) {
+            for (final Nose nose : noses) {
+                if (!availableNoses.contains(nose)) {
                     differentNoses = true;
                     break;
                 }
             }
         }
-        
+
         if (differentNoses) {
             availableNoses = noses;
             setAvailableNoses(availableNoses, activeNose);
         }
+
+        boolean differentStyles = false;
+        final Collection<HairStyles> styles = parent.getAvailableHairStyles();
+        if (availableHairStyles == null) {
+            availableHairStyles = styles;
+            differentStyles = true;
+        } else {
+            for (final HairStyles style : styles) {
+                if (!availableHairStyles.contains(style)) {
+                    differentStyles = true;
+                    break;
+                }
+            }
+        }
+
+        if (differentStyles) {
+            availableHairStyles = styles;
+        }
+
+        boolean differentHairColors = false;
+        final Collection<HairColors> hairColors = parent.getAvailableHairColors();
+        Gdx.app.log(getClass().getSimpleName(), "Hair Colors null? " + (hairColors == null));
+        if (availableHairColors == null) {
+            Gdx.app.log(getClass().getSimpleName(), "Available hair colors was null.");
+            availableHairColors = hairColors;
+            differentHairColors = true;
+        } else {
+            for (final HairColors hc : hairColors) {
+                if (!availableHairColors.contains(hc)) {
+
+                    Gdx.app.log(getClass().getSimpleName(), "Available hair colors didn't contain " + hc.getDisplayName() + ".");
+                    differentHairColors = true;
+                    break;
+                }
+            }
+        }
+
+        if (differentHairColors) {
+            Gdx.app.log(getClass().getSimpleName(), "Different Hair Colors!");
+            availableHairColors = hairColors;
+        }
+
+        if (differentStyles || differentHairColors) {
+            setAvailableHairStyles(availableHairStyles, availableHairColors, activeHairStyle, activeHairColor);
+        }
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
     private Tree.Node buildNameNode() {
@@ -237,7 +299,7 @@ public class CharacterSettingsView extends Table {
         return genderNode;
     }
 
-    private Tree.Node buildPresetColorNode(final Collection<Color> availableColors, final Color activeColor) {
+    private Tree.Node buildPresetColorNode(final Collection<SkinColor> availableColors, final SkinColor activeColor) {
         if (presetColorsNode == null) {
             presetColorsNode = buildLabeledNode("Preset Colors", skin);
         } else {
@@ -257,11 +319,11 @@ public class CharacterSettingsView extends Table {
             }
         }
 
-        for (final Color c : availableColors) {
+        for (final SkinColor c : availableColors) {
             final Button btn = new Button(skin, "colored");
             final CheckBox cb = new CheckBox("", skin);
             presetColorGroup.add(cb);
-            btn.setColor(c);
+            btn.setColor(c.getSampleColor());
             btn.setSize(32f, 32f);
             if (c == activeColor) {
                 cb.setChecked(true);
@@ -347,7 +409,7 @@ public class CharacterSettingsView extends Table {
         if (availableEyes == null) {
             return eyesNode;
         }
-        
+
         final List<EyeListDetails> eyeDetails = new ArrayList<EyeListDetails>(availableEyes);
 
         eyeDetails.sort(new Comparator<EyeListDetails>() {
@@ -395,40 +457,33 @@ public class CharacterSettingsView extends Table {
                 count = 1;
             }
         }
-        
+
         final Tree.Node tableNode = new Tree.Node(btnTable);
         tableNode.setSelectable(false);
         eyesNode.add(tableNode);
         return eyesNode;
     }
-    
-    private Tree.Node buildEarsNode(final Collection<EarListDetails> availableEars, final Ears activeEars) {
+
+    private Tree.Node buildEarsNode(final Collection<Ears> availableEars, final Ears activeEars) {
         if (earsNode == null) {
             earsNode = buildLabeledNode("Ears", skin);
         } else {
             earsNode.removeAll();
         }
-        
+
         clearButtonGroup(earsGroup);
         if (availableEars == null) {
             return earsNode;
         }
-        
-        final List<EarListDetails> earDetails = new ArrayList<EarListDetails>(availableEars);
 
-        earDetails.sort(new Comparator<EarListDetails>() {
-            @Override
-            public int compare(EarListDetails o1, EarListDetails o2) {
-                return o1.compareTo(o2);
-            }
-        });
+        final List<Ears> earDetails = new ArrayList<Ears>(availableEars);
 
         final Table btnTable = new Table(skin);
-        for (final EarListDetails ear : earDetails) {
-            final String earName = StringUtils.capitalize(ear.getEars().name().toLowerCase());
+        for (final Ears ear : earDetails) {
+            final String earName = StringUtils.capitalize(ear.name().toLowerCase());
             final CheckBox cb = new CheckBox(earName, skin);
             earsGroup.add(cb);
-            if (ear.getEars() == activeEars) {
+            if (ear == activeEars) {
                 cb.setChecked(true);
             }
             cb.addListener(new ChangeListener() {
@@ -436,7 +491,7 @@ public class CharacterSettingsView extends Table {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     if (cb.isChecked()) {
-                        parent.setCharacterEars(ear.getEars());
+                        parent.setCharacterEars(ear);
                     }
                 }
             });
@@ -444,41 +499,34 @@ public class CharacterSettingsView extends Table {
             btnTable.add(cb).left();
             btnTable.row();
         }
-        
+
         final Tree.Node earsTableNode = new Tree.Node(btnTable);
         earsTableNode.setSelectable(false);
         earsNode.add(earsTableNode);
-        
+
         return earsNode;
     }
-    
-    private Tree.Node buildNoseNode(final Collection<NoseListDetails> availableNoses, final Nose activeNose) {
+
+    private Tree.Node buildNoseNode(final Collection<Nose> availableNoses, final Nose activeNose) {
         if (noseNode == null) {
             noseNode = buildLabeledNode("Nose", skin);
         } else {
             noseNode.removeAll();
         }
-        
+
         clearButtonGroup(noseGroup);
         if (availableNoses == null) {
             return noseNode;
         }
-        
-        final List<NoseListDetails> noseDetails = new ArrayList<NoseListDetails>(availableNoses);
 
-        noseDetails.sort(new Comparator<NoseListDetails>() {
-            @Override
-            public int compare(NoseListDetails o1, NoseListDetails o2) {
-                return o1.compareTo(o2);
-            }
-        });
+        final List<Nose> noseDetails = new ArrayList<Nose>(availableNoses);
 
         final Table btnTable = new Table(skin);
-        for (final NoseListDetails nose : noseDetails) {
-            final String earName = StringUtils.capitalize(nose.getNose().name().toLowerCase());
+        for (final Nose nose : noseDetails) {
+            final String earName = StringUtils.capitalize(nose.name().toLowerCase());
             final CheckBox cb = new CheckBox(earName, skin);
-            earsGroup.add(cb);
-            if (nose.getNose() == activeNose) {
+            noseGroup.add(cb);
+            if (nose == activeNose) {
                 cb.setChecked(true);
             }
             cb.addListener(new ChangeListener() {
@@ -486,7 +534,7 @@ public class CharacterSettingsView extends Table {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     if (cb.isChecked()) {
-                        parent.setCharacterNose(nose.getNose());
+                        parent.setCharacterNose(nose);
                     }
                 }
             });
@@ -494,12 +542,88 @@ public class CharacterSettingsView extends Table {
             btnTable.add(cb).left();
             btnTable.row();
         }
-        
+
         final Tree.Node noseTableNode = new Tree.Node(btnTable);
         noseTableNode.setSelectable(false);
         noseNode.add(noseTableNode);
-        
+
         return noseNode;
+    }
+
+    private Tree.Node buildHairNode(final Collection<HairStyles> availableHairStyles, final Collection<HairColors> availableHairColors, final HairStyles activeHairStyle, final HairColors activeHairColor) {
+        if (hairNode == null) {
+            hairNode = buildLabeledNode("Hair", skin);
+        } else {
+            hairNode.removeAll();
+        }
+
+        if (availableHairStyles == null) {
+            return hairNode;
+        }
+
+        final Label styleLabel = new Label("Style:", skin);
+        final SelectBox<String> stylesSelection = new SelectBox<String>(skin);
+        final List<String> hairStylesList = new ArrayList<String>(availableHairStyles.size());
+        for (final HairStyles style : availableHairStyles) {
+            final String dispName = style.getDisplayName();
+            hairStylesList.add(dispName);
+        }
+        stylesSelection.setItems(hairStylesList.toArray(new String[hairStylesList.size()]));
+        stylesSelection.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                final String selected = stylesSelection.getSelected();
+                final HairStyles style = HairStyles.fromDisplayName(selected);
+                parent.setCharacterHairStyle(style);
+            }
+        });
+        if (activeHairStyle != null) {
+            stylesSelection.setSelected(activeHairStyle.getDisplayName());
+        } else {
+            stylesSelection.setSelectedIndex(0);
+        }
+
+        final Table styleTable = new Table(skin);
+        styleTable.add(styleLabel).right().pad(5f);
+        styleTable.add(stylesSelection).left();
+        styleTable.row();
+
+        final Label colorLabel = new Label("Color:", skin);
+        final SelectBox<String> colorsSelection = new SelectBox<String>(skin);
+        if (availableHairColors == null) {
+            colorsSelection.setDisabled(true);
+            colorsSelection.getItems().add("N/A");
+        } else {
+            colorsSelection.setDisabled(false);
+            final List<String> colorsList = new ArrayList<String>(availableHairColors.size());
+            for (final HairColors color : availableHairColors) {
+                final String dispName = color.getDisplayName();
+                colorsList.add(dispName);
+            }
+            colorsSelection.setItems(colorsList.toArray(new String[colorsList.size()]));
+            colorsSelection.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                    final String selected = colorsSelection.getSelected();
+                    final HairColors color = HairColors.fromDisplayName(selected);
+                    parent.setCharacterHairColor(color);
+                }
+            });
+            if (activeHairColor != null) {
+                colorsSelection.setSelected(activeHairColor.getDisplayName());
+            } else {
+                colorsSelection.setSelectedIndex(0);
+            }
+        }
+
+        styleTable.add(colorLabel).right().pad(5f);
+        styleTable.add(colorsSelection).left();
+
+        final Tree.Node stylesTableNode = new Tree.Node(styleTable);
+        stylesTableNode.setSelectable(false);
+        hairNode.add(stylesTableNode);
+
+        return hairNode;
     }
 
     private static final class RaceButtonClickListener extends ClickListener {
@@ -544,14 +668,19 @@ public class CharacterSettingsView extends Table {
     private Tree.Node eyesNode;
     private Tree.Node earsNode;
     private Tree.Node noseNode;
+    private Tree.Node hairNode;
     private final Skin skin;
     private final CharacterBuildTable parent;
     private final Tree actionsTree;
     private final ButtonGroup genderButtonGroup, raceButtonGroup, presetColorGroup, eyesGroup, earsGroup, noseGroup;
     private final ScrollPane scrollPane;
 
-    private Collection<Color> availableColors = null;
+    private final CharacterBuilderAssets assets;
+
+    private Collection<SkinColor> availableColors = null;
     private Collection<EyeListDetails> availableEyes = null;
-    private Collection<EarListDetails> availableEars = null;
-    private Collection<NoseListDetails> availableNoses = null;
+    private Collection<Ears> availableEars = null;
+    private Collection<Nose> availableNoses = null;
+    private Collection<HairStyles> availableHairStyles = null;
+    private Collection<HairColors> availableHairColors = null;
 }

@@ -26,8 +26,12 @@ public class UniversalDirectionalSprite implements Disposable {
 
     public static final int SPRITE_WIDTH = 64;
     public static final int SPRITE_HEIGHT = 64;
+    
+    public static UniversalDirectionalSprite createdMergedSprite(final Texture... textures) {
+        return createMergedSprite(AnimationState.values());
+    }
 
-    public static UniversalDirectionalSprite createdMergedSprite(final float frameRate, final AnimationState[] availableAnimations, final Texture[] textures) {
+    public static UniversalDirectionalSprite createdMergedSprite(final AnimationState[] availableAnimations, final Texture[] textures) {
         // get the first texture as a baseline.
         final Texture baselineTexture = getFirstNotNullTexture(textures);
         final int width = baselineTexture.getWidth();
@@ -64,25 +68,32 @@ public class UniversalDirectionalSprite implements Disposable {
 
         fb.end();
 
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(new Texture(pm), frameRate, availableAnimations);
+        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(new Texture(pm), availableAnimations);
         pm.dispose();
         sb.dispose();
         fb.dispose();
         return res;
     }
     
-    public static UniversalDirectionalSprite createMergedSprite(final float frameRate, final AnimationState[] availableAnimations, final UniversalDirectionalSprite... sprites) {
+    public static UniversalDirectionalSprite createMergedSprite(final UniversalDirectionalSprite... sprites) {
+        return createMergedSprite(AnimationState.values(), sprites);
+    }
+    
+    public static UniversalDirectionalSprite createMergedSprite(final AnimationState[] availableAnimations, final UniversalDirectionalSprite... sprites) {
         final Texture[] textures = new Texture[sprites.length];
         
         for (int i = 0; i < sprites.length; ++i) {
             textures[i] = sprites[i].getBaseTexture();
         }
         
-        return createdMergedSprite(frameRate, availableAnimations, textures);
+        return createdMergedSprite(availableAnimations, textures);
+    }
+    
+    public UniversalDirectionalSprite(final Texture baseTexture) {
+        this(baseTexture, AnimationState.values());
     }
 
-    public UniversalDirectionalSprite(final Texture baseTexture, final float frameRate, final AnimationState... availableAnimations) {
-        this.frameRate = frameRate;
+    public UniversalDirectionalSprite(final Texture baseTexture, final AnimationState... availableAnimations) {
         this.baseTexture = baseTexture;
 
         this.availableAnimations = availableAnimations;
@@ -92,15 +103,15 @@ public class UniversalDirectionalSprite implements Disposable {
             for (final Direction dir : Direction.values()) {
                 if (mState == AnimationState.IDLE) {
                     final TextureRegion idle = getIdleRegion(dir, baseTexture);
-                    final Animation idleAnimation = new Animation(this.frameRate, idle);
+                    final Animation idleAnimation = new Animation(mState.getFrameDuration(), idle);
                     directionAnimations.put(dir, idleAnimation);
                 } else if (mState != AnimationState.HURT) {
                     final TextureRegion[] frames = getFrames(dir, mState, baseTexture);
-                    final Animation anim = new Animation(this.frameRate, frames);
+                    final Animation anim = new Animation(mState.getFrameDuration(), frames);
                     directionAnimations.put(dir, anim);
                 } else {
                     final TextureRegion[] frames = getHurtFrames(baseTexture);
-                    final Animation anim = new Animation(this.frameRate, frames);
+                    final Animation anim = new Animation(mState.getFrameDuration(), frames);
                     directionAnimations.put(dir, anim);
                 }
             }
@@ -108,8 +119,8 @@ public class UniversalDirectionalSprite implements Disposable {
         }
     }
 
-    public UniversalDirectionalSprite(final String imgName, final float frameRate, final AnimationState... availableAnimations) {
-        this(new Texture(imgName), frameRate, availableAnimations);
+    public UniversalDirectionalSprite(final String imgName, final AnimationState... availableAnimations) {
+        this(new Texture(imgName), availableAnimations);
     }
 
     public TextureRegion getTextureRegion(final float deltaTime) {
@@ -251,6 +262,6 @@ public class UniversalDirectionalSprite implements Disposable {
     private float movementTime = 0f;
     private int width, height;
 
-    private final float frameRate;
+//    private final float frameRate;
     private final Map<AnimationState, Map<Direction, Animation>> animations = new EnumMap<AnimationState, Map<Direction, Animation>>(AnimationState.class);
 }

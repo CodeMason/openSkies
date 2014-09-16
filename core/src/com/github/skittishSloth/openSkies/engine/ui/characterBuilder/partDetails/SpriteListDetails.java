@@ -8,8 +8,8 @@ package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetail
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
-import com.github.skittishSloth.openSkies.engine.player.Gender;
-import com.github.skittishSloth.openSkies.engine.player.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.Gender;
+import com.github.skittishSloth.openSkies.engine.player.details.Race;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
 
 /**

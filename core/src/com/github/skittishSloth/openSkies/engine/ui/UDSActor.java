@@ -65,6 +65,10 @@ public class UDSActor extends Actor {
     public void setNoseSprite(final UniversalDirectionalSprite noseSprite) {
         this.noseSprite = noseSprite;
     }
+    
+    public void setHairSprite(final UniversalDirectionalSprite hairSprite) {
+        this.hairSprite = hairSprite;
+    }
 
     @Override
     public void act(final float delta) {
@@ -77,6 +81,7 @@ public class UDSActor extends Actor {
         safeDraw(batch, eyeSprite);
         safeDraw(batch, earSprite);
         safeDraw(batch, noseSprite);
+        safeDraw(batch, hairSprite);
     }
     
     private void safeDraw(final Batch batch, final UniversalDirectionalSprite spriteToDraw) {
@@ -87,6 +92,5 @@ public class UDSActor extends Actor {
     }
     
     private float deltaTime = 0f;
-    private UniversalDirectionalSprite sprite, eyeSprite, earSprite, noseSprite;
-    
+    private UniversalDirectionalSprite sprite, eyeSprite, earSprite, noseSprite, hairSprite;
 }

@@ -24,6 +24,7 @@ public enum AnimationState {
     private final int numFrames;
     private final int sectionIndex;
     private final boolean moveable;
+    private final float frameDuration;
     
     private AnimationState(final String frameName, final boolean loopable, final int numFrames, final int sectionIndex, final boolean moveable) {
         this.frameName = frameName;
@@ -31,6 +32,16 @@ public enum AnimationState {
         this.numFrames = numFrames;
         this.sectionIndex = sectionIndex;
         this.moveable = moveable;
+        this.frameDuration = 1 /15f;
+    }
+    
+    private AnimationState(final String frameName, final boolean loopable, final int numFrames, final int sectionIndex, final boolean moveable, final float frameDuration) {
+        this.frameName = frameName;
+        this.loopable = loopable;
+        this.numFrames = numFrames;
+        this.sectionIndex = sectionIndex;
+        this.moveable = moveable;
+        this.frameDuration = frameDuration;
     }
     
     public String getFrameName() {
@@ -51,5 +62,9 @@ public enum AnimationState {
 
     public boolean isMoveable() {
         return moveable;
+    }
+    
+    public float getFrameDuration() {
+        return frameDuration;
     }
 }

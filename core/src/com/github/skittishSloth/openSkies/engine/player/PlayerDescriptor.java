@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.player;
 
+import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
@@ -111,8 +112,6 @@ public class PlayerDescriptor implements Disposable {
             mergedSprite.dispose();
         }
         
-        final float frameRate = 1 / 15f;
-
         final Texture[] textures = new Texture[]{
             body,
             ears,
@@ -122,7 +121,7 @@ public class PlayerDescriptor implements Disposable {
             facial
         };
 
-        mergedSprite = UniversalDirectionalSprite.createdMergedSprite(frameRate, AnimationState.values(), textures);
+        mergedSprite = UniversalDirectionalSprite.createdMergedSprite(AnimationState.values(), textures);
         updateTextureRequired = false;
     }
     
