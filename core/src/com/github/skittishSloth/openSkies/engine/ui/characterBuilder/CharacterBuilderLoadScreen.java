@@ -24,10 +24,11 @@ public class CharacterBuilderLoadScreen extends AbstractScreen {
     private static final int BAR_X_OFFSET = 40;
     private static final int BAR_HEIGHT = 20;
 
-    public CharacterBuilderLoadScreen(final OpenSkies game, final CharacterBuilderAssets assets) {
+    public CharacterBuilderLoadScreen(final OpenSkies game, final CharacterBuilderScreenManager manager, final CharacterBuilderAssets assets) {
         super(game);
 
         this.assets = assets;
+        this.manager = manager;
         final Skin skin = super.getSkin();
         font = skin.getFont("default-font");
         emptyTexture = new Texture("gfx/ui/loading/empty.png");
@@ -46,6 +47,12 @@ public class CharacterBuilderLoadScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
+        if (isFinished()) {
+            manager.loadingScreenFinished();
+            Gdx.app.log(getName(), "Loading Screen is finished!");
+            return;
+        }
+        
         final float progress = assets.getProgress();
         
         final int screenWidth = Gdx.graphics.getWidth();
@@ -69,6 +76,7 @@ public class CharacterBuilderLoadScreen extends AbstractScreen {
         batch.dispose();
     }
 
+    private final CharacterBuilderScreenManager manager;
     private final CharacterBuilderAssets assets;
     private final SpriteBatch batch;
     private final Texture emptyTexture, fullTexture;

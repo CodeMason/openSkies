@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
+package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,11 +16,16 @@ import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
 import com.github.skittishSloth.openSkies.engine.player.details.Nose;
+import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
 import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
+import com.github.skittishSloth.openSkies.engine.player.details.Shirts;
+import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.UDSActor;
+import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.CharacterBuilderAssets;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EyeListDetails;
 import java.util.Collection;
 
@@ -30,20 +35,24 @@ import java.util.Collection;
  */
 public final class CharacterView extends Table implements Disposable {
 
-    public CharacterView(final Skin skin, final CharacterBuildTable parent, final CharacterBuilderAssets assets) {
+    public CharacterView(final Skin skin, final CharacterAppearanceTable parent, final CharacterBuilderAssets assets) {
         super(skin);
         this.parent = parent;
         this.assets = assets;
 
         defaults().align(Align.center);
-        buildData = new CharacterBuildData();
+        buildData = new CharacterAppearanceData();
 
         spriteActor = new UDSActor(null);
         add(spriteActor).center();
         buildData.setGender(Gender.MALE);
+        buildData.setShirt(Shirts.LONGSLEEVE);
+        buildData.setShirtColor(ShirtColors.values()[0]);
         buildData.setRace(Race.HUMAN);
         buildData.setSkinColor(SkinColor.LIGHT);
         buildData.setNose(Nose.STRAIGHT);
+        buildData.setPantsColor(PantsColors.WHITE);
+        buildData.setShoeColor(ShoeColors.BLACK);
 
         updateCurrentSprite();
     }
@@ -79,6 +88,26 @@ public final class CharacterView extends Table implements Disposable {
     public Collection<HairColors> getAvailableHairColors() {
         return assets.getAvailableHairColors(buildData);
     }
+    
+    public Collection<ShirtColors> getAvailableShirtColors() {
+        return assets.getAvailableShirtColors();
+    }
+    
+    public Collection<PantsColors> getAvailablePantsColors() {
+        return assets.getAvailablePantsColors();
+    }
+    
+    public Collection<ShoeColors> getAvailableShoeColors() {
+        return assets.getAvailableShoeColors();
+    }
+    
+    public CharacterAppearanceData getCharacter() {
+        return buildData;
+    }
+    
+    public void setCharacterName(final String name) {
+        buildData.setName(name);
+    }
 
     public void setActiveColor(final SkinColor color) {
         buildData.setSkinColor(color);
@@ -88,6 +117,12 @@ public final class CharacterView extends Table implements Disposable {
 
     public void setGender(final Gender gender) {
         buildData.setGender(gender);
+        if (gender == Gender.MALE) {
+            buildData.setShirt(Shirts.LONGSLEEVE);
+        } else {
+            buildData.setShirt(Shirts.SLEEVELESS);
+        }
+        
         updateCurrentSprite();
         parent.updateSettings();
     }
@@ -127,6 +162,24 @@ public final class CharacterView extends Table implements Disposable {
         updateCurrentSprite();
         parent.updateSettings();
     }
+    
+    public void setShirtColor(final ShirtColors color) {
+        buildData.setShirtColor(color);
+        updateCurrentSprite();
+        parent.updateSettings();
+    }
+    
+    public void setPantsColor(final PantsColors color) {
+        buildData.setPantsColor(color);
+        updateCurrentSprite();
+        parent.updateSettings();
+    }
+    
+    public void setShoeColor(final ShoeColors color) {
+        buildData.setShoeColor(color);
+        updateCurrentSprite();
+        parent.updateSettings();
+    }
 
     public SkinColor getActiveColor() {
         return buildData.getSkinColor();
@@ -151,6 +204,14 @@ public final class CharacterView extends Table implements Disposable {
     public HairColors getActiveHairColor() {
         return buildData.getHairColor();
     }
+    
+    public ShirtColors getActiveShirtColor() {
+        return buildData.getShirtColor();
+    }
+    
+    public PantsColors getActivePantsColor() {
+        return buildData.getPantsColor();
+    }
 
     @Override
     public void dispose() {
@@ -172,12 +233,24 @@ public final class CharacterView extends Table implements Disposable {
         
         final UniversalDirectionalSprite hair = assets.getHairSprite(buildData);
         initSpriteState(hair);
-
+        
+        final UniversalDirectionalSprite shirt = assets.getShirtSprite(buildData);
+        initSpriteState(shirt);
+        
+        final UniversalDirectionalSprite pants = assets.getPantsSprite(buildData);
+        initSpriteState(pants);
+        
+        final UniversalDirectionalSprite shoes = assets.getShoeSprite(buildData);
+        initSpriteState(shoes);
+        
         spriteActor.setSprite(sprite);
         spriteActor.setEyeSprite(eyes);
         spriteActor.setNoseSprite(nose);
         spriteActor.setEarSprite(ears);
         spriteActor.setHairSprite(hair);
+        spriteActor.setShirtSprite(shirt);
+        spriteActor.setPantsSprite(pants);
+        spriteActor.setShoeSprite(shoes);
     }
     
     private void initSpriteState(final UniversalDirectionalSprite sprite) {
@@ -190,8 +263,8 @@ public final class CharacterView extends Table implements Disposable {
     }
 
     private final UDSActor spriteActor;
-    private final CharacterBuildTable parent;
+    private final CharacterAppearanceTable parent;
     private final CharacterBuilderAssets assets;
 
-    private final CharacterBuildData buildData;
+    private final CharacterAppearanceData buildData;
 }

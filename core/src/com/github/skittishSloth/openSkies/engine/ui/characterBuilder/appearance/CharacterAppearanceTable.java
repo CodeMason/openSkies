@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
-package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
+package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
@@ -17,8 +18,12 @@ import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
 import com.github.skittishSloth.openSkies.engine.player.details.Nose;
+import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
 import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
+import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
+import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.CharacterBuilderAssets;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EyeListDetails;
 import java.util.Collection;
 
@@ -26,30 +31,32 @@ import java.util.Collection;
  *
  * @author mcory01
  */
-public final class CharacterBuildTable extends Table implements Disposable {
+public final class CharacterAppearanceTable extends Table implements Disposable {
     
-    public CharacterBuildTable(final Skin skin, final CharacterBuilderAssets assets) {
+    public CharacterAppearanceTable(final Skin skin, final CharacterAppearanceScreen parentScreen, final CharacterBuilderAssets assets) {
         super(skin);
+        
+        this.parentScreen = parentScreen;
         
         clearChildren();
         
         final int width = Gdx.graphics.getWidth();
-        final int height = Gdx.graphics.getHeight();
         
-        settings = new CharacterSettingsView(skin, this, assets);
+        final Label label = new Label("Appearance", skin);
+        add(label).top().left().padLeft(5f);
+        row();
+        
+        settings = new CharacterAppearanceSettings(skin, this);
         view = new CharacterView(skin, this, assets);
-        controls = new CharacterBuildControls(skin);
+        controls = new CharacterAppearanceControls(skin, this);
         add(view).center().width(width * 0.4f).expandY();
         add(settings).top().width(width * 0.6f).expandY();
         row();
-        add(controls).bottom().right().colspan(2);
+        add(controls).bottom().right().colspan(2).pad(5f);
         
+        settingsValidator = new CharacterAppearanceSettingsValidator(settings);
         updateSettings();
     }
-    
-    public void setAvailableColors(final Collection<SkinColor> colors) {
-        settings.setAvailableColors(colors, null);
-    } 
     
     public Collection<SkinColor> getAvailableColors() {
         return view.getAvailableColors();
@@ -60,24 +67,16 @@ public final class CharacterBuildTable extends Table implements Disposable {
     }
     
     public void setCharacterGender(final Gender gender) {
-        Gdx.app.log(getClass().getSimpleName(), "Changing gender to " + gender);
         view.setGender(gender);
     }
 
     public void setCharacterRace(final Race race) {
-        Gdx.app.log(getClass().getSimpleName(), "Changing race to " + race);
         view.setRace(race);
     }
     
     public void updateSettings() {
-        Gdx.app.log(getClass().getSimpleName(), "Updating settings view.");
-        final SkinColor activeColor = view.getActiveColor();
-        final Eye activeEye = view.getActiveEye();
-        final Ears activeEars = view.getActiveEars();
-        final Nose activeNose = view.getActiveNose();
-        final HairStyles activeHairStyle = view.getActiveHairStyle();
-        final HairColors activeHairColor = view.getActiveHairColor();
-        settings.update(activeColor, activeEye, activeEars, activeNose, activeHairStyle, activeHairColor);
+        final CharacterAppearanceData buildData = view.getCharacter();
+        settings.update(buildData);
     }
 
     public Collection<EyeListDetails> getAvailableEyes() {
@@ -100,6 +99,22 @@ public final class CharacterBuildTable extends Table implements Disposable {
         return view.getAvailableHairColors();
     }
     
+    public Collection<ShirtColors> getAvailableShirtColors() {
+        return view.getAvailableShirtColors();
+    }
+    
+    public Collection<PantsColors> getAvailablePantsColors() {
+        return view.getAvailablePantsColors();
+    }
+    
+    public Collection<ShoeColors> getAvailableShoeColors() {
+        return view.getAvailableShoeColors();
+    }
+    
+    public void setCharacterName(final String name) {
+        view.setCharacterName(name);
+    }
+    
     public void setCharacterEye(final Eye eye) {
         view.setEye(eye);
     }
@@ -120,15 +135,47 @@ public final class CharacterBuildTable extends Table implements Disposable {
         view.setHairColor(color);
     }
     
+    public void setCharacterShirtColor(final ShirtColors color) {
+        view.setShirtColor(color);
+    }
+    
+    public void setCharacterPantsColor(final PantsColors color) {
+        view.setPantsColor(color);
+    }
+    
+    public void setCharacterShoeColor(final ShoeColors color) {
+        view.setShoeColor(color);
+    }
+    
+    public CharacterAppearanceData getCurrentState() {
+        return view.getCharacter();
+    }
+    
+    public boolean validateSettings() {
+        final CharacterAppearanceData data = view.getCharacter();
+        return settingsValidator.validate(data);
+    }
+    
+    public void handleNext() {
+        if (validateSettings()) {
+            parentScreen.appearanceScreenNext();
+        }
+    }
+    
+    public void handleCancel() {
+        parentScreen.appearanceScreenCancel();
+    }
+    
     @Override
     public void dispose() {
         Gdx.app.log(getClass().getSimpleName(), "Disposing");
         GdxUtils.safeDispose(view);
         GdxUtils.safeDispose(settings);
-        GdxUtils.safeDispose(controls);
     }
     
-    private final CharacterSettingsView settings;
+    private final CharacterAppearanceSettings settings;
     private final CharacterView view;
-    private final CharacterBuildControls controls;
+    private final CharacterAppearanceControls controls;
+    private final CharacterAppearanceScreen parentScreen;
+    private final CharacterAppearanceSettingsValidator settingsValidator;
 }

@@ -1,0 +1,7 @@
+#BIMP 1.11
+#MANIPULATION SET DEFINITION
+
+[USERDEF0]
+procedure=gimp-image-convert-rgb
+num_params=1
+PARAM0=NOT_USED

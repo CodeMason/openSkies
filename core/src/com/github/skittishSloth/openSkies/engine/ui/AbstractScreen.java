@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
 
@@ -25,6 +27,12 @@ public abstract class AbstractScreen implements Screen {
     protected AbstractScreen(final OpenSkies game) {
         this.game = game;
         this.stage = new Stage();
+        
+        final int width = Gdx.graphics.getWidth();
+        final int height = Gdx.graphics.getHeight();
+        final Viewport viewport = new ExtendViewport(width, height, getStage().getCamera());
+        getStage().setViewport(viewport);
+        Gdx.input.setInputProcessor(getStage());
     }
 
     protected final String getName() {
@@ -50,7 +58,7 @@ public abstract class AbstractScreen implements Screen {
     @Override
     public void resize(final int width, final int height) {
         Gdx.app.log(getName(), "Resizing screen: " + getName() + " to: " + width + " x " + height);
-
+        getStage().getViewport().update(width, height);
     }
 
     @Override

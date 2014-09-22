@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
 
+import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance.CharacterAppearanceData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
@@ -16,8 +17,17 @@ import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
 import com.github.skittishSloth.openSkies.engine.player.details.Nose;
+import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
 import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
+import com.github.skittishSloth.openSkies.engine.player.details.Shirts;
+import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
+import com.github.skittishSloth.openSkies.engine.player.info.BackStory;
+import com.github.skittishSloth.openSkies.engine.player.info.BackStoryCollection;
+import com.github.skittishSloth.openSkies.engine.player.info.PlayerClass;
+import com.github.skittishSloth.openSkies.engine.player.info.PlayerClassCollection;
+import com.github.skittishSloth.openSkies.engine.player.info.InformationLoader;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EyeListDetails;
 import java.io.File;
@@ -39,6 +49,17 @@ public class CharacterBuilderAssets implements Disposable {
     private static final String HAIR_PATH = BASE_CB_PATH + "/hair";
     private static final String FEMALE_BODY_PATH = BODY_PATH + "/female";
     private static final String MALE_BODY_PATH = BODY_PATH + "/male";
+    
+    private static final String TORSO_PATH = BASE_CB_PATH + "/torso";
+    private static final String SHIRT_PATH = TORSO_PATH + "/shirts";
+    
+    private static final String LEGS_PATH = BASE_CB_PATH + "/legs";
+    private static final String PANTS_PATH = LEGS_PATH + "/pants";
+    
+    private static final String FEET_PATH = BASE_CB_PATH + "/feet";
+    private static final String SHOE_PATH = FEET_PATH + "/shoes";
+    
+    private static final String DATA_PATH = "data/char-building";
 
     public CharacterBuilderAssets() {
         this.assets = new AssetManager();
@@ -61,7 +82,7 @@ public class CharacterBuilderAssets implements Disposable {
         return assets.getProgress();
     }
 
-    public UniversalDirectionalSprite getBodySprite(final CharacterBuildData buildData) {
+    public UniversalDirectionalSprite getBodySprite(final CharacterAppearanceData buildData) {
         if (buildData == null) {
             Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
             return null;
@@ -85,7 +106,7 @@ public class CharacterBuilderAssets implements Disposable {
         return res;
     }
 
-    public UniversalDirectionalSprite getEyesSprite(final CharacterBuildData buildData) {
+    public UniversalDirectionalSprite getEyesSprite(final CharacterAppearanceData buildData) {
         if (buildData == null) {
             Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
             return null;
@@ -109,7 +130,7 @@ public class CharacterBuilderAssets implements Disposable {
         return enumToCollection(Nose.class);
     }
 
-    public UniversalDirectionalSprite getNoseSprite(final CharacterBuildData buildData) {
+    public UniversalDirectionalSprite getNoseSprite(final CharacterAppearanceData buildData) {
         if (buildData == null) {
             Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
             return null;
@@ -143,7 +164,7 @@ public class CharacterBuilderAssets implements Disposable {
         return res;
     }
 
-    public UniversalDirectionalSprite getEarSprite(final CharacterBuildData buildData) {
+    public UniversalDirectionalSprite getEarSprite(final CharacterAppearanceData buildData) {
         if (buildData == null) {
             Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
             return null;
@@ -177,7 +198,7 @@ public class CharacterBuilderAssets implements Disposable {
         return res;
     }
     
-    public UniversalDirectionalSprite getHairSprite(final CharacterBuildData buildData) {
+    public UniversalDirectionalSprite getHairSprite(final CharacterAppearanceData buildData) {
         if (buildData == null) {
             Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
             return null;
@@ -205,6 +226,76 @@ public class CharacterBuilderAssets implements Disposable {
         
         final Texture hairTexture = assets.get(colorPathStr, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(hairTexture);
+        return res;
+    }
+    
+    public UniversalDirectionalSprite getShirtSprite(final CharacterAppearanceData buildData) {
+        if (buildData == null) {
+            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            return null;
+        }
+        
+        final Gender gender = buildData.getGender();
+        final Shirts shirt = buildData.getShirt();
+        final ShirtColors color = buildData.getShirtColor();
+        
+        if ((gender == null) || (shirt == null) || (color == null)) {
+            return null;
+        }
+        
+        final String basePathStr = SHIRT_PATH + "/" + shirt.name().toLowerCase() + "/" + gender.name().toLowerCase();
+        final String colorPathStr = basePathStr + "/" + color.name().toLowerCase() + "_" + shirt.name().toLowerCase() + ".png";
+        
+        final Texture texture = assets.get(colorPathStr, Texture.class);
+        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
+        return res;
+    }
+    
+    public UniversalDirectionalSprite getPantsSprite(final CharacterAppearanceData buildData) {
+        if (buildData == null) {
+            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            return null;
+        }
+        
+        final Gender gender = buildData.getGender();
+        final PantsColors color = buildData.getPantsColor();
+        
+        if ((gender == null) || (color == null)) {
+            Gdx.app.log(getClass().getSimpleName(), "Pants Sprite: Build data incomplete.");
+            if (gender == null) {
+                Gdx.app.log(getClass().getSimpleName(), "--Gender null");
+            } else if (color == null) {
+                Gdx.app.log(getClass().getSimpleName(), "--Color null");
+            }
+            return null;
+        }
+        
+        final String basePathStr = PANTS_PATH + "/" + gender.name().toLowerCase();
+        final String colorPathStr = basePathStr + "/" + color.name().toLowerCase() + "_pants_" + gender.name().toLowerCase() + ".png";
+        
+        final Texture texture = assets.get(colorPathStr, Texture.class);
+        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
+        return res;
+    }
+    
+    public UniversalDirectionalSprite getShoeSprite(final CharacterAppearanceData buildData) {
+        if (buildData == null) {
+            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            return null;
+        }
+        
+        final Gender gender = buildData.getGender();
+        final ShoeColors color = buildData.getShoeColor();
+        
+        if ((gender == null) || (color == null)) {
+            return null;
+        }
+        
+        final String basePathStr = SHOE_PATH + "/" + gender.name().toLowerCase();
+        final String colorPathStr = basePathStr + "/" + color.name().toLowerCase() + "_shoes_" + gender.name().toLowerCase() + ".png";
+        
+        final Texture texture = assets.get(colorPathStr, Texture.class);
+        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
         return res;
     }
 
@@ -254,7 +345,7 @@ public class CharacterBuilderAssets implements Disposable {
         return enumToCollection(HairStyles.class);
     }
     
-    public Collection<HairColors> getAvailableHairColors(final CharacterBuildData buildData) {
+    public Collection<HairColors> getAvailableHairColors(final CharacterAppearanceData buildData) {
         if (buildData == null) {
             Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
             return null;
@@ -289,10 +380,99 @@ public class CharacterBuilderAssets implements Disposable {
         
         return res;
     }
+    
+    public Collection<ShirtColors> getAvailableShirtColors() {
+        return enumToCollection(ShirtColors.class);
+    }
+    
+    public Collection<PantsColors> getAvailablePantsColors() {
+        return enumToCollection(PantsColors.class);
+    }
+    
+    public Collection<ShoeColors> getAvailableShoeColors() {
+        return enumToCollection(ShoeColors.class);
+    }
+    
+    public Collection<PlayerClass> getPlayerClasses() {
+        return playerClasses;
+    }
+    
+    public Collection<BackStory> getBackStories() {
+        return backStories;
+    }
 
     @Override
     public void dispose() {
         assets.dispose();
+    }
+
+    private void registerAssets() {
+
+        final String elfPath = "/elf";
+        final String humanPath = "/human";
+        final String eyesPath = "/eyes";
+
+        loadFilesInPath(FEMALE_BODY_PATH + elfPath);
+        loadFilesInPath(MALE_BODY_PATH + elfPath);
+
+        loadFilesInPath(FEMALE_BODY_PATH + humanPath);
+        loadFilesInPath(MALE_BODY_PATH + humanPath);
+
+        loadFilesInPath(FEMALE_BODY_PATH + eyesPath);
+        loadFilesInPath(MALE_BODY_PATH + eyesPath);
+
+        loadFilesInPath(SHIRT_PATH);
+        
+        loadFilesInPath(PANTS_PATH);
+        
+        loadFilesInPath(SHOE_PATH);
+        
+        loadPlayerClasses();
+        
+        loadBackStories();
+    }
+
+    private void loadFilesInPath(final String path) {
+        final FileHandle dir = Gdx.files.internal(path);
+        for (final FileHandle file : dir.list()) {
+            final String filePath = file.path();
+            if (loadedPaths.contains(filePath)) {
+                continue;
+            }
+
+            if (file.extension().equalsIgnoreCase("png")) {
+                assets.load(file.path(), Texture.class);
+                loadedPaths.add(file.path());
+            } else if (file.isDirectory() && !(file.name().endsWith("_ignore"))) {
+                loadFilesInPath(file.path());
+            } else {
+                Gdx.app.log(getClass().getSimpleName(), "Unrecognized file: " + file.name());
+            }
+        }
+    }
+    
+    private void loadPlayerClasses() {
+        final FileHandle fh = Gdx.files.internal("data/char-building/class-descriptions.json");
+        final PlayerClassCollection classCollection = InformationLoader.playerClassesFromJsonFile(fh);
+        playerClasses.clear();
+        if (classCollection != null) {
+            final Collection<PlayerClass> classCollectionClasses = classCollection.getClasses();
+            if (classCollectionClasses != null) {
+                playerClasses.addAll(classCollectionClasses);
+            }
+        }
+    }
+    
+    private void loadBackStories() {
+        final FileHandle fh = Gdx.files.internal("data/char-building/backstories.json");
+        final BackStoryCollection backStoryCollection = InformationLoader.backStoriesFromJsonFile(fh);
+        backStories.clear();
+        if (backStoryCollection != null) {
+            final Collection<BackStory> backStoryCollectionItems = backStoryCollection.getBackStories();
+            if (backStoryCollectionItems != null) {
+                backStories.addAll(backStoryCollectionItems);
+            }
+        }
     }
 
     private static SkinColor normalizeColor(final SkinColor color, final Race race) {
@@ -314,42 +494,8 @@ public class CharacterBuilderAssets implements Disposable {
         return res;
     }
 
-    private void registerAssets() {
-
-        final String elfPath = "/elf";
-        final String humanPath = "/human";
-        final String eyesPath = "/eyes";
-
-        loadFilesInPath(FEMALE_BODY_PATH + elfPath);
-        loadFilesInPath(MALE_BODY_PATH + elfPath);
-
-        loadFilesInPath(FEMALE_BODY_PATH + humanPath);
-        loadFilesInPath(MALE_BODY_PATH + humanPath);
-
-        loadFilesInPath(FEMALE_BODY_PATH + eyesPath);
-        loadFilesInPath(MALE_BODY_PATH + eyesPath);
-
-    }
-
-    private void loadFilesInPath(final String path) {
-        final FileHandle dir = Gdx.files.internal(path);
-        for (final FileHandle file : dir.list()) {
-            final String filePath = file.path();
-            if (loadedPaths.contains(filePath)) {
-                continue;
-            }
-
-            if (file.extension().equalsIgnoreCase("png")) {
-                assets.load(file.path(), Texture.class);
-                loadedPaths.add(file.path());
-            } else if (file.isDirectory() && !(file.name().endsWith("_ignore"))) {
-                loadFilesInPath(file.path());
-            } else {
-                Gdx.app.log(getClass().getSimpleName(), "Unrecognized file: " + file.name());
-            }
-        }
-    }
-
     private final AssetManager assets;
     private final Set<String> loadedPaths = new HashSet<String>();
+    private final Collection<PlayerClass> playerClasses = new ArrayList<PlayerClass>();
+    private final Collection<BackStory> backStories = new ArrayList<BackStory>();
 }

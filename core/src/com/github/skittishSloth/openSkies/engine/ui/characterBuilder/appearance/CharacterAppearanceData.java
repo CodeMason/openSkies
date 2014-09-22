@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
+package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance;
 
 import com.github.skittishSloth.openSkies.engine.player.details.Ears;
 import com.github.skittishSloth.openSkies.engine.player.details.Eye;
@@ -11,14 +11,18 @@ import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
 import com.github.skittishSloth.openSkies.engine.player.details.Nose;
+import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
 import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
+import com.github.skittishSloth.openSkies.engine.player.details.Shirts;
+import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
 
 /**
  *
  * @author mcory01
  */
-public class CharacterBuildData {
+public class CharacterAppearanceData {
 
     public String getName() {
         return name;
@@ -92,6 +96,38 @@ public class CharacterBuildData {
         this.hairColor = hairColor;
     }
 
+    public Shirts getShirt() {
+        return shirt;
+    }
+
+    public void setShirt(Shirts shirt) {
+        this.shirt = shirt;
+    }
+
+    public ShirtColors getShirtColor() {
+        return shirtColor;
+    }
+
+    public void setShirtColor(ShirtColors shirtColor) {
+        this.shirtColor = shirtColor;
+    }
+
+    public PantsColors getPantsColor() {
+        return pantsColor;
+    }
+
+    public void setPantsColor(PantsColors pantsColor) {
+        this.pantsColor = pantsColor;
+    }
+
+    public ShoeColors getShoeColor() {
+        return shoeColor;
+    }
+
+    public void setShoeColor(ShoeColors shoeColor) {
+        this.shoeColor = shoeColor;
+    }
+
     private String name;
     private Gender gender;
     private Race race;
@@ -101,4 +137,8 @@ public class CharacterBuildData {
     private Nose nose;
     private HairStyles hairStyle;
     private HairColors hairColor;
+    private Shirts shirt;
+    private ShirtColors shirtColor;
+    private PantsColors pantsColor;
+    private ShoeColors shoeColor;
 }

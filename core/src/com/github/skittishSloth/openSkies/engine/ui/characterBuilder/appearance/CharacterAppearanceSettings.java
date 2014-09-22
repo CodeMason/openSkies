@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
+package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -28,7 +29,10 @@ import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
 import com.github.skittishSloth.openSkies.engine.player.details.Nose;
+import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
 import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
+import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EyeListDetails;
 import java.util.ArrayList;
@@ -41,11 +45,11 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author mcory01
  */
-public class CharacterSettingsView extends Table implements Disposable {
+public class CharacterAppearanceSettings extends Table implements Disposable {
 
     private static final int PRESET_BTNS_PER_ROW = 3;
 
-    public CharacterSettingsView(final Skin skin, final CharacterBuildTable parent, final CharacterBuilderAssets assets) {
+    public CharacterAppearanceSettings(final Skin skin, final CharacterAppearanceTable parent) {
         super(skin);
         this.skin = skin;
 
@@ -53,15 +57,19 @@ public class CharacterSettingsView extends Table implements Disposable {
         scrollPane = new ScrollPane(actionsTree, skin, "no-bg");
         this.parent = parent;
 
-        this.assets = assets;
-
         genderButtonGroup = new ButtonGroup();
         raceButtonGroup = new ButtonGroup();
-        presetColorGroup = new ButtonGroup();
+        skinColorGroup = new ButtonGroup();
         eyesGroup = new ButtonGroup();
         earsGroup = new ButtonGroup();
         noseGroup = new ButtonGroup();
-
+        shirtColorGroup = new ButtonGroup();
+        pantsColorGroup = new ButtonGroup();
+        shoeColorGroup = new ButtonGroup();
+        
+        invalidNameLbl = new Label("You must add a valid name.", skin);
+        invalidNameLbl.setColor(Color.RED);
+        invalidNameLbl.setVisible(false);
         nameNode = buildNameNode();
         actionsTree.add(nameNode);
 
@@ -71,23 +79,37 @@ public class CharacterSettingsView extends Table implements Disposable {
         raceNode = buildRaceNode();
         actionsTree.add(raceNode);
 
-        presetColorsNode = buildPresetColorNode(null, null);
-        actionsTree.add(presetColorsNode);
+        skinColorsNode = buildSkinColorNode(null);
+        actionsTree.add(skinColorsNode);
 
-        eyesNode = buildEyesNode(null, null);
+        eyesNode = buildEyesNode(null);
         actionsTree.add(eyesNode);
 
-        earsNode = buildEarsNode(null, null);
+        earsNode = buildEarsNode(null);
         actionsTree.add(earsNode);
 
-        noseNode = buildNoseNode(null, null);
+        noseNode = buildNoseNode(null);
         actionsTree.add(noseNode);
 
-        hairNode = buildHairNode(null, null, null, null);
+        hairNode = buildHairNode(null, null);
         actionsTree.add(hairNode);
+
+        shirtColorNode = buildShirtColorNode(null);
+        actionsTree.add(shirtColorNode);
+
+        pantsColorNode = buildPantsColorNode(null);
+        actionsTree.add(pantsColorNode);
+
+        shoeColorNode = buildShoeColorNode(null);
+        actionsTree.add(shoeColorNode);
 
         add(scrollPane);
         scrollPane.setFillParent(true);
+    }
+
+    public void setValidName(final boolean validName) {
+        this.validName = validName;
+        invalidNameLbl.setVisible(!this.validName);
     }
 
     @Override
@@ -97,132 +119,80 @@ public class CharacterSettingsView extends Table implements Disposable {
         scrollPane.setHeight(getHeight());
     }
 
-    public void setAvailableColors(final Collection<SkinColor> colors, final SkinColor activeColor) {
-        buildPresetColorNode(colors, activeColor);
-    }
+    public void update(final CharacterAppearanceData buildData) {
 
-    public void setAvailableEyes(final Collection<EyeListDetails> availableEyes, final Eye activeEye) {
-        buildEyesNode(availableEyes, activeEye);
-    }
+        final Collection<SkinColor> skinColors = parent.getAvailableColors();
+        final boolean differentSkinColors = differentCollections(availableSkinColors, skinColors);
 
-    public void setAvailableEars(final Collection<Ears> availableEars, final Ears activeEars) {
-        buildEarsNode(availableEars, activeEars);
-    }
-
-    public void setAvailableNoses(final Collection<Nose> availableNoses, final Nose activeNose) {
-        buildNoseNode(availableNoses, activeNose);
-    }
-
-    public void setAvailableHairStyles(final Collection<HairStyles> availableHairStyles, final Collection<HairColors> availableHairColors, final HairStyles activeStyle, final HairColors activeHairColor) {
-        buildHairNode(availableHairStyles, availableHairColors, activeStyle, activeHairColor);
-    }
-
-    public void update(final SkinColor activeColor, final Eye activeEye, final Ears activeEars, final Nose activeNose, final HairStyles activeHairStyle, final HairColors activeHairColor) {
-        final Collection<SkinColor> colors = parent.getAvailableColors();
-        boolean differentColors = false;
-        if (availableColors == null) {
-            availableColors = colors;
-            differentColors = true;
+        if (differentSkinColors) {
+            Gdx.app.log(getClass().getSimpleName(), "Different skin colors!");
+            availableSkinColors = skinColors;
+            buildSkinColorNode(buildData.getSkinColor());
         } else {
-            for (final SkinColor c : colors) {
-                if (!availableColors.contains(c)) {
-                    differentColors = true;
-                    break;
-                }
-            }
-        }
-
-        if (differentColors) {
-            availableColors = colors;
-            setAvailableColors(availableColors, activeColor);
+            Gdx.app.log(getClass().getSimpleName(), "Skin colors were the same :/");
         }
 
         if (availableEyes == null) {
             availableEyes = parent.getAvailableEyes();
-            setAvailableEyes(availableEyes, activeEye);
+            buildEyesNode(buildData.getEyes());
         }
 
-        boolean differentEars = false;
         final Collection<Ears> ears = parent.getAvailableEars();
-        if (availableEars == null) {
-            availableEars = ears;
-            differentEars = true;
-        } else {
-            for (final Ears ear : ears) {
-                if (!availableEars.contains(ear)) {
-                    differentEars = true;
-                    break;
-                }
-            }
-        }
+        final boolean differentEars = differentCollections(availableEars, ears);
 
         if (differentEars) {
             availableEars = ears;
-            setAvailableEars(availableEars, activeEars);
+            buildEarsNode(buildData.getEars());
         }
 
-        boolean differentNoses = false;
         final Collection<Nose> noses = parent.getAvailableNoses();
-        if (availableNoses == null) {
-            availableNoses = noses;
-            differentNoses = true;
-        } else {
-            for (final Nose nose : noses) {
-                if (!availableNoses.contains(nose)) {
-                    differentNoses = true;
-                    break;
-                }
-            }
-        }
+        final boolean differentNoses = differentCollections(availableNoses, noses);
 
         if (differentNoses) {
             availableNoses = noses;
-            setAvailableNoses(availableNoses, activeNose);
+            buildNoseNode(buildData.getNose());
         }
 
-        boolean differentStyles = false;
-        final Collection<HairStyles> styles = parent.getAvailableHairStyles();
-        if (availableHairStyles == null) {
-            availableHairStyles = styles;
-            differentStyles = true;
-        } else {
-            for (final HairStyles style : styles) {
-                if (!availableHairStyles.contains(style)) {
-                    differentStyles = true;
-                    break;
-                }
-            }
-        }
+        final Collection<HairStyles> hairStyles = parent.getAvailableHairStyles();
+        final boolean differentStyles = differentCollections(availableHairStyles, hairStyles);
 
         if (differentStyles) {
-            availableHairStyles = styles;
+            availableHairStyles = hairStyles;
         }
 
-        boolean differentHairColors = false;
         final Collection<HairColors> hairColors = parent.getAvailableHairColors();
-        Gdx.app.log(getClass().getSimpleName(), "Hair Colors null? " + (hairColors == null));
-        if (availableHairColors == null) {
-            Gdx.app.log(getClass().getSimpleName(), "Available hair colors was null.");
-            availableHairColors = hairColors;
-            differentHairColors = true;
-        } else {
-            for (final HairColors hc : hairColors) {
-                if (!availableHairColors.contains(hc)) {
-
-                    Gdx.app.log(getClass().getSimpleName(), "Available hair colors didn't contain " + hc.getDisplayName() + ".");
-                    differentHairColors = true;
-                    break;
-                }
-            }
-        }
+        final boolean differentHairColors = differentCollections(availableHairColors, hairColors);
 
         if (differentHairColors) {
-            Gdx.app.log(getClass().getSimpleName(), "Different Hair Colors!");
             availableHairColors = hairColors;
         }
 
         if (differentStyles || differentHairColors) {
-            setAvailableHairStyles(availableHairStyles, availableHairColors, activeHairStyle, activeHairColor);
+            buildHairNode(buildData.getHairStyle(), buildData.getHairColor());
+        }
+
+        final Collection<ShirtColors> shirtColors = parent.getAvailableShirtColors();
+        final boolean differentShirtColors = differentCollections(availableShirtColors, shirtColors);
+
+        if (differentShirtColors) {
+            availableShirtColors = shirtColors;
+            buildShirtColorNode(buildData.getShirtColor());
+        }
+
+        final Collection<PantsColors> pantsColors = parent.getAvailablePantsColors();
+        final boolean differentPantsColors = differentCollections(availablePantsColors, pantsColors);
+
+        if (differentPantsColors) {
+            availablePantsColors = pantsColors;
+            buildPantsColorNode(buildData.getPantsColor());
+        }
+
+        final Collection<ShoeColors> shoeColors = parent.getAvailableShoeColors();
+        final boolean differentShoeColors = differentCollections(availableShoeColors, shoeColors);
+
+        if (differentShoeColors) {
+            availableShoeColors = shoeColors;
+            buildShoeColorNode(buildData.getShoeColor());
         }
     }
 
@@ -240,6 +210,14 @@ public class CharacterSettingsView extends Table implements Disposable {
 
         if (nameField == null) {
             nameField = new TextField("", skin);
+            nameField.setTextFieldListener(new TextField.TextFieldListener() {
+                @Override
+                public void keyTyped(TextField textField, char c) {
+                    Gdx.app.log(getClass().getSimpleName(), "Textfield changed - " + nameField.getText());
+                    parent.setCharacterName(nameField.getText());
+                    parent.validateSettings();
+                }
+            });
         } else {
             nameField.setText("");
         }
@@ -249,9 +227,15 @@ public class CharacterSettingsView extends Table implements Disposable {
         nameTbl.add(nameLbl).right().pad(2f);
         nameTbl.add(nameField).left();
 
+        
+        nameTbl.row();
+        nameTbl.add(invalidNameLbl).colspan(2);
+
         final Tree.Node nameTblNode = new Tree.Node(nameTbl);
         nameTblNode.setSelectable(false);
         nameNode.add(nameTblNode);
+        nameNode.setExpanded(true);
+
         return nameNode;
     }
 
@@ -299,30 +283,30 @@ public class CharacterSettingsView extends Table implements Disposable {
         return genderNode;
     }
 
-    private Tree.Node buildPresetColorNode(final Collection<SkinColor> availableColors, final SkinColor activeColor) {
-        if (presetColorsNode == null) {
-            presetColorsNode = buildLabeledNode("Preset Colors", skin);
+    private Tree.Node buildSkinColorNode(final SkinColor activeColor) {
+        if (skinColorsNode == null) {
+            skinColorsNode = buildLabeledNode("Skin Colors", skin);
         } else {
-            presetColorsNode.removeAll();
+            skinColorsNode.removeAll();
         }
 
-        if (availableColors == null) {
-            return presetColorsNode;
+        if (availableSkinColors == null) {
+            return skinColorsNode;
         }
 
         final Table btnTable = new Table();
         int count = 1;
-        final Array<Button> presetGroupButtons = presetColorGroup.getButtons();
+        final Array<Button> presetGroupButtons = skinColorGroup.getButtons();
         if (presetGroupButtons.size > 0) {
             for (final Button btn : presetGroupButtons) {
-                presetColorGroup.remove(btn);
+                skinColorGroup.remove(btn);
             }
         }
 
-        for (final SkinColor c : availableColors) {
+        for (final SkinColor c : availableSkinColors) {
             final Button btn = new Button(skin, "colored");
             final CheckBox cb = new CheckBox("", skin);
-            presetColorGroup.add(cb);
+            skinColorGroup.add(cb);
             btn.setColor(c.getSampleColor());
             btn.setSize(32f, 32f);
             if (c == activeColor) {
@@ -357,9 +341,9 @@ public class CharacterSettingsView extends Table implements Disposable {
         }
         final Tree.Node btnTableNode = new Tree.Node(btnTable);
         btnTableNode.setSelectable(false);
-        presetColorsNode.add(btnTableNode);
+        skinColorsNode.add(btnTableNode);
 
-        return presetColorsNode;
+        return skinColorsNode;
     }
 
     private Tree.Node buildRaceNode() {
@@ -398,7 +382,7 @@ public class CharacterSettingsView extends Table implements Disposable {
         return raceNode;
     }
 
-    private Tree.Node buildEyesNode(final Collection<EyeListDetails> availableEyes, final Eye activeEye) {
+    private Tree.Node buildEyesNode(final Eye activeEye) {
         if (eyesNode == null) {
             eyesNode = buildLabeledNode("Eyes", skin);
         } else {
@@ -464,7 +448,7 @@ public class CharacterSettingsView extends Table implements Disposable {
         return eyesNode;
     }
 
-    private Tree.Node buildEarsNode(final Collection<Ears> availableEars, final Ears activeEars) {
+    private Tree.Node buildEarsNode(final Ears activeEars) {
         if (earsNode == null) {
             earsNode = buildLabeledNode("Ears", skin);
         } else {
@@ -476,10 +460,8 @@ public class CharacterSettingsView extends Table implements Disposable {
             return earsNode;
         }
 
-        final List<Ears> earDetails = new ArrayList<Ears>(availableEars);
-
         final Table btnTable = new Table(skin);
-        for (final Ears ear : earDetails) {
+        for (final Ears ear : availableEars) {
             final String earName = StringUtils.capitalize(ear.name().toLowerCase());
             final CheckBox cb = new CheckBox(earName, skin);
             earsGroup.add(cb);
@@ -507,7 +489,7 @@ public class CharacterSettingsView extends Table implements Disposable {
         return earsNode;
     }
 
-    private Tree.Node buildNoseNode(final Collection<Nose> availableNoses, final Nose activeNose) {
+    private Tree.Node buildNoseNode(final Nose activeNose) {
         if (noseNode == null) {
             noseNode = buildLabeledNode("Nose", skin);
         } else {
@@ -550,7 +532,7 @@ public class CharacterSettingsView extends Table implements Disposable {
         return noseNode;
     }
 
-    private Tree.Node buildHairNode(final Collection<HairStyles> availableHairStyles, final Collection<HairColors> availableHairColors, final HairStyles activeHairStyle, final HairColors activeHairColor) {
+    private Tree.Node buildHairNode(final HairStyles activeHairStyle, final HairColors activeHairColor) {
         if (hairNode == null) {
             hairNode = buildLabeledNode("Hair", skin);
         } else {
@@ -591,8 +573,8 @@ public class CharacterSettingsView extends Table implements Disposable {
         final Label colorLabel = new Label("Color:", skin);
         final SelectBox<String> colorsSelection = new SelectBox<String>(skin);
         if (availableHairColors == null) {
-            colorsSelection.setDisabled(true);
             colorsSelection.getItems().add("N/A");
+            colorsSelection.setDisabled(true);
         } else {
             colorsSelection.setDisabled(false);
             final List<String> colorsList = new ArrayList<String>(availableHairColors.size());
@@ -626,9 +608,186 @@ public class CharacterSettingsView extends Table implements Disposable {
         return hairNode;
     }
 
+    private Tree.Node buildShirtColorNode(final ShirtColors activeColor) {
+        if (shirtColorNode == null) {
+            shirtColorNode = buildLabeledNode("Shirt Color", skin);
+        } else {
+            shirtColorNode.removeAll();
+        }
+
+        clearButtonGroup(shirtColorGroup);
+
+        if (availableShirtColors == null) {
+            return shirtColorNode;
+        }
+
+        final Table btnTable = new Table(skin);
+        int count = 1;
+        for (final ShirtColors color : availableShirtColors) {
+            final Button btn = new Button(skin, "colored");
+            final CheckBox cb = new CheckBox("", skin);
+            shirtColorGroup.add(cb);
+            btn.setColor(color.getSampleColor());
+            btn.setSize(32f, 32f);
+            if (color == activeColor) {
+                cb.setChecked(true);
+            }
+            cb.addListener(new ChangeListener() {
+
+                @Override
+                public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                    if (cb.isChecked()) {
+                        parent.setCharacterShirtColor(color);
+                    }
+                }
+            });
+
+            btn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    parent.setCharacterShirtColor(color);
+                    cb.setChecked(true);
+                }
+            });
+
+            btnTable.add(cb);
+            btnTable.add(btn).pad(5f);
+            if (count < PRESET_BTNS_PER_ROW) {
+                count++;
+            } else {
+                btnTable.row();
+                count = 1;
+            }
+        }
+
+        final Tree.Node tableNode = new Tree.Node(btnTable);
+        tableNode.setSelectable(false);
+        shirtColorNode.add(tableNode);
+
+        return shirtColorNode;
+    }
+
+    private Tree.Node buildPantsColorNode(final PantsColors activeColor) {
+        if (pantsColorNode == null) {
+            pantsColorNode = buildLabeledNode("Pants Color", skin);
+        } else {
+            pantsColorNode.removeAll();
+        }
+
+        clearButtonGroup(pantsColorGroup);
+
+        if (availablePantsColors == null) {
+            return pantsColorNode;
+        }
+
+        final Table btnTable = new Table(skin);
+        int count = 1;
+        for (final PantsColors color : availablePantsColors) {
+            final Button btn = new Button(skin, "colored");
+            final CheckBox cb = new CheckBox("", skin);
+            pantsColorGroup.add(cb);
+            btn.setColor(color.getSampleColor());
+            btn.setSize(32f, 32f);
+            if (color == activeColor) {
+                cb.setChecked(true);
+            }
+            cb.addListener(new ChangeListener() {
+
+                @Override
+                public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                    if (cb.isChecked()) {
+                        parent.setCharacterPantsColor(color);
+                    }
+                }
+            });
+
+            btn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    parent.setCharacterPantsColor(color);
+                    cb.setChecked(true);
+                }
+            });
+
+            btnTable.add(cb);
+            btnTable.add(btn).pad(5f);
+            if (count < PRESET_BTNS_PER_ROW) {
+                count++;
+            } else {
+                btnTable.row();
+                count = 1;
+            }
+        }
+
+        final Tree.Node tableNode = new Tree.Node(btnTable);
+        tableNode.setSelectable(false);
+        pantsColorNode.add(tableNode);
+
+        return pantsColorNode;
+    }
+
+    private Tree.Node buildShoeColorNode(final ShoeColors activeColor) {
+        if (shoeColorNode == null) {
+            shoeColorNode = buildLabeledNode("Shoe Color", skin);
+        } else {
+            shoeColorNode.removeAll();
+        }
+
+        clearButtonGroup(shoeColorGroup);
+
+        if (availableShoeColors == null) {
+            return shoeColorNode;
+        }
+
+        final Table btnTable = new Table(skin);
+        int count = 1;
+        for (final ShoeColors color : availableShoeColors) {
+            final Button btn = new Button(skin, "colored");
+            final CheckBox cb = new CheckBox("", skin);
+            shoeColorGroup.add(cb);
+            btn.setColor(color.getSampleColor());
+            btn.setSize(32f, 32f);
+            if (color == activeColor) {
+                cb.setChecked(true);
+            }
+            cb.addListener(new ChangeListener() {
+
+                @Override
+                public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                    if (cb.isChecked()) {
+                        parent.setCharacterShoeColor(color);
+                    }
+                }
+            });
+
+            btn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    parent.setCharacterShoeColor(color);
+                    cb.setChecked(true);
+                }
+            });
+
+            btnTable.add(cb);
+            btnTable.add(btn).pad(5f);
+            if (count < PRESET_BTNS_PER_ROW) {
+                count++;
+            } else {
+                btnTable.row();
+                count = 1;
+            }
+        }
+
+        final Tree.Node tableNode = new Tree.Node(btnTable);
+        tableNode.setSelectable(false);
+        shoeColorNode.add(tableNode);
+
+        return shoeColorNode;
+    }
+
     private static final class RaceButtonClickListener extends ClickListener {
 
-        public RaceButtonClickListener(final CharacterBuildTable parent, final Race race) {
+        public RaceButtonClickListener(final CharacterAppearanceTable parent, final Race race) {
             this.parent = parent;
             this.race = race;
         }
@@ -638,7 +797,7 @@ public class CharacterSettingsView extends Table implements Disposable {
             parent.setCharacterRace(race);
         }
 
-        private final CharacterBuildTable parent;
+        private final CharacterAppearanceTable parent;
         private final Race race;
     }
 
@@ -660,27 +819,54 @@ public class CharacterSettingsView extends Table implements Disposable {
         }
     }
 
+    private static <T> boolean differentCollections(final Collection<T> a, final Collection<T> b) {
+        if (a == null) {
+            return true;
+        }
+
+        boolean res = false;
+        if (a.size() != b.size()) {
+            res = true;
+        } else {
+            for (final T item : b) {
+                if (!a.contains(item)) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+
     private Tree.Node nameNode;
     private TextField nameField;
     private Tree.Node genderNode;
-    private Tree.Node presetColorsNode;
+    private Tree.Node skinColorsNode;
     private Tree.Node raceNode;
     private Tree.Node eyesNode;
     private Tree.Node earsNode;
     private Tree.Node noseNode;
     private Tree.Node hairNode;
+    private Tree.Node shirtColorNode;
+    private Tree.Node pantsColorNode;
+    private Tree.Node shoeColorNode;
     private final Skin skin;
-    private final CharacterBuildTable parent;
+    private final CharacterAppearanceTable parent;
     private final Tree actionsTree;
-    private final ButtonGroup genderButtonGroup, raceButtonGroup, presetColorGroup, eyesGroup, earsGroup, noseGroup;
+    private final ButtonGroup genderButtonGroup, raceButtonGroup, skinColorGroup, eyesGroup, earsGroup, noseGroup, shirtColorGroup, pantsColorGroup, shoeColorGroup;
     private final ScrollPane scrollPane;
 
-    private final CharacterBuilderAssets assets;
+    private boolean validName = true;
+    private final Label invalidNameLbl;
 
-    private Collection<SkinColor> availableColors = null;
+    private Collection<SkinColor> availableSkinColors = null;
     private Collection<EyeListDetails> availableEyes = null;
     private Collection<Ears> availableEars = null;
     private Collection<Nose> availableNoses = null;
     private Collection<HairStyles> availableHairStyles = null;
     private Collection<HairColors> availableHairColors = null;
+    private Collection<ShirtColors> availableShirtColors = null;
+    private Collection<PantsColors> availablePantsColors = null;
+    private Collection<ShoeColors> availableShoeColors = null;
 }

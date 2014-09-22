@@ -1,0 +1,60 @@
+{
+
+		classes: [
+			{
+						name : Tank,
+						description : "High health, high defense, and likes to pummel stuff.  Kinda slow on the uptake though, so don't expect the Tank to learn quickly.",
+						modifiers : [
+							{
+								type : BONUS,
+								area : defense,
+								amount : 1	
+							},
+							{
+								type : BONUS,
+								area : melee,
+								amount : 1
+							},
+							{
+								type : BONUS,
+								area : health,
+								amount : 1
+							},
+							{
+								type : PENALTY,
+								area : intelligence,
+								amount : 1
+							}
+						]
+					},
+					{
+						name : Mage,
+						description : "A brilliant mind who has embraced the world of magic.  Bonus for intelligence, but those robes don't protect against much.",
+						modifiers : [
+							{
+								type: BONUS,
+								area: intelligence,
+								amount: 1
+							},
+							{
+								type : PENALTY,
+								area : defense,
+								amount: 1
+							}
+						]
+					},
+					{
+						name : Engineer,
+						description : "Loves building things.",
+						modifiers : [
+							{
+								type: BONUS,
+								area: crafting,
+								amount: 1
+							}
+						]
+					}
+		]
+	
+	
+}
