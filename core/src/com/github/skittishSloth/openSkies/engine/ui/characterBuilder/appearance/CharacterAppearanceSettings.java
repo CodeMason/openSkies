@@ -24,17 +24,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.github.skittishSloth.openSkies.engine.player.details.Ears;
+import com.github.skittishSloth.openSkies.engine.player.details.EarDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
 import com.github.skittishSloth.openSkies.engine.player.details.Nose;
 import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
-import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.RaceDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
 import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
-import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
+import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -120,7 +120,13 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
     public void update(final CharacterAppearanceData buildData) {
 
-        final Collection<SkinColor> skinColors = parent.getAvailableColors();
+        final Collection<RaceDetails> races = parent.getAvailableRaces();
+        if (availableRaces == null) {
+            availableRaces = races;
+            buildRaceNode();
+        }
+        
+        final Collection<SkinColorDetails> skinColors = parent.getAvailableColors();
         final boolean differentSkinColors = differentCollections(availableSkinColors, skinColors);
 
         if (differentSkinColors) {
@@ -136,12 +142,12 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             buildEyesNode(availableEyes, buildData.getEyeDetails());
         }
 
-        final Collection<Ears> ears = parent.getAvailableEars();
+        final Collection<EarDetails> ears = parent.getAvailableEarDetails();
         final boolean differentEars = differentCollections(availableEars, ears);
 
         if (differentEars) {
             availableEars = ears;
-            buildEarsNode(buildData.getEars());
+            buildEarsNode(buildData.getEarDetails());
         }
 
         final Collection<Nose> noses = parent.getAvailableNoses();
@@ -282,7 +288,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         return genderNode;
     }
 
-    private Tree.Node buildSkinColorNode(final SkinColor activeColor) {
+    private Tree.Node buildSkinColorNode(final SkinColorDetails activeColor) {
         if (skinColorsNode == null) {
             skinColorsNode = buildLabeledNode("Skin Colors", skin);
         } else {
@@ -302,11 +308,12 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             }
         }
 
-        for (final SkinColor c : availableSkinColors) {
+        for (final SkinColorDetails c : availableSkinColors) {
             final Button btn = new Button(skin, "colored");
             final CheckBox cb = new CheckBox("", skin);
             skinColorGroup.add(cb);
-            btn.setColor(c.getSampleColor());
+            final Color sampleColor = Color.valueOf(c.getSampleColor());
+            btn.setColor(sampleColor);
             btn.setSize(32f, 32f);
             if (c == activeColor) {
                 cb.setChecked(true);
@@ -316,7 +323,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     if (cb.isChecked()) {
-                        parent.setCharacterColor(c);
+                        parent.setCharacterSkinColor(c);
                     }
                 }
             });
@@ -324,7 +331,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    parent.setCharacterColor(c);
+                    parent.setCharacterSkinColor(c);
                     cb.setChecked(true);
                 }
             });
@@ -352,27 +359,29 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             raceNode.removeAll();
         }
 
+        clearButtonGroup(raceButtonGroup);
+        
+        if (availableRaces == null) {
+            return raceNode;
+        }
+        
         final Table raceTbl = new Table(skin);
         raceTbl.defaults().left();
 
-        final CheckBox humanBtn = new CheckBox("Human", skin);
-        humanBtn.addListener(new RaceButtonClickListener(parent, Race.HUMAN));
+        for (final RaceDetails race : availableRaces) {
+            final CheckBox btn = new CheckBox(race.getName(), skin);
+            btn.addListener(new ClickListener() {
 
-        final CheckBox elfBtn = new CheckBox("Elf", skin);
-        elfBtn.addListener(new RaceButtonClickListener(parent, Race.ELF));
-
-        final Array<Button> raceBtns = raceButtonGroup.getButtons();
-        if (raceBtns.size > 0) {
-            for (final Button btn : raceBtns) {
-                raceButtonGroup.remove(btn);
-            }
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    parent.setCharacterRace(race);
+                }
+            });
+            
+            raceButtonGroup.add(btn);
+            raceTbl.add(btn);
+            raceTbl.row();
         }
-
-        raceButtonGroup.add(humanBtn, elfBtn);
-
-        raceTbl.add(humanBtn);
-        raceTbl.row();
-        raceTbl.add(elfBtn);
 
         final Tree.Node raceTblNode = new Tree.Node(raceTbl);
         raceTblNode.setSelectable(false);
@@ -441,7 +450,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         return eyesNode;
     }
 
-    private Tree.Node buildEarsNode(final Ears activeEars) {
+    private Tree.Node buildEarsNode(final EarDetails activeEars) {
         if (earsNode == null) {
             earsNode = buildLabeledNode("Ears", skin);
         } else {
@@ -454,8 +463,9 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         }
 
         final Table btnTable = new Table(skin);
-        for (final Ears ear : availableEars) {
-            final String earName = StringUtils.capitalize(ear.name().toLowerCase());
+        for (final EarDetails ear : availableEars) {
+            
+            final String earName = StringUtils.capitalize(ear.getName().toLowerCase());
             final CheckBox cb = new CheckBox(earName, skin);
             earsGroup.add(cb);
             if (ear == activeEars) {
@@ -466,7 +476,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     if (cb.isChecked()) {
-                        parent.setCharacterEars(ear);
+                        parent.setCharacterEarDetails(ear);
                     }
                 }
             });
@@ -780,7 +790,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
     private static final class RaceButtonClickListener extends ClickListener {
 
-        public RaceButtonClickListener(final CharacterAppearanceTable parent, final Race race) {
+        public RaceButtonClickListener(final CharacterAppearanceTable parent, final RaceDetails race) {
             this.parent = parent;
             this.race = race;
         }
@@ -791,7 +801,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         }
 
         private final CharacterAppearanceTable parent;
-        private final Race race;
+        private final RaceDetails race;
     }
 
     private static Tree.Node buildLabeledNode(final String text, final Skin skin) {
@@ -853,9 +863,10 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
     private boolean validName = true;
     private final Label invalidNameLbl;
 
-    private Collection<SkinColor> availableSkinColors = null;
+    private Collection<RaceDetails> availableRaces = null;
+    private Collection<SkinColorDetails> availableSkinColors = null;
     private Collection<EyeDetails> availableEyes = null;
-    private Collection<Ears> availableEars = null;
+    private Collection<EarDetails> availableEars = null;
     private Collection<Nose> availableNoses = null;
     private Collection<HairStyles> availableHairStyles = null;
     private Collection<HairColors> availableHairColors = null;

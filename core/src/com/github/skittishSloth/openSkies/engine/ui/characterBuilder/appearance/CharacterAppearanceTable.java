@@ -13,17 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
-import com.github.skittishSloth.openSkies.engine.player.details.Ears;
+import com.github.skittishSloth.openSkies.engine.player.details.EarDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
 import com.github.skittishSloth.openSkies.engine.player.details.Nose;
 import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
-import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.RaceDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
 import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
-import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
+import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.CharacterBuilderAssets;
 import java.util.Collection;
 
@@ -58,11 +58,15 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         updateSettings();
     }
     
-    public Collection<SkinColor> getAvailableColors() {
+    public Collection<RaceDetails> getAvailableRaces() {
+        return view.getAvailableRaces();
+    }
+    
+    public Collection<SkinColorDetails> getAvailableColors() {
         return view.getAvailableColors();
     }
     
-    public void setCharacterColor(final SkinColor color) {
+    public void setCharacterSkinColor(final SkinColorDetails color) {
         view.setActiveColor(color);
     }
     
@@ -70,7 +74,7 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         view.setGender(gender);
     }
 
-    public void setCharacterRace(final Race race) {
+    public void setCharacterRace(final RaceDetails race) {
         view.setRace(race);
     }
     
@@ -83,8 +87,8 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         return view.getAvailableEyeDetails();
     }
     
-    public Collection<Ears> getAvailableEars() {
-        return view.getAvailableEars();
+    public Collection<EarDetails> getAvailableEarDetails() {
+        return view.getAvailableEarDetails();
     }
     
     public Collection<Nose> getAvailableNoses() {
@@ -115,11 +119,11 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         view.setCharacterName(name);
     }
 
-    public void setCharacterEyeDetails(EyeDetails eye) {
+    public void setCharacterEyeDetails(final EyeDetails eye) {
         view.setEye(eye);
     }
     
-    public void setCharacterEars(final Ears ears) {
+    public void setCharacterEarDetails(final EarDetails ears) {
         view.setEars(ears);
     }
     

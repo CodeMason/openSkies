@@ -1,0 +1,13 @@
+{
+	items: [
+		{
+			class: raceDetails,
+			name: Human,
+			defaultRace: true
+		},
+		{
+			class: raceDetails,
+			name: Elf
+		}
+	]
+}

@@ -11,20 +11,20 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
-import com.github.skittishSloth.openSkies.engine.player.details.Ears;
+import com.github.skittishSloth.openSkies.engine.player.details.DetailsCollection;
+import com.github.skittishSloth.openSkies.engine.player.details.DetailsLoader;
+import com.github.skittishSloth.openSkies.engine.player.details.EarDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.EyeDetailsCollection;
-import com.github.skittishSloth.openSkies.engine.player.details.EyeDetailsLoader;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
 import com.github.skittishSloth.openSkies.engine.player.details.Nose;
 import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
-import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.RaceDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
 import com.github.skittishSloth.openSkies.engine.player.details.Shirts;
 import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
-import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
+import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.info.BackStory;
 import com.github.skittishSloth.openSkies.engine.player.info.BackStoryCollection;
 import com.github.skittishSloth.openSkies.engine.player.info.PlayerClass;
@@ -35,7 +35,10 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
@@ -89,8 +92,8 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
 
-        final SkinColor skinColor = buildData.getSkinColor();
-        final Race race = buildData.getRace();
+        final SkinColorDetails skinColor = buildData.getSkinColor();
+        final RaceDetails race = buildData.getRace();
         final Gender gender = buildData.getGender();
 
         if ((gender == null) || (race == null) || (skinColor == null)) {
@@ -98,15 +101,15 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
 
-        final SkinColor actualColor = normalizeColor(skinColor, race);
+        final SkinColorDetails actualColor = normalizeColorForRace(skinColor, race);
 
-        final String colorPath = actualColor.name().toLowerCase() + ".png";
-        final String assetPath = BODY_PATH + "/" + gender.name().toLowerCase() + "/" + race.name().toLowerCase() + "/body/" + colorPath;
+        final String colorPath = actualColor.getName().toLowerCase() + ".png";
+        final String assetPath = BODY_PATH + "/" + gender.name().toLowerCase() + "/" + race.getName().toLowerCase() + "/body/" + colorPath;
         final Texture texture = assets.get(assetPath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
         return res;
     }
-    
+
     public UniversalDirectionalSprite getEyeDetailsSprite(final CharacterAppearanceData buildData) {
         if (buildData == null) {
             Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
@@ -119,7 +122,7 @@ public class CharacterBuilderAssets implements Disposable {
             Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
             return null;
         }
-        
+
         final String assetPath;
         switch (gender) {
             case FEMALE:
@@ -131,7 +134,7 @@ public class CharacterBuilderAssets implements Disposable {
             default:
                 throw new IllegalStateException("Unexpected gender: " + gender);
         }
-        
+
         if (StringUtils.isBlank(assetPath)) {
             return null;
         }
@@ -157,8 +160,9 @@ public class CharacterBuilderAssets implements Disposable {
         }
 
         final Gender gender = buildData.getGender();
-        final Race race = buildData.getRace();
-        final SkinColor skinColor = normalizeColor(buildData.getSkinColor(), race);
+        final RaceDetails race = buildData.getRace();
+        final SkinColorDetails buildDataSkinColor = buildData.getSkinColor();
+        final SkinColorDetails skinColor = normalizeColorForRace(buildDataSkinColor, race);
         final Nose nose = buildData.getNose();
 
         if ((gender == null) || (race == null) || (skinColor == null) || (nose == null)) {
@@ -170,44 +174,46 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
 
-        final String nosePathStr = BODY_PATH + "/" + gender.name().toLowerCase() + "/" + race.name().toLowerCase() + "/nose";
-        final String noseFileStr = nose.name().toLowerCase() + "nose_" + skinColor.name().toLowerCase() + ".png";
+        final String nosePathStr = BODY_PATH + "/" + gender.name().toLowerCase() + "/" + race.getName().toLowerCase() + "/nose";
+        final String noseFileStr = nose.name().toLowerCase() + "nose_" + skinColor.getName().toLowerCase() + ".png";
         final String assetPath = nosePathStr + "/" + noseFileStr;
         final Texture texture = assets.get(assetPath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
 
         return res;
     }
-
-    public UniversalDirectionalSprite getEarSprite(final CharacterAppearanceData buildData) {
+    
+    public UniversalDirectionalSprite getEarDetailsSprite(final CharacterAppearanceData buildData) {
         if (buildData == null) {
             Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
             return null;
         }
-
-        if (buildData.getSkinColor() == null) {
+        
+        final RaceDetails race = buildData.getRace();
+        if (race == null) {
             Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
             return null;
         }
-
+        
         final Gender gender = buildData.getGender();
-        final Race race = buildData.getRace();
-        final SkinColor skinColor = normalizeColor(buildData.getSkinColor(), race);
-        final Ears ear = buildData.getEars();
-
-        if ((gender == null) || (race == null) || (skinColor == null) || (ear == null)) {
+        final SkinColorDetails skinColor = buildData.getSkinColor();
+        final EarDetails buildEarDetails = buildData.getEarDetails();
+        
+        if ((skinColor == null) || (gender == null) || (buildEarDetails == null)) {
             Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
             return null;
         }
-
-        if (ear == Ears.DEFAULT) {
+        
+        if (!buildEarDetails.hasTexture()) {
             return null;
         }
-
-        final String earPathStr = BODY_PATH + "/" + gender.name().toLowerCase() + "/" + race.name().toLowerCase() + "/ears";
-        final String earFileStr = ear.name().toLowerCase() + "ears_" + skinColor.name().toLowerCase() + ".png";
-        final String assetPath = earPathStr + "/" + earFileStr;
-        final Texture texture = assets.get(assetPath, Texture.class);
+        
+        final String texturePath = buildEarDetails.getTexturePath(buildData);
+        if (!assets.isLoaded(texturePath)) {
+            return null;
+        }
+        
+        final Texture texture = assets.get(texturePath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
 
         return res;
@@ -313,20 +319,35 @@ public class CharacterBuilderAssets implements Disposable {
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
         return res;
     }
-
-    public Collection<SkinColor> getAvailableColors(final Race race) {
-        final SkinColor[] availColors = SkinColor.getAvailableByRace(race);
-        final Collection<SkinColor> res = new ArrayList<SkinColor>(availColors.length);
-        for (final SkinColor c : availColors) {
-            res.add(c);
+    
+    public Collection<SkinColorDetails> getAvailableSkinColors(final RaceDetails race) {
+        return skinColorsByRace.get(race);
+    }
+    
+    public SkinColorDetails getDefaultSkinColor() {
+        SkinColorDetails res = null;
+        for (final SkinColorDetails skinColor : skinColorDetails) {
+            if (skinColor.isDefaultColor()) {
+                res = skinColor;
+                break;
+            }
         }
+        
+        return res;
+    }
+    
+    public RaceDetails getDefaultRace() {
+        RaceDetails res = null;
+        for (final RaceDetails race : raceDetails) {
+            if (race.isDefaultRace()) {
+                res = race;
+                break;
+            }
+        }
+        
         return res;
     }
 
-    public Collection<Ears> getAvailableEars() {
-        return enumToCollection(Ears.class);
-    }
-    
     public Collection<HairStyles> getAvailableHairStyles() {
         return enumToCollection(HairStyles.class);
     }
@@ -391,6 +412,18 @@ public class CharacterBuilderAssets implements Disposable {
         return eyeDetails;
     }
 
+    public Collection<EarDetails> getEarDetails() {
+        return earDetails;
+    }
+    
+    public Collection<RaceDetails> getRaceDetails() {
+        return raceDetails;
+    }
+    
+    public Collection<SkinColorDetails> getSkinColorDetails() {
+        return skinColorDetails;
+    }
+
     @Override
     public void dispose() {
         assets.dispose();
@@ -400,7 +433,6 @@ public class CharacterBuilderAssets implements Disposable {
 
         final String elfPath = "/elf";
         final String humanPath = "/human";
-//        final String eyesPath = "/eyes";
 
         loadFilesInPath(FEMALE_BODY_PATH + elfPath);
         loadFilesInPath(MALE_BODY_PATH + elfPath);
@@ -408,8 +440,6 @@ public class CharacterBuilderAssets implements Disposable {
         loadFilesInPath(FEMALE_BODY_PATH + humanPath);
         loadFilesInPath(MALE_BODY_PATH + humanPath);
 
-//        loadFilesInPath(FEMALE_BODY_PATH + eyesPath);
-//        loadFilesInPath(MALE_BODY_PATH + eyesPath);
         loadFilesInPath(SHIRT_PATH);
 
         loadFilesInPath(PANTS_PATH);
@@ -421,6 +451,14 @@ public class CharacterBuilderAssets implements Disposable {
         loadBackStories();
 
         loadEyeDetails();
+
+        loadEarDetails();
+        
+        loadRaceDetails();
+        
+        loadSkinColorDetails();
+        
+        buildSkinColorAssociation();
     }
 
     private void loadFilesInPath(final String path) {
@@ -468,10 +506,10 @@ public class CharacterBuilderAssets implements Disposable {
 
     private void loadEyeDetails() {
         final FileHandle fh = Gdx.files.internal("data/char-building/appearances/eyes.json");
-        final EyeDetailsCollection eyesCollection = EyeDetailsLoader.eyeDetailsFromJsonFile(fh);
+        final DetailsCollection<EyeDetails> eyesCollection = DetailsLoader.fromJson(EyeDetails.class, fh);
         eyeDetails.clear();
         if (eyesCollection != null) {
-            final Collection<EyeDetails> eyeDetailsCollectionItems = eyesCollection.getEyeDetails();
+            final Collection<EyeDetails> eyeDetailsCollectionItems = eyesCollection.getItems();
             if (eyeDetailsCollectionItems != null) {
                 eyeDetails.addAll(eyeDetailsCollectionItems);
 
@@ -479,8 +517,8 @@ public class CharacterBuilderAssets implements Disposable {
                     final String malePath = eyes.getMaleTexturePath();
                     final String femalePath = eyes.getFemaleTexturePath();
                     if (isLoadablePath(malePath)) {
-                            assets.load(malePath, Texture.class);
-                            loadedPaths.add(malePath);
+                        assets.load(malePath, Texture.class);
+                        loadedPaths.add(malePath);
                     }
 
                     if (isLoadablePath(femalePath)) {
@@ -493,13 +531,52 @@ public class CharacterBuilderAssets implements Disposable {
         }
     }
 
-    private static SkinColor normalizeColor(final SkinColor color, final Race race) {
-        if (color.getRace() == race) {
-            return color;
+    private void loadEarDetails() {
+        final FileHandle fh = Gdx.files.internal("data/char-building/appearances/ears.json");
+        final DetailsCollection<EarDetails> earsCollection = DetailsLoader.fromJson(EarDetails.class, fh);
+        earDetails.clear();
+        if (earsCollection != null) {
+            final Collection<EarDetails> earDetailsCollectionItems = earsCollection.getItems();
+            if (earDetailsCollectionItems != null) {
+                earDetails.addAll(earDetailsCollectionItems);
+            }
         }
-
-        final SkinColor[] availColors = SkinColor.getAvailableByRace(race);
-        return availColors[0];
+    }
+    
+    private void loadRaceDetails() {
+        final FileHandle fh = Gdx.files.internal("data/char-building/appearances/races.json");
+        final DetailsCollection<RaceDetails> raceCollection = DetailsLoader.fromJson(RaceDetails.class, fh);
+        raceDetails.clear();
+        if (raceCollection != null) {
+            final Collection<RaceDetails> raceDetailsCollectionItems = raceCollection.getItems();
+            if (raceDetailsCollectionItems != null) {
+                raceDetails.addAll(raceDetailsCollectionItems);
+            }
+        }
+    }
+    
+    private void loadSkinColorDetails() {
+        final FileHandle fh = Gdx.files.internal("data/char-building/appearances/skinColors.json");
+        final DetailsCollection<SkinColorDetails> skinColorCollection = DetailsLoader.fromJson(SkinColorDetails.class, fh);
+        skinColorDetails.clear();
+        if (skinColorCollection != null) {
+            final Collection<SkinColorDetails> skinColorDetailsCollectionItems = skinColorCollection.getItems();
+            if (skinColorDetailsCollectionItems != null) {
+                skinColorDetails.addAll(skinColorDetailsCollectionItems);
+            }
+        }
+    }
+    
+    private void buildSkinColorAssociation() {
+        for (final RaceDetails race : raceDetails) {
+            final List<SkinColorDetails> skinColors = new ArrayList<SkinColorDetails>();
+            for (final SkinColorDetails scDetails : skinColorDetails) {
+                if (scDetails.getRace().equalsIgnoreCase(race.getName())) {
+                    skinColors.add(scDetails);
+                }
+            }
+            skinColorsByRace.put(race, skinColors);
+        }
     }
 
     private static <T extends Enum> Collection<T> enumToCollection(Class<T> clazz) {
@@ -511,9 +588,18 @@ public class CharacterBuilderAssets implements Disposable {
 
         return res;
     }
-    
+
     private boolean isLoadablePath(final String path) {
         return ((StringUtils.isNotBlank(path)) && !(loadedPaths.contains(path)));
+    }
+    
+    private SkinColorDetails normalizeColorForRace(final SkinColorDetails skinColor, final RaceDetails race) {
+        if (skinColor.getRace().equalsIgnoreCase(race.getName())) {
+            return skinColor;
+        }
+        
+        final List<SkinColorDetails> raceColors = skinColorsByRace.get(race);
+        return raceColors.get(0);
     }
 
     private final AssetManager assets;
@@ -521,4 +607,9 @@ public class CharacterBuilderAssets implements Disposable {
     private final Collection<PlayerClass> playerClasses = new ArrayList<PlayerClass>();
     private final Collection<BackStory> backStories = new ArrayList<BackStory>();
     private final Collection<EyeDetails> eyeDetails = new ArrayList<EyeDetails>();
+    private final Collection<EarDetails> earDetails = new ArrayList<EarDetails>();
+    private final Collection<RaceDetails> raceDetails = new ArrayList<RaceDetails>();
+    private final Collection<SkinColorDetails> skinColorDetails = new ArrayList<SkinColorDetails>();
+    
+    private final Map<RaceDetails, List<SkinColorDetails>> skinColorsByRace = new HashMap<RaceDetails, List<SkinColorDetails>>();
 }

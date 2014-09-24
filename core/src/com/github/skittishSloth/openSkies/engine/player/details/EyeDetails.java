@@ -5,7 +5,6 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.details;
 
-import com.badlogic.gdx.Gdx;
 import org.apache.commons.lang3.StringUtils;
 
 /**

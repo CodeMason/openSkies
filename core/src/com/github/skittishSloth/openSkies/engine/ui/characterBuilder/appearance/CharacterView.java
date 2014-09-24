@@ -11,18 +11,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.github.skittishSloth.openSkies.engine.player.details.Ears;
+import com.github.skittishSloth.openSkies.engine.player.details.EarDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
 import com.github.skittishSloth.openSkies.engine.player.details.Nose;
 import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
-import com.github.skittishSloth.openSkies.engine.player.details.Race;
+import com.github.skittishSloth.openSkies.engine.player.details.RaceDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
 import com.github.skittishSloth.openSkies.engine.player.details.Shirts;
 import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
-import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
+import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.UDSActor;
@@ -48,25 +48,29 @@ public final class CharacterView extends Table implements Disposable {
         buildData.setGender(Gender.MALE);
         buildData.setShirt(Shirts.LONGSLEEVE);
         buildData.setShirtColor(ShirtColors.values()[0]);
-        buildData.setRace(Race.HUMAN);
-        buildData.setSkinColor(SkinColor.LIGHT);
+        buildData.setRace(assets.getDefaultRace());
+        buildData.setSkinColor(assets.getDefaultSkinColor());
         buildData.setNose(Nose.STRAIGHT);
         buildData.setPantsColor(PantsColors.WHITE);
         buildData.setShoeColor(ShoeColors.BLACK);
 
         updateCurrentSprite();
     }
+    
+    public Collection<RaceDetails> getAvailableRaces() {
+        return assets.getRaceDetails();
+    }
 
-    public Collection<SkinColor> getAvailableColors() {
+    public Collection<SkinColorDetails> getAvailableColors() {
         if (buildData.getRace() == null) {
             return null;
         }
 
-        return assets.getAvailableColors(buildData.getRace());
+        return assets.getAvailableSkinColors(buildData.getRace());
     }
-
-    public Collection<Ears> getAvailableEars() {
-        return assets.getAvailableEars();
+    
+    public Collection<EarDetails> getAvailableEarDetails() {
+        return assets.getEarDetails();
     }
 
     public Collection<Nose> getAvailableNoses() {
@@ -105,10 +109,9 @@ public final class CharacterView extends Table implements Disposable {
         buildData.setName(name);
     }
 
-    public void setActiveColor(final SkinColor color) {
+    public void setActiveColor(final SkinColorDetails color) {
         buildData.setSkinColor(color);
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
 
     public void setGender(final Gender gender) {
@@ -119,74 +122,60 @@ public final class CharacterView extends Table implements Disposable {
             buildData.setShirt(Shirts.SLEEVELESS);
         }
         
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
 
-    public void setRace(final Race race) {
+    public void setRace(final RaceDetails race) {
         buildData.setRace(race);
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
     
     public void setEye(final EyeDetails eye) {
         buildData.setEyeDetails(eye);
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
-
-    public void setEars(final Ears ears) {
-        buildData.setEars(ears);
-        updateCurrentSprite();
-        parent.updateSettings();
+    
+    public void setEars(final EarDetails ears) {
+        buildData.setEarDetails(ears);
+        doUpdate();
     }
 
     public void setNose(final Nose nose) {
         buildData.setNose(nose);
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
     
     public void setHairStyle(final HairStyles style) {
         buildData.setHairStyle(style);
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
     
     public void setHairColor(final HairColors color) {
         buildData.setHairColor(color);
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
     
     public void setShirtColor(final ShirtColors color) {
         buildData.setShirtColor(color);
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
     
     public void setPantsColor(final PantsColors color) {
         buildData.setPantsColor(color);
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
     
     public void setShoeColor(final ShoeColors color) {
         buildData.setShoeColor(color);
-        updateCurrentSprite();
-        parent.updateSettings();
+        doUpdate();
     }
 
-    public SkinColor getActiveColor() {
+    public SkinColorDetails getActiveColor() {
         return buildData.getSkinColor();
     }
 
     public EyeDetails getActiveEye() {
         return buildData.getEyeDetails();
-    }
-
-    public Ears getActiveEars() {
-        return buildData.getEars();
     }
 
     public Nose getActiveNose() {
@@ -224,7 +213,7 @@ public final class CharacterView extends Table implements Disposable {
         final UniversalDirectionalSprite nose = assets.getNoseSprite(buildData);
         initSpriteState(nose);
         
-        final UniversalDirectionalSprite ears = assets.getEarSprite(buildData);
+        final UniversalDirectionalSprite ears = assets.getEarDetailsSprite(buildData);
         initSpriteState(ears);
         
         final UniversalDirectionalSprite hair = assets.getHairSprite(buildData);
@@ -258,6 +247,12 @@ public final class CharacterView extends Table implements Disposable {
         sprite.setAnimationState(AnimationState.WALKING);
     }
 
+
+    private void doUpdate() {
+        updateCurrentSprite();
+        parent.updateSettings();
+    }
+    
     private final UDSActor spriteActor;
     private final CharacterAppearanceTable parent;
     private final CharacterBuilderAssets assets;

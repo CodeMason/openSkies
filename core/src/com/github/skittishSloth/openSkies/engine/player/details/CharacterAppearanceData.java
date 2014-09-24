@@ -27,43 +27,43 @@ public class CharacterAppearanceData {
         this.gender = gender;
     }
 
-    public Race getRace() {
+    public RaceDetails getRace() {
         return race;
     }
 
-    public void setRace(Race race) {
+    public void setRace(RaceDetails race) {
         this.race = race;
     }
 
-    public SkinColor getSkinColor() {
+    public SkinColorDetails getSkinColor() {
         return skinColor;
     }
 
-    public void setSkinColor(SkinColor skinColor) {
+    public void setSkinColor(SkinColorDetails skinColor) {
         this.skinColor = skinColor;
     }
-    
+
     public EyeDetails getEyeDetails() {
         return eyeDetails;
     }
-    
+
     public void setEyeDetails(final EyeDetails eyeDetails) {
         this.eyeDetails = eyeDetails;
     }
 
-    public Ears getEars() {
-        return ears;
+    public EarDetails getEarDetails() {
+        return earDetails;
     }
 
-    public void setEars(Ears ears) {
-        this.ears = ears;
+    public void setEarDetails(final EarDetails earDetails) {
+        this.earDetails = earDetails;
     }
 
     public Nose getNose() {
         return nose;
     }
 
-    public void setNose(Nose nose) {
+    public void setNose(final Nose nose) {
         this.nose = nose;
     }
 
@@ -71,7 +71,7 @@ public class CharacterAppearanceData {
         return hairStyle;
     }
 
-    public void setHairStyle(HairStyles hairStyle) {
+    public void setHairStyle(final HairStyles hairStyle) {
         this.hairStyle = hairStyle;
     }
 
@@ -117,10 +117,10 @@ public class CharacterAppearanceData {
 
     private String name;
     private Gender gender;
-    private Race race;
-    private SkinColor skinColor;
+    private RaceDetails race;
+    private SkinColorDetails skinColor;
     private EyeDetails eyeDetails;
-    private Ears ears;
+    private EarDetails earDetails;
     private Nose nose;
     private HairStyles hairStyle;
     private HairColors hairColor;

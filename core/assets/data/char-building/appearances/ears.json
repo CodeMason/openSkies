@@ -1,0 +1,18 @@
+{
+	items: [
+		{
+			class: "earDetails",
+			name: Default
+		},
+		{
+			class: "earDetails",
+			name: Big,
+			texturePathPattern: "gfx/char-building/body/${gender}/${race}/ears/bigears_${skin}.png"
+		},
+		{
+			class: "earDetails",
+			name: Elven,
+			texturePathPattern: "gfx/char-building/body/${gender}/${race}/ears/elvenears_${skin}.png"
+		}
+	]
+}
