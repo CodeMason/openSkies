@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance;
 
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppearanceData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -24,7 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.player.details.Ears;
-import com.github.skittishSloth.openSkies.engine.player.details.Eye;
+import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
@@ -34,10 +35,8 @@ import com.github.skittishSloth.openSkies.engine.player.details.Race;
 import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
 import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EyeListDetails;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -82,7 +81,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         skinColorsNode = buildSkinColorNode(null);
         actionsTree.add(skinColorsNode);
 
-        eyesNode = buildEyesNode(null);
+        eyesNode = buildEyesNode(null, null);
         actionsTree.add(eyesNode);
 
         earsNode = buildEarsNode(null);
@@ -133,8 +132,8 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         }
 
         if (availableEyes == null) {
-            availableEyes = parent.getAvailableEyes();
-            buildEyesNode(buildData.getEyes());
+            availableEyes = parent.getAvailableEyeDetails();
+            buildEyesNode(availableEyes, buildData.getEyeDetails());
         }
 
         final Collection<Ears> ears = parent.getAvailableEars();
@@ -381,8 +380,9 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
         return raceNode;
     }
-
-    private Tree.Node buildEyesNode(final Eye activeEye) {
+    
+    private Tree.Node buildEyesNode(final Collection<EyeDetails> availableEyes, final EyeDetails activeEyes) {
+        Gdx.app.log(getClass().getSimpleName(), "Building Eyes Node.");
         if (eyesNode == null) {
             eyesNode = buildLabeledNode("Eyes", skin);
         } else {
@@ -391,27 +391,20 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
         clearButtonGroup(eyesGroup);
         if (availableEyes == null) {
+            Gdx.app.log(getClass().getSimpleName(), "--Available eyes were null; returning.");
             return eyesNode;
         }
 
-        final List<EyeListDetails> eyeDetails = new ArrayList<EyeListDetails>(availableEyes);
-
-        eyeDetails.sort(new Comparator<EyeListDetails>() {
-            @Override
-            public int compare(EyeListDetails o1, EyeListDetails o2) {
-                return o1.compareTo(o2);
-            }
-        });
-
         final Table btnTable = new Table(skin);
         int count = 1;
-        for (final EyeListDetails eye : eyeDetails) {
+        for (final EyeDetails eye : availableEyes) {
             final Button btn = new Button(skin, "colored");
             final CheckBox cb = new CheckBox("", skin);
             eyesGroup.add(cb);
-            btn.setColor(eye.getColor());
+            final Color eyeColor = Color.valueOf(eye.getSampleColorRgb());
+            btn.setColor(eyeColor);
             btn.setSize(32f, 32f);
-            if (eye.getEye() == activeEye) {
+            if (eye == activeEyes) {
                 cb.setChecked(true);
             }
             cb.addListener(new ChangeListener() {
@@ -419,7 +412,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     if (cb.isChecked()) {
-                        parent.setCharacterEye(eye.getEye());
+                        parent.setCharacterEyeDetails(eye);
                     }
                 }
             });
@@ -427,7 +420,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    parent.setCharacterEye(eye.getEye());
+                    parent.setCharacterEyeDetails(eye);
                     cb.setChecked(true);
                 }
             });
@@ -861,7 +854,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
     private final Label invalidNameLbl;
 
     private Collection<SkinColor> availableSkinColors = null;
-    private Collection<EyeListDetails> availableEyes = null;
+    private Collection<EyeDetails> availableEyes = null;
     private Collection<Ears> availableEars = null;
     private Collection<Nose> availableNoses = null;
     private Collection<HairStyles> availableHairStyles = null;

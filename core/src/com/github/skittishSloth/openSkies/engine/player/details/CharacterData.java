@@ -3,10 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
-
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance.CharacterAppearanceData;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.information.CharacterInformationData;
+package com.github.skittishSloth.openSkies.engine.player.details;
 
 /**
  *

@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance;
 
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppearanceData;
 import org.apache.commons.lang3.StringUtils;
 
 /**

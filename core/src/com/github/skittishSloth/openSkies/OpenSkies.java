@@ -2,11 +2,13 @@ package com.github.skittishSloth.openSkies;
 
 import com.badlogic.gdx.Game;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.CharacterBuilderScreenManager;
+import com.github.skittishSloth.openSkies.engine.maps.local.LocalScreen;
+import com.github.skittishSloth.openSkies.engine.menu.MainMenuScreen;
 
 public final class OpenSkies extends Game {
     
-    private CharacterBuilderScreenManager characterBuilder;
+    private MainMenuScreen mainMenu;
+    private LocalScreen localScreen;
     
     public OpenSkies() {
         
@@ -14,15 +16,18 @@ public final class OpenSkies extends Game {
     
     @Override
     public void create() {
-        characterBuilder = new CharacterBuilderScreenManager(this);
-        characterBuilder.startCharacterBuilder();
+//        localScreen = new LocalScreen(this);
+//        setScreen(localScreen);
+        
+        mainMenu = new MainMenuScreen(this);
+        setScreen(mainMenu);
     }
 
     @Override
     public void dispose() {
         
-        GdxUtils.safeDispose(characterBuilder);
-        
+        GdxUtils.safeScreenDispose(mainMenu);
+        GdxUtils.safeScreenDispose(localScreen);
         super.dispose();
     }
 }

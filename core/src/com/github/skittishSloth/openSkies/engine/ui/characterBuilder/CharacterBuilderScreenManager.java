@@ -5,15 +5,16 @@
  */
 package com.github.skittishSloth.openSkies.engine.ui.characterBuilder;
 
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Json;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
 import com.github.skittishSloth.openSkies.engine.player.info.BackStory;
 import com.github.skittishSloth.openSkies.engine.player.info.PlayerClass;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance.CharacterAppearanceData;
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppearanceData;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance.CharacterAppearanceScreen;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.information.CharacterInformationData;
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterInformationData;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.information.CharacterInformationScreen;
 import java.util.Collection;
 

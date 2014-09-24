@@ -6,6 +6,7 @@
 
 package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance;
 
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppearanceData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
 import com.github.skittishSloth.openSkies.engine.player.details.Ears;
-import com.github.skittishSloth.openSkies.engine.player.details.Eye;
+import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
@@ -24,7 +25,6 @@ import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
 import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.CharacterBuilderAssets;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EyeListDetails;
 import java.util.Collection;
 
 /**
@@ -78,9 +78,9 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         final CharacterAppearanceData buildData = view.getCharacter();
         settings.update(buildData);
     }
-
-    public Collection<EyeListDetails> getAvailableEyes() {
-        return view.getAvailableEyes();
+    
+    public Collection<EyeDetails> getAvailableEyeDetails() {
+        return view.getAvailableEyeDetails();
     }
     
     public Collection<Ears> getAvailableEars() {
@@ -114,8 +114,8 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
     public void setCharacterName(final String name) {
         view.setCharacterName(name);
     }
-    
-    public void setCharacterEye(final Eye eye) {
+
+    public void setCharacterEyeDetails(EyeDetails eye) {
         view.setEye(eye);
     }
     

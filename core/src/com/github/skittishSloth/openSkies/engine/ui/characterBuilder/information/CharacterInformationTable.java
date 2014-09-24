@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.information;
 
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterInformationData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;

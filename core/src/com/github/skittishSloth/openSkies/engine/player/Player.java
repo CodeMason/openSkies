@@ -5,21 +5,13 @@
  */
 package com.github.skittishSloth.openSkies.engine.player;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.github.skittishSloth.openSkies.engine.common.Direction;
 import com.github.skittishSloth.openSkies.engine.equipment.PlayerEquipment;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -27,75 +19,31 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Player implements Disposable {
 
-    private static final float FRAME_RATE = 1 / 15f;
-
     public Player() {
 
-        final Texture bodyTexture = new Texture("gfx/sprites/body/male/light.png");
-        final int width = bodyTexture.getWidth();
-        final int height = bodyTexture.getHeight();
+        final Texture bodyTexture = new Texture("gfx/char-building/body/male/human/body/light.png");
         
-        final FrameBuffer fb = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
-        //Set the projection matrix for the SpriteBatch.
-        final Matrix4 projectionMatrix = new Matrix4();
-
-        //because Pixmap has its origin on the topleft and everything else in LibGDX has the origin left bottom
-        //we flip the projection matrix on y and move it -height. So it will end up side up in the .png
-        projectionMatrix.setToOrtho2D(0, -height, width, height).scale(1, -1, 1);
-
-        //create our sprite batch
-        final SpriteBatch sb = new SpriteBatch();
-
-        final String vertexShader = Gdx.files.internal("passthrough.vert").readString();
-        final String fragShader = Gdx.files.internal("desaturate.frag").readString();
+        descriptor.setBody(bodyTexture, false);
         
-        final ShaderProgram shader = new ShaderProgram(vertexShader, fragShader);
-        
-        if (!StringUtils.isEmpty(shader.getLog())) {
-            System.err.println(shader.getLog());
-        }
-        
-//        shader.begin();
-//        shader.setUniformf("tint", new Color(0, 0, 0.5f, 1));
-//        shader.end();
-        sb.setShader(shader);
-        
-        //Set the projection matrix on the SpriteBatch
-        sb.setProjectionMatrix(projectionMatrix);
-        fb.begin();
-        sb.begin();
-        sb.draw(bodyTexture, 0, 0);
-        sb.end();
-
-        final Pixmap pm = ScreenUtils.getFrameBufferPixmap(0, 0, width, height);
-
-        fb.end();
-        final Texture bodyTinted = new Texture(pm);
-        pm.dispose();
-        sb.dispose();
-        fb.dispose();
-        
-        descriptor.setBody(bodyTinted, false);
-        
-        final Texture hairTexture = new Texture("gfx/sprites/hair/male/bedhead/black.png");
+        final Texture hairTexture = new Texture("gfx/char-building/hair/male/bedhead/black.png");
         descriptor.setHair(hairTexture, false);
         
-        final Texture earsTexture = new Texture("gfx/sprites/body/male/ears/bigears_light.png");
+        final Texture earsTexture = new Texture("gfx/char-building/body/male/human/ears/bigears_light.png");
         descriptor.setEars(earsTexture, false);
         
-        final Texture eyesTexture = new Texture("gfx/sprites/body/male/eyes/blue.png");
+        final Texture eyesTexture = new Texture("gfx/char-building/body/male/eyes/blue.png");
         descriptor.setEyes(eyesTexture, false);
         
-        final Texture noseTexture = new Texture("gfx/sprites/body/male/nose/straightnose_light.png");
+        final Texture noseTexture = new Texture("gfx/char-building/body/male/human/nose/straightnose_light.png");
         descriptor.setNose(noseTexture, false);
         
-        final Texture facialTexture = new Texture("gfx/sprites/facial/male/beard/black.png");
+        final Texture facialTexture = new Texture("gfx/char-building/facial/male/beard/black.png");
         descriptor.setFacial(facialTexture, false);
         
         descriptor.mergeSprites();
         
         bodyTexture.dispose();
-        bodyTinted.dispose();
+//        bodyTinted.dispose();
         hairTexture.dispose();
         earsTexture.dispose();
         eyesTexture.dispose();

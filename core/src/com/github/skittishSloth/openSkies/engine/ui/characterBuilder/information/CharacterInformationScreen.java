@@ -6,6 +6,7 @@
 
 package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.information;
 
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterInformationData;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.player.info.BackStory;
 import com.github.skittishSloth.openSkies.engine.player.info.PlayerClass;

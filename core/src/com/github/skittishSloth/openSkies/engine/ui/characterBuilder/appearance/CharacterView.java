@@ -5,13 +5,14 @@
  */
 package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance;
 
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppearanceData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.player.details.Ears;
-import com.github.skittishSloth.openSkies.engine.player.details.Eye;
+import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
@@ -26,7 +27,6 @@ import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.UDSActor;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.CharacterBuilderAssets;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.partDetails.EyeListDetails;
 import java.util.Collection;
 
 /**
@@ -72,13 +72,9 @@ public final class CharacterView extends Table implements Disposable {
     public Collection<Nose> getAvailableNoses() {
         return assets.getAvailableNoses();
     }
-
-    public Collection<EyeListDetails> getAvailableEyes() {
-        if (buildData.getGender() == null) {
-            return null;
-        }
-
-        return assets.getAvailableEyes(buildData.getGender());
+    
+    public Collection<EyeDetails> getAvailableEyeDetails() {
+        return assets.getEyeDetails();
     }
     
     public Collection<HairStyles> getAvailableHairStyles() {
@@ -132,9 +128,9 @@ public final class CharacterView extends Table implements Disposable {
         updateCurrentSprite();
         parent.updateSettings();
     }
-
-    public void setEye(final Eye eye) {
-        buildData.setEyes(eye);
+    
+    public void setEye(final EyeDetails eye) {
+        buildData.setEyeDetails(eye);
         updateCurrentSprite();
         parent.updateSettings();
     }
@@ -185,8 +181,8 @@ public final class CharacterView extends Table implements Disposable {
         return buildData.getSkinColor();
     }
 
-    public Eye getActiveEye() {
-        return buildData.getEyes();
+    public EyeDetails getActiveEye() {
+        return buildData.getEyeDetails();
     }
 
     public Ears getActiveEars() {
@@ -222,7 +218,7 @@ public final class CharacterView extends Table implements Disposable {
         final UniversalDirectionalSprite sprite = assets.getBodySprite(buildData);
         initSpriteState(sprite);
         
-        final UniversalDirectionalSprite eyes = assets.getEyesSprite(buildData);
+        final UniversalDirectionalSprite eyes = assets.getEyeDetailsSprite(buildData);
         initSpriteState(eyes);
         
         final UniversalDirectionalSprite nose = assets.getNoseSprite(buildData);

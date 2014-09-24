@@ -3,20 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.skittishSloth.openSkies.engine.ui.characterBuilder.appearance;
-
-import com.github.skittishSloth.openSkies.engine.player.details.Ears;
-import com.github.skittishSloth.openSkies.engine.player.details.Eye;
-import com.github.skittishSloth.openSkies.engine.player.details.Gender;
-import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
-import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
-import com.github.skittishSloth.openSkies.engine.player.details.Nose;
-import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
-import com.github.skittishSloth.openSkies.engine.player.details.Race;
-import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
-import com.github.skittishSloth.openSkies.engine.player.details.Shirts;
-import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
-import com.github.skittishSloth.openSkies.engine.player.details.SkinColor;
+package com.github.skittishSloth.openSkies.engine.player.details;
 
 /**
  *
@@ -55,13 +42,13 @@ public class CharacterAppearanceData {
     public void setSkinColor(SkinColor skinColor) {
         this.skinColor = skinColor;
     }
-
-    public Eye getEyes() {
-        return eyes;
+    
+    public EyeDetails getEyeDetails() {
+        return eyeDetails;
     }
-
-    public void setEyes(Eye eyes) {
-        this.eyes = eyes;
+    
+    public void setEyeDetails(final EyeDetails eyeDetails) {
+        this.eyeDetails = eyeDetails;
     }
 
     public Ears getEars() {
@@ -132,7 +119,7 @@ public class CharacterAppearanceData {
     private Gender gender;
     private Race race;
     private SkinColor skinColor;
-    private Eye eyes;
+    private EyeDetails eyeDetails;
     private Ears ears;
     private Nose nose;
     private HairStyles hairStyle;
