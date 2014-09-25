@@ -67,43 +67,43 @@ public class CharacterAppearanceData {
         this.nose = nose;
     }
 
-    public HairStyles getHairStyle() {
+    public HairStyleDetails getHairStyle() {
         return hairStyle;
     }
 
-    public void setHairStyle(final HairStyles hairStyle) {
+    public void setHairStyle(final HairStyleDetails hairStyle) {
         this.hairStyle = hairStyle;
     }
 
-    public HairColors getHairColor() {
+    public HairColorDetails getHairColor() {
         return hairColor;
     }
 
-    public void setHairColor(HairColors hairColor) {
+    public void setHairColor(HairColorDetails hairColor) {
         this.hairColor = hairColor;
     }
 
-    public Shirts getShirt() {
+    public ShirtDetails getShirt() {
         return shirt;
     }
 
-    public void setShirt(Shirts shirt) {
+    public void setShirt(ShirtDetails shirt) {
         this.shirt = shirt;
     }
 
-    public ShirtColors getShirtColor() {
+    public ShirtColorDetails getShirtColor() {
         return shirtColor;
     }
 
-    public void setShirtColor(ShirtColors shirtColor) {
+    public void setShirtColor(ShirtColorDetails shirtColor) {
         this.shirtColor = shirtColor;
     }
 
-    public PantsColors getPantsColor() {
+    public PantsColorDetails getPantsColor() {
         return pantsColor;
     }
 
-    public void setPantsColor(PantsColors pantsColor) {
+    public void setPantsColor(PantsColorDetails pantsColor) {
         this.pantsColor = pantsColor;
     }
 
@@ -122,10 +122,10 @@ public class CharacterAppearanceData {
     private EyeDetails eyeDetails;
     private EarDetails earDetails;
     private NoseDetails nose;
-    private HairStyles hairStyle;
-    private HairColors hairColor;
-    private Shirts shirt;
-    private ShirtColors shirtColor;
-    private PantsColors pantsColor;
+    private HairStyleDetails hairStyle;
+    private HairColorDetails hairColor;
+    private ShirtDetails shirt;
+    private ShirtColorDetails shirtColor;
+    private PantsColorDetails pantsColor;
     private ShoeColorDetails shoeColor;
 }

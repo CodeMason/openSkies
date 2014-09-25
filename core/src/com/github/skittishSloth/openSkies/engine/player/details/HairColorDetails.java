@@ -5,12 +5,15 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.details;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  *
  * @author mcory01
  */
-public class RaceDetails extends BaseDetails {
+public class HairColorDetails extends BaseDetails {
 
-    public RaceDetails() {
+    public HairColorDetails() {
+
     }
 }

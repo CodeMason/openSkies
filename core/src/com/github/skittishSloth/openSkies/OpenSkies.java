@@ -16,11 +16,11 @@ public final class OpenSkies extends Game {
     
     @Override
     public void create() {
-        localScreen = new LocalScreen(this);
-        setScreen(localScreen);
+//        localScreen = new LocalScreen(this);
+//        setScreen(localScreen);
         
-//        mainMenu = new MainMenuScreen(this);
-//        setScreen(mainMenu);
+        mainMenu = new MainMenuScreen(this);
+        setScreen(mainMenu);
     }
 
     @Override

@@ -4,6 +4,7 @@
 			class: "eyeDetails",
 			name: Blue,
 			sampleColorRgb: "5187b3",
+			defaultDetails: true,
 			maleTexturePath: "gfx/char-building/body/male/eyes/blue.png",
 			femaleTexturePath: "gfx/char-building/body/female/eyes/blue.png"
 		},

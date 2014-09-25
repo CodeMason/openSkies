@@ -2,7 +2,8 @@
 	items: [
 		{
 			class: "earDetails",
-			name: Default
+			name: Default,
+			defaultDetails: true
 		},
 		{
 			class: "earDetails",

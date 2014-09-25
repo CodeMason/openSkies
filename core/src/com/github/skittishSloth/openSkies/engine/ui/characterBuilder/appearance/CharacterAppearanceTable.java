@@ -16,12 +16,12 @@ import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
 import com.github.skittishSloth.openSkies.engine.player.details.EarDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
-import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
-import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
+import com.github.skittishSloth.openSkies.engine.player.details.HairColorDetails;
+import com.github.skittishSloth.openSkies.engine.player.details.HairStyleDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.NoseDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
+import com.github.skittishSloth.openSkies.engine.player.details.PantsColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.RaceDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
+import com.github.skittishSloth.openSkies.engine.player.details.ShirtColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.ShoeColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.CharacterBuilderAssets;
@@ -95,19 +95,19 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         return view.getAvailableNoses();
     }
     
-    public Collection<HairStyles> getAvailableHairStyles() {
+    public Collection<HairStyleDetails> getAvailableHairStyles() {
         return view.getAvailableHairStyles();
     }
     
-    public Collection<HairColors> getAvailableHairColors() {
+    public Collection<HairColorDetails> getAvailableHairColors() {
         return view.getAvailableHairColors();
     }
     
-    public Collection<ShirtColors> getAvailableShirtColors() {
+    public Collection<ShirtColorDetails> getAvailableShirtColors() {
         return view.getAvailableShirtColors();
     }
     
-    public Collection<PantsColors> getAvailablePantsColors() {
+    public Collection<PantsColorDetails> getAvailablePantsColors() {
         return view.getAvailablePantsColors();
     }
     
@@ -131,19 +131,19 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         view.setNose(nose);
     }
     
-    public void setCharacterHairStyle(final HairStyles style) {
+    public void setCharacterHairStyle(final HairStyleDetails style) {
         view.setHairStyle(style);
     }
     
-    public void setCharacterHairColor(final HairColors color) {
+    public void setCharacterHairColor(final HairColorDetails color) {
         view.setHairColor(color);
     }
     
-    public void setCharacterShirtColor(final ShirtColors color) {
+    public void setCharacterShirtColor(final ShirtColorDetails color) {
         view.setShirtColor(color);
     }
     
-    public void setCharacterPantsColor(final PantsColors color) {
+    public void setCharacterPantsColor(final PantsColorDetails color) {
         view.setPantsColor(color);
     }
     
@@ -153,6 +153,14 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
     
     public CharacterAppearanceData getCurrentState() {
         return view.getCharacter();
+    }
+    
+    public HairColorDetails getHairColorByDisplayName(final String displayName) {
+        return view.getHairColorByDisplayName(displayName);
+    }
+    
+    public HairStyleDetails getHairStyleByDisplayName(final String displayName) {
+        return view.getHairStyleByDisplayName(displayName);
     }
     
     public boolean validateSettings() {

@@ -1,0 +1,21 @@
+{
+	items: [
+		{
+			class: "shirtDetails",
+			name: Longsleeve,
+			gender: MALE,
+			defaultDetails: true
+		},
+		{
+			class: "shirtDetails",
+			name: Sleeveless,
+			gender: FEMALE,
+			defaultDetails: true
+		},
+		{
+			class: "shirtDetails",
+			name: Pirate,
+			gender: FEMALE
+		}
+	]
+}

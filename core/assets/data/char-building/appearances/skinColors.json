@@ -3,16 +3,16 @@
 		{
 			class: "skinColorDetails",
 			name: Light,
-			sampleColor: "fdd5b7",
+			sampleColorRgb: "fdd5b7",
 			race: Human,
-			defaultColor: true,
+			defaultDetails: true,
 			maleTexturePath: "gfx/char-building/body/male/human/body/light.png",
 			femaleTexturePath: "gfx/char-building/body/female/human/body/light.png"
 		},
 		{
 			class: "skinColorDetails",
 			name: Tanned,
-			sampleColor: "fdd082",
+			sampleColorRgb: "fdd082",
 			race: Human,
 			maleTexturePath: "gfx/char-building/body/male/human/body/tanned.png",
 			femaleTexturePath: "gfx/char-building/body/female/human/body/tanned.png"
@@ -20,7 +20,7 @@
 		{
 			class: "skinColorDetails",
 			name: "Tanned2",
-			sampleColor: "ecc479",
+			sampleColorRgb: "ecc479",
 			race: Human,
 			maleTexturePath: "gfx/char-building/body/male/human/body/tanned2.png",
 			femaleTexturePath: "gfx/char-building/body/female/human/body/tanned2.png"
@@ -28,7 +28,7 @@
 		{
 			class: "skinColorDetails",
 			name: Dark,
-			sampleColor: "ba8454",
+			sampleColorRgb: "ba8454",
 			race: Human,
 			maleTexturePath: "gfx/char-building/body/male/human/body/dark.png",
 			femaleTexturePath: "gfx/char-building/body/female/human/body/dark.png"
@@ -36,7 +36,7 @@
 		{
 			class: "skinColorDetails",
 			name: "Dark2",
-			sampleColor: "9c663e",
+			sampleColorRgb: "9c663e",
 			race: Human,
 			maleTexturePath: "gfx/char-building/body/male/human/body/dark2.png",
 			femaleTexturePath: "gfx/char-building/body/female/human/body/dark2.png"
@@ -44,7 +44,7 @@
 		{
 			class: "skinColorDetails",
 			name: DarkElf,
-			sampleColor: "aeb3ca",
+			sampleColorRgb: "aeb3ca",
 			race: Elf,
 			maleTexturePath: "gfx/char-building/body/male/elf/body/darkelf.png",
 			femaleTexturePath: "gfx/char-building/body/female/elf/body/darkelf.png"
@@ -52,7 +52,7 @@
 		{
 			class: "skinColorDetails",
 			name: "DarkElf2",
-			sampleColor: "c9d0ee",
+			sampleColorRgb: "c9d0ee",
 			race: Elf,
 			maleTexturePath: "gfx/char-building/body/male/elf/body/darkelf2.png",
 			femaleTexturePath: "gfx/char-building/body/female/elf/body/darkelf2.png"

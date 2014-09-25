@@ -1,0 +1,129 @@
+{
+	items: [
+		{
+			class: "hairStyleDetails",
+			name: Bald,
+			defaultDetails: true
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Bangs
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Bangslong
+		},
+	    {
+			class: "hairStyleDetails",
+			name: "Bangslong2"
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Bangsshort
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Bedhead
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Bunches
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Jewfro
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Long
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Longhawk
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Longknot
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Loose
+		},
+	    {
+			class: "hairStyleDetails",
+			name: "Messy1"
+		},
+	    {
+			class: "hairStyleDetails",
+			name: "Messy2"
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Mohawk
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Page
+		},
+	    {
+			class: "hairStyleDetails",
+			name: "Page2"
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Parted
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Pixie
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Plain
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Ponytail
+		},
+	    {
+			class: "hairStyleDetails",
+			name: "Ponytail2"
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Princess
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Shorthawk
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Shortknot
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Shoulderl
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Shoulderr
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Swoop
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Unkempt
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Xlong
+		},
+	    {
+			class: "hairStyleDetails",
+			name: Xlongknot
+		}
+	]
+}

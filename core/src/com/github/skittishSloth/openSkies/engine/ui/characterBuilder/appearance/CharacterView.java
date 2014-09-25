@@ -14,13 +14,12 @@ import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.player.details.EarDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
-import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
-import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
+import com.github.skittishSloth.openSkies.engine.player.details.HairColorDetails;
+import com.github.skittishSloth.openSkies.engine.player.details.HairStyleDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.NoseDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
+import com.github.skittishSloth.openSkies.engine.player.details.PantsColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.RaceDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
-import com.github.skittishSloth.openSkies.engine.player.details.Shirts;
+import com.github.skittishSloth.openSkies.engine.player.details.ShirtColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.ShoeColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
@@ -46,17 +45,17 @@ public final class CharacterView extends Table implements Disposable {
         spriteActor = new UDSActor(null);
         add(spriteActor).center();
         buildData.setGender(Gender.MALE);
-        buildData.setShirt(Shirts.LONGSLEEVE);
-        buildData.setShirtColor(ShirtColors.values()[0]);
+        buildData.setShirt(assets.getDefaultShirt(buildData));
+        buildData.setShirtColor(assets.getDefaultShirtColor());
         buildData.setRace(assets.getDefaultRace());
         buildData.setSkinColor(assets.getDefaultSkinColor());
         buildData.setNose(assets.getDefaultNose());
-        buildData.setPantsColor(PantsColors.WHITE);
+        buildData.setPantsColor(assets.getDefaultPantsColor());
         buildData.setShoeColor(assets.getDefaultShoeColor());
 
         updateCurrentSprite();
     }
-    
+
     public Collection<RaceDetails> getAvailableRaces() {
         return assets.getRaceDetails();
     }
@@ -68,7 +67,7 @@ public final class CharacterView extends Table implements Disposable {
 
         return assets.getAvailableSkinColors(buildData.getRace());
     }
-    
+
     public Collection<EarDetails> getAvailableEarDetails() {
         return assets.getEarDetails();
     }
@@ -76,35 +75,43 @@ public final class CharacterView extends Table implements Disposable {
     public Collection<NoseDetails> getAvailableNoses() {
         return assets.getAvailableNoses();
     }
-    
+
     public Collection<EyeDetails> getAvailableEyeDetails() {
         return assets.getEyeDetails();
     }
-    
-    public Collection<HairStyles> getAvailableHairStyles() {
+
+    public Collection<HairStyleDetails> getAvailableHairStyles() {
         return assets.getAvailableHairStyles();
     }
-    
-    public Collection<HairColors> getAvailableHairColors() {
-        return assets.getAvailableHairColors(buildData);
+
+    public Collection<HairColorDetails> getAvailableHairColors() {
+        return assets.getAvailableHairColors();
     }
-    
-    public Collection<ShirtColors> getAvailableShirtColors() {
+
+    public Collection<ShirtColorDetails> getAvailableShirtColors() {
         return assets.getAvailableShirtColors();
     }
-    
-    public Collection<PantsColors> getAvailablePantsColors() {
+
+    public Collection<PantsColorDetails> getAvailablePantsColors() {
         return assets.getAvailablePantsColors();
     }
-    
+
     public Collection<ShoeColorDetails> getAvailableShoeColors() {
         return assets.getAvailableShoeColors();
     }
     
+    public HairColorDetails getHairColorByDisplayName(final String displayName) {
+        return assets.getHairColorByDisplayName(displayName);
+    }
+    
+    public HairStyleDetails getHairStyleByDisplayName(final String displayName) {
+        return assets.getHairStyleByDisplayName(displayName);
+    }
+
     public CharacterAppearanceData getCharacter() {
         return buildData;
     }
-    
+
     public void setCharacterName(final String name) {
         buildData.setName(name);
     }
@@ -116,12 +123,7 @@ public final class CharacterView extends Table implements Disposable {
 
     public void setGender(final Gender gender) {
         buildData.setGender(gender);
-        if (gender == Gender.MALE) {
-            buildData.setShirt(Shirts.LONGSLEEVE);
-        } else {
-            buildData.setShirt(Shirts.SLEEVELESS);
-        }
-        
+        buildData.setShirt(assets.getDefaultShirt(buildData));
         doUpdate();
     }
 
@@ -129,12 +131,12 @@ public final class CharacterView extends Table implements Disposable {
         buildData.setRace(race);
         doUpdate();
     }
-    
+
     public void setEye(final EyeDetails eye) {
         buildData.setEyeDetails(eye);
         doUpdate();
     }
-    
+
     public void setEars(final EarDetails ears) {
         buildData.setEarDetails(ears);
         doUpdate();
@@ -144,27 +146,27 @@ public final class CharacterView extends Table implements Disposable {
         buildData.setNose(nose);
         doUpdate();
     }
-    
-    public void setHairStyle(final HairStyles style) {
+
+    public void setHairStyle(final HairStyleDetails style) {
         buildData.setHairStyle(style);
         doUpdate();
     }
-    
-    public void setHairColor(final HairColors color) {
+
+    public void setHairColor(final HairColorDetails color) {
         buildData.setHairColor(color);
         doUpdate();
     }
-    
-    public void setShirtColor(final ShirtColors color) {
+
+    public void setShirtColor(final ShirtColorDetails color) {
         buildData.setShirtColor(color);
         doUpdate();
     }
-    
-    public void setPantsColor(final PantsColors color) {
+
+    public void setPantsColor(final PantsColorDetails color) {
         buildData.setPantsColor(color);
         doUpdate();
     }
-    
+
     public void setShoeColor(final ShoeColorDetails color) {
         buildData.setShoeColor(color);
         doUpdate();
@@ -181,20 +183,20 @@ public final class CharacterView extends Table implements Disposable {
     public NoseDetails getActiveNose() {
         return buildData.getNose();
     }
-    
-    public HairStyles getActiveHairStyle() {
+
+    public HairStyleDetails getActiveHairStyle() {
         return buildData.getHairStyle();
     }
-    
-    public HairColors getActiveHairColor() {
+
+    public HairColorDetails getActiveHairColor() {
         return buildData.getHairColor();
     }
-    
-    public ShirtColors getActiveShirtColor() {
+
+    public ShirtColorDetails getActiveShirtColor() {
         return buildData.getShirtColor();
     }
-    
-    public PantsColors getActivePantsColor() {
+
+    public PantsColorDetails getActivePantsColor() {
         return buildData.getPantsColor();
     }
 
@@ -206,28 +208,28 @@ public final class CharacterView extends Table implements Disposable {
     private void updateCurrentSprite() {
         final UniversalDirectionalSprite sprite = assets.getBodySprite(buildData);
         initSpriteState(sprite);
-        
+
         final UniversalDirectionalSprite eyes = assets.getEyeDetailsSprite(buildData);
         initSpriteState(eyes);
-        
+
         final UniversalDirectionalSprite nose = assets.getNoseSprite(buildData);
         initSpriteState(nose);
-        
+
         final UniversalDirectionalSprite ears = assets.getEarDetailsSprite(buildData);
         initSpriteState(ears);
-        
+
         final UniversalDirectionalSprite hair = assets.getHairSprite(buildData);
         initSpriteState(hair);
-        
+
         final UniversalDirectionalSprite shirt = assets.getShirtSprite(buildData);
         initSpriteState(shirt);
-        
+
         final UniversalDirectionalSprite pants = assets.getPantsSprite(buildData);
         initSpriteState(pants);
-        
+
         final UniversalDirectionalSprite shoes = assets.getShoeSprite(buildData);
         initSpriteState(shoes);
-        
+
         spriteActor.setSprite(sprite);
         spriteActor.setEyeSprite(eyes);
         spriteActor.setNoseSprite(nose);
@@ -237,22 +239,21 @@ public final class CharacterView extends Table implements Disposable {
         spriteActor.setPantsSprite(pants);
         spriteActor.setShoeSprite(shoes);
     }
-    
+
     private void initSpriteState(final UniversalDirectionalSprite sprite) {
         if (sprite == null) {
             return;
         }
-        
+
         sprite.setMoving(true);
         sprite.setAnimationState(AnimationState.WALKING);
     }
-
 
     private void doUpdate() {
         updateCurrentSprite();
         parent.updateSettings();
     }
-    
+
     private final UDSActor spriteActor;
     private final CharacterAppearanceTable parent;
     private final CharacterBuilderAssets assets;

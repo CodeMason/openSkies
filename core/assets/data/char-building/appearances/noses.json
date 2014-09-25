@@ -17,7 +17,7 @@
 		{
 			class: "noseDetails",
 			name: Straight,
-			defaultNose: true,
+			defaultDetails: true,
 			texturePathPattern: "gfx/char-building/body/${gender}/${race}/nose/straightnose_${skinColor}.png"
 		}
 	]

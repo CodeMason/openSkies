@@ -9,8 +9,8 @@ package com.github.skittishSloth.openSkies.engine.player.details;
  *
  * @author mcory01
  */
-public class RaceDetails extends BaseDetails {
-
-    public RaceDetails() {
+public class ShirtColorDetails extends ColoredDetails {
+    public ShirtColorDetails() {
+        
     }
 }

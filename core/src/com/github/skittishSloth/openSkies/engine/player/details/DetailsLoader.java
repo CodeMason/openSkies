@@ -22,9 +22,14 @@ public class DetailsLoader {
         json.addClassTag("skinColorDetails", SkinColorDetails.class);
         json.addClassTag("noseDetails", NoseDetails.class);
         json.addClassTag("shoeColorDetails", ShoeColorDetails.class);
+        json.addClassTag("pantsColors", PantsColorDetails.class);
+        json.addClassTag("shirtDetails", ShirtDetails.class);
+        json.addClassTag("shirtColorDetails", ShirtColorDetails.class);
+        json.addClassTag("hairStyleDetails", HairStyleDetails.class);
+        json.addClassTag("hairColorDetails", HairColorDetails.class);
     }
     
-    public static final <T> DetailsCollection<T> fromJson(final Class<T> clazz, final FileHandle fh) {
+    public static final <T extends BaseDetails> DetailsCollection<T> fromJson(final Class<T> clazz, final FileHandle fh) {
         final DetailsCollection<T> res = json.fromJson(DetailsCollection.class, clazz, fh);
         return res;
     }

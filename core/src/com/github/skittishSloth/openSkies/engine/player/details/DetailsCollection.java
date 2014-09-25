@@ -12,7 +12,7 @@ import java.util.Collection;
  *
  * @author mcory01
  */
-public class DetailsCollection<T> {
+public class DetailsCollection<T extends BaseDetails> {
     
     public Collection<T> getItems() {
         return items;
