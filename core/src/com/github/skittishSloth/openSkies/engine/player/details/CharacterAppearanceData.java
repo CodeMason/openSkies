@@ -15,7 +15,7 @@ public class CharacterAppearanceData {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -23,7 +23,7 @@ public class CharacterAppearanceData {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(final Gender gender) {
         this.gender = gender;
     }
 
@@ -31,7 +31,7 @@ public class CharacterAppearanceData {
         return race;
     }
 
-    public void setRace(BaseDetails race) {
+    public void setRace(final BaseDetails race) {
         this.race = race;
     }
 
@@ -39,7 +39,7 @@ public class CharacterAppearanceData {
         return skinColor;
     }
 
-    public void setSkinColor(SkinColorDetails skinColor) {
+    public void setSkinColor(final SkinColorDetails skinColor) {
         this.skinColor = skinColor;
     }
 
@@ -79,7 +79,7 @@ public class CharacterAppearanceData {
         return hairColor;
     }
 
-    public void setHairColor(BaseDetails hairColor) {
+    public void setHairColor(final BaseDetails hairColor) {
         this.hairColor = hairColor;
     }
 
@@ -87,7 +87,7 @@ public class CharacterAppearanceData {
         return shirt;
     }
 
-    public void setShirt(ShirtDetails shirt) {
+    public void setShirt(final ShirtDetails shirt) {
         this.shirt = shirt;
     }
 
@@ -95,7 +95,7 @@ public class CharacterAppearanceData {
         return shirtColor;
     }
 
-    public void setShirtColor(ColoredDetails shirtColor) {
+    public void setShirtColor(final ColoredDetails shirtColor) {
         this.shirtColor = shirtColor;
     }
 
@@ -103,7 +103,7 @@ public class CharacterAppearanceData {
         return pantsColor;
     }
 
-    public void setPantsColor(ColoredDetails pantsColor) {
+    public void setPantsColor(final ColoredDetails pantsColor) {
         this.pantsColor = pantsColor;
     }
 
@@ -111,7 +111,7 @@ public class CharacterAppearanceData {
         return shoeColor;
     }
 
-    public void setShoeColor(ColoredDetails shoeColor) {
+    public void setShoeColor(final ColoredDetails shoeColor) {
         this.shoeColor = shoeColor;
     }
 

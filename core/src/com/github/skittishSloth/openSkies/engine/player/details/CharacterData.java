@@ -14,7 +14,7 @@ public class CharacterData {
     public CharacterData() {
     }
 
-    public CharacterData(CharacterAppearanceData appearanceData, CharacterInformationData informationData) {
+    public CharacterData(final CharacterAppearanceData appearanceData, final CharacterInformationData informationData) {
         this.appearanceData = appearanceData;
         this.informationData = informationData;
     }
@@ -23,7 +23,7 @@ public class CharacterData {
         return appearanceData;
     }
 
-    public void setAppearanceData(CharacterAppearanceData appearanceData) {
+    public void setAppearanceData(final CharacterAppearanceData appearanceData) {
         this.appearanceData = appearanceData;
     }
 
@@ -31,7 +31,7 @@ public class CharacterData {
         return informationData;
     }
 
-    public void setInformationData(CharacterInformationData informationData) {
+    public void setInformationData(final CharacterInformationData informationData) {
         this.informationData = informationData;
     }
 
