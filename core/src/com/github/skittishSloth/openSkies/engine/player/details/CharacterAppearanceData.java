@@ -59,11 +59,11 @@ public class CharacterAppearanceData {
         this.earDetails = earDetails;
     }
 
-    public Nose getNose() {
+    public NoseDetails getNose() {
         return nose;
     }
 
-    public void setNose(final Nose nose) {
+    public void setNose(final NoseDetails nose) {
         this.nose = nose;
     }
 
@@ -107,11 +107,11 @@ public class CharacterAppearanceData {
         this.pantsColor = pantsColor;
     }
 
-    public ShoeColors getShoeColor() {
+    public ShoeColorDetails getShoeColor() {
         return shoeColor;
     }
 
-    public void setShoeColor(ShoeColors shoeColor) {
+    public void setShoeColor(ShoeColorDetails shoeColor) {
         this.shoeColor = shoeColor;
     }
 
@@ -121,11 +121,11 @@ public class CharacterAppearanceData {
     private SkinColorDetails skinColor;
     private EyeDetails eyeDetails;
     private EarDetails earDetails;
-    private Nose nose;
+    private NoseDetails nose;
     private HairStyles hairStyle;
     private HairColors hairColor;
     private Shirts shirt;
     private ShirtColors shirtColor;
     private PantsColors pantsColor;
-    private ShoeColors shoeColor;
+    private ShoeColorDetails shoeColor;
 }

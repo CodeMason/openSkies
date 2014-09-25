@@ -18,11 +18,11 @@ import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
-import com.github.skittishSloth.openSkies.engine.player.details.Nose;
+import com.github.skittishSloth.openSkies.engine.player.details.NoseDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
 import com.github.skittishSloth.openSkies.engine.player.details.RaceDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
-import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
+import com.github.skittishSloth.openSkies.engine.player.details.ShoeColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.CharacterBuilderAssets;
 import java.util.Collection;
@@ -91,7 +91,7 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         return view.getAvailableEarDetails();
     }
     
-    public Collection<Nose> getAvailableNoses() {
+    public Collection<NoseDetails> getAvailableNoses() {
         return view.getAvailableNoses();
     }
     
@@ -111,7 +111,7 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         return view.getAvailablePantsColors();
     }
     
-    public Collection<ShoeColors> getAvailableShoeColors() {
+    public Collection<ShoeColorDetails> getAvailableShoeColors() {
         return view.getAvailableShoeColors();
     }
     
@@ -127,7 +127,7 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         view.setEars(ears);
     }
     
-    public void setCharacterNose(final Nose nose) {
+    public void setCharacterNose(final NoseDetails nose) {
         view.setNose(nose);
     }
     
@@ -147,7 +147,7 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
         view.setPantsColor(color);
     }
     
-    public void setCharacterShoeColor(final ShoeColors color) {
+    public void setCharacterShoeColor(final ShoeColorDetails color) {
         view.setShoeColor(color);
     }
     

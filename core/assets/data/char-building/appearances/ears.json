@@ -7,12 +7,12 @@
 		{
 			class: "earDetails",
 			name: Big,
-			texturePathPattern: "gfx/char-building/body/${gender}/${race}/ears/bigears_${skin}.png"
+			texturePathPattern: "gfx/char-building/body/${gender}/${race}/ears/bigears_${skinColor}.png"
 		},
 		{
 			class: "earDetails",
 			name: Elven,
-			texturePathPattern: "gfx/char-building/body/${gender}/${race}/ears/elvenears_${skin}.png"
+			texturePathPattern: "gfx/char-building/body/${gender}/${race}/ears/elvenears_${skinColor}.png"
 		}
 	]
 }

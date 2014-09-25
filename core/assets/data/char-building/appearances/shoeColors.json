@@ -1,0 +1,23 @@
+{
+	items: [
+		{
+			class: "shoeColorDetails",
+			name: Black,
+			sampleColor: "313131",
+			defaultShoeColor: true,
+			texturePathPattern: "gfx/char-building/feet/shoes/${gender}/black_shoes_${gender}.png"
+		},
+		{
+			class: "shoeColorDetails",
+			name: Brown,
+			sampleColor: "865e40",
+			texturePathPattern: "gfx/char-building/feet/shoes/${gender}/brown_shoes_${gender}.png"
+		},
+		{
+			class: "shoeColorDetails",
+			name: Maroon,
+			sampleColor: "83534e",
+			texturePathPattern: "gfx/char-building/feet/shoes/${gender}/maroon_shoes_${gender}.png"
+		}
+	]
+}

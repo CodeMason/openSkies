@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
+import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
 
 /**
  *
@@ -30,7 +31,7 @@ public class Item implements Disposable {
     }
     
     public boolean isActionable() {
-        return (actionTexture != null);
+        return true;
     }
 
     public boolean isActionPerformed() {
@@ -48,10 +49,12 @@ public class Item implements Disposable {
     public TextureRegion getTextureRegion() {
         final TextureRegion res;
         
-        if (actionPerformed && isActionable()) {
+        if (actionPerformed && isActionable() && (actionTexture != null)) {
             res = new TextureRegion(actionTexture);
-        } else {
+        } else if (initialTexture != null) {
             res = new TextureRegion(initialTexture);
+        } else {
+            res = null;
         }
         
         return res;
@@ -71,6 +74,8 @@ public class Item implements Disposable {
     
     @Override
     public void dispose() {
+        GdxUtils.safeDispose(initialTexture);
+        GdxUtils.safeDispose(actionTexture);
         if (initialTexture != null) {
             initialTexture.dispose();
         }

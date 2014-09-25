@@ -11,13 +11,33 @@
    eJxjYKAuYARiJgKYGYgFgXgPASwMxIpEqFMegeYZEqHOGIgB/qI2+Q==
   </data>
  </layer>
- <objectgroup name="player" width="10" height="12"/>
- <layer name="decorations1" width="10" height="12">
+ <layer name="bases" width="10" height="12">
   <data encoding="base64" compression="zlib">
-   eJxjYECARgb8wA6I7YF4IpTPg0OdHxD7A/FCKF8GSgcDcQiSujggjgfiTVC+DpROBuIUAm4RB+JiIC4hoI4QCAXiMCLUlQJxGRAvINF8NyR2BZF6OohUxwTFzEhijEjiIAAAR7AKhQ==
+   eJxjYECARgb8wA6I7YF4IpTPg0OdHxD7A/FCKF8GSgcDcQiSujggjgfiTVC+DpROBuIUAm4RB+JiIC4hoI5aoBSIy4B4AYn63Miwq4NIdUxQzIwkxogkDgIAfPkJYg==
   </data>
  </layer>
- <objectgroup name="objects" width="10" height="12"/>
- <objectgroup name="events" width="10" height="12"/>
- <objectgroup name="collisions" width="10" height="12"/>
+ <objectgroup name="player" width="10" height="12"/>
+ <layer name="tops" width="10" height="12">
+  <data encoding="base64" compression="zlib">
+   eJxjYBjZIBSIw+hkVwWd7EEGAMyIASQ=
+  </data>
+ </layer>
+ <objectgroup name="objects" width="10" height="12">
+  <object name="cabinet" type="item" x="164" y="98" width="23" height="23">
+   <properties>
+    <property name="contains" value="300 gold"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="events" width="10" height="12">
+  <object name="start" type="map_entry" x="146" y="161" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="collisions" width="10" height="12">
+  <object x="36" y="99" width="89" height="22"/>
+  <object x="235" y="89" width="41" height="56"/>
+  <object x="37" y="312" width="23" height="21"/>
+  <object x="263" y="266" width="17" height="13"/>
+  <object x="162" y="90" width="28" height="34"/>
+  <object x="141" y="222" width="37" height="26"/>
+ </objectgroup>
 </map>

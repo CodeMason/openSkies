@@ -431,7 +431,12 @@ public class ManagedMap {
             }
 
             final String initialTexturePath = props.get("initial_icon", String.class);
-            final Texture initialTexture = new Texture(Gdx.files.internal(initialTexturePath));
+            final Texture initialTexture;
+            if (StringUtils.isBlank(initialTexturePath)) {
+                initialTexture = null;
+            } else {
+                initialTexture = new Texture(Gdx.files.internal(initialTexturePath));
+            }
 
             final String actionTexturePath = props.get("action_icon", String.class);
             final Texture actionTexture;

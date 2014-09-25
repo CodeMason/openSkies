@@ -1,0 +1,24 @@
+{
+	items: [
+		{
+			class: "noseDetails",
+			name: None
+		},
+		{
+			class: "noseDetails",
+			name: Big,
+			texturePathPattern: "gfx/char-building/body/${gender}/${race}/nose/bignose_${skinColor}.png"
+		},
+		{
+			class: "noseDetails",
+			name: Button,
+			texturePathPattern: "gfx/char-building/body/${gender}/${race}/nose/buttonnose_${skinColor}.png"
+		},
+		{
+			class: "noseDetails",
+			name: Straight,
+			defaultNose: true,
+			texturePathPattern: "gfx/char-building/body/${gender}/${race}/nose/straightnose_${skinColor}.png"
+		}
+	]
+}

@@ -20,10 +20,11 @@ public class DetailsLoader {
         json.addClassTag("earDetails", EarDetails.class);
         json.addClassTag("raceDetails", RaceDetails.class);
         json.addClassTag("skinColorDetails", SkinColorDetails.class);
+        json.addClassTag("noseDetails", NoseDetails.class);
+        json.addClassTag("shoeColorDetails", ShoeColorDetails.class);
     }
     
     public static final <T> DetailsCollection<T> fromJson(final Class<T> clazz, final FileHandle fh) {
-        
         final DetailsCollection<T> res = json.fromJson(DetailsCollection.class, clazz, fh);
         return res;
     }

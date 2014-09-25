@@ -10,6 +10,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
@@ -32,10 +35,12 @@ public class LocalScreen extends AbstractScreen {
         final float w = Gdx.graphics.getWidth();
         final float h = Gdx.graphics.getHeight();
         camera.setToOrtho(false, w, h);
+        camera.update();
         
         player = new Player();
-        
+        currentMap.initializePlayer(null, null, 0, player);
         mapRenderer = new OrthogonalTiledMapRendererWithSprites(currentMap, getStage().getBatch());
+        
     }
 
     @Override
@@ -105,23 +110,29 @@ public class LocalScreen extends AbstractScreen {
         // calc total map size
         final int worldSizeWidth = currentMap.getWorldWidth();
         final int worldSizeHeight = currentMap.getWorldHeight();
+        final float viewportWidth = camera.viewportWidth;
+        final float viewportHeight = camera.viewportHeight;
+        
+        if ((worldSizeWidth < viewportWidth) && (worldSizeHeight < viewportHeight)) {
+            camera.position.set(worldSizeWidth / 2, worldSizeHeight / 2, 0);
+        } else {
+            // calc min/max camera points inside the map
+            final float minCameraX = camera.zoom * (viewportWidth / 2);
+            final float maxCameraX = worldSizeWidth - minCameraX;
+            final float minCameraY = camera.zoom * (viewportHeight / 2);
+            final float maxCameraY = worldSizeHeight - minCameraY;
 
-        // calc min/max camera points inside the map
-        final float minCameraX = camera.zoom * (camera.viewportWidth / 2);
-        final float maxCameraX = worldSizeWidth - minCameraX;
-        final float minCameraY = camera.zoom * (camera.viewportHeight / 2);
-        final float maxCameraY = worldSizeHeight - minCameraY;
+            final PositionInformation playerPos = player.getPositionInformation();
 
-        final PositionInformation playerPos = player.getPositionInformation();
+            float charX = playerPos.getX();
+            float charY = playerPos.getY();
 
-        float charX = playerPos.getX();
-        float charY = playerPos.getY();
-
-        camera.position.set(
-                Math.min(maxCameraX, Math.max(charX, minCameraX)),
-                Math.min(maxCameraY, Math.max(charY, minCameraY)),
-                0
-        );
+            camera.position.set(
+                    Math.min(maxCameraX, Math.max(charX, minCameraX)),
+                    Math.min(maxCameraY, Math.max(charY, minCameraY)),
+                    0
+            );
+        }
 
         camera.update();
     }
@@ -150,9 +161,9 @@ public class LocalScreen extends AbstractScreen {
             player.takeHit(50);
         }
 
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-//            performAction();
-//        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            performAction();
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             player.attack();
@@ -173,6 +184,39 @@ public class LocalScreen extends AbstractScreen {
         if (player.isAllAnimationFinished()) {
             player.setMoving(false);
         }
+    }
+    
+    private void performAction() {
+        // based on the player's position and facing direction,
+        // get any items within x tiles from their current position
+        // in the direction they're facing.
+        final Item item = currentMap.getNearbyItems(player);
+        if (item == null) {
+            return;
+        }
+
+        if (item.isActionPerformed()) {
+            return;
+        }
+
+        if (!item.isAlive()) {
+            return;
+        }
+
+        displayItemContents(item);
+        item.setActionPerformed(true);
+    }
+    
+    private void displayItemContents(final Item item) {
+        final String contains = item.getContains();
+        final Rectangle itemRect = item.getRectangle();
+        final Label lbl = new Label("You just got " + contains, getSkin());
+        lbl.setColor(1, 1, 1, 0);
+        lbl.setX(itemRect.x);
+        lbl.setY(itemRect.y);
+        lbl.addAction(Actions.sequence(Actions.fadeIn(0.5f), Actions.delay(1.0f), Actions.fadeOut(0.5f)));
+        getStage().addActor(lbl);
+        System.err.println("You just got " + contains);
     }
 
     private final OrthogonalTiledMapRendererWithSprites mapRenderer;

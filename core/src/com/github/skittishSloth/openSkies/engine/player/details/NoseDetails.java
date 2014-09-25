@@ -11,15 +11,15 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author mcory01
  */
-public class EarDetails {
+public class NoseDetails {
 
-    public EarDetails() {
-        
+    public NoseDetails() {
     }
-    
-    public EarDetails(final String name, final String texturePathPattern) {
+
+    public NoseDetails(String name, String texturePathPattern, boolean defaultNose) {
         this.name = name;
         this.texturePathPattern = texturePathPattern;
+        this.defaultNose = defaultNose;
     }
 
     public String getName() {
@@ -57,7 +57,16 @@ public class EarDetails {
         
         return withSkin;
     }
-    
+
+    public boolean isDefaultNose() {
+        return defaultNose;
+    }
+
+    public void setDefaultNose(boolean defaultNose) {
+        this.defaultNose = defaultNose;
+    }
+
     private String name;
     private String texturePathPattern;
+    private boolean defaultNose;
 }

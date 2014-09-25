@@ -16,12 +16,12 @@ import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.HairColors;
 import com.github.skittishSloth.openSkies.engine.player.details.HairStyles;
-import com.github.skittishSloth.openSkies.engine.player.details.Nose;
+import com.github.skittishSloth.openSkies.engine.player.details.NoseDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.PantsColors;
 import com.github.skittishSloth.openSkies.engine.player.details.RaceDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.ShirtColors;
 import com.github.skittishSloth.openSkies.engine.player.details.Shirts;
-import com.github.skittishSloth.openSkies.engine.player.details.ShoeColors;
+import com.github.skittishSloth.openSkies.engine.player.details.ShoeColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
@@ -50,9 +50,9 @@ public final class CharacterView extends Table implements Disposable {
         buildData.setShirtColor(ShirtColors.values()[0]);
         buildData.setRace(assets.getDefaultRace());
         buildData.setSkinColor(assets.getDefaultSkinColor());
-        buildData.setNose(Nose.STRAIGHT);
+        buildData.setNose(assets.getDefaultNose());
         buildData.setPantsColor(PantsColors.WHITE);
-        buildData.setShoeColor(ShoeColors.BLACK);
+        buildData.setShoeColor(assets.getDefaultShoeColor());
 
         updateCurrentSprite();
     }
@@ -73,7 +73,7 @@ public final class CharacterView extends Table implements Disposable {
         return assets.getEarDetails();
     }
 
-    public Collection<Nose> getAvailableNoses() {
+    public Collection<NoseDetails> getAvailableNoses() {
         return assets.getAvailableNoses();
     }
     
@@ -97,7 +97,7 @@ public final class CharacterView extends Table implements Disposable {
         return assets.getAvailablePantsColors();
     }
     
-    public Collection<ShoeColors> getAvailableShoeColors() {
+    public Collection<ShoeColorDetails> getAvailableShoeColors() {
         return assets.getAvailableShoeColors();
     }
     
@@ -140,7 +140,7 @@ public final class CharacterView extends Table implements Disposable {
         doUpdate();
     }
 
-    public void setNose(final Nose nose) {
+    public void setNose(final NoseDetails nose) {
         buildData.setNose(nose);
         doUpdate();
     }
@@ -165,7 +165,7 @@ public final class CharacterView extends Table implements Disposable {
         doUpdate();
     }
     
-    public void setShoeColor(final ShoeColors color) {
+    public void setShoeColor(final ShoeColorDetails color) {
         buildData.setShoeColor(color);
         doUpdate();
     }
@@ -178,7 +178,7 @@ public final class CharacterView extends Table implements Disposable {
         return buildData.getEyeDetails();
     }
 
-    public Nose getActiveNose() {
+    public NoseDetails getActiveNose() {
         return buildData.getNose();
     }
     
