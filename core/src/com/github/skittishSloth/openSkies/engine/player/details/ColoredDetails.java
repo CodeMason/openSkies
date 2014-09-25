@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author mcory01
  */
-public abstract class ColoredDetails extends BaseDetails {
+public class ColoredDetails extends BaseDetails {
 
     public ColoredDetails() {
     }

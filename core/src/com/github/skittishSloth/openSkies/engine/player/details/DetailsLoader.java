@@ -16,17 +16,17 @@ public class DetailsLoader {
     private static final Json json = new Json();
     
     static {
-        json.addClassTag("eyeDetails", EyeDetails.class);
-        json.addClassTag("earDetails", EarDetails.class);
-        json.addClassTag("raceDetails", RaceDetails.class);
+        json.addClassTag("eyeDetails", ColoredDetails.class);
+        json.addClassTag("earDetails", BaseDetails.class);
+        json.addClassTag("raceDetails", BaseDetails.class);
         json.addClassTag("skinColorDetails", SkinColorDetails.class);
-        json.addClassTag("noseDetails", NoseDetails.class);
-        json.addClassTag("shoeColorDetails", ShoeColorDetails.class);
-        json.addClassTag("pantsColors", PantsColorDetails.class);
+        json.addClassTag("noseDetails", BaseDetails.class);
+        json.addClassTag("shoeColorDetails", ColoredDetails.class);
+        json.addClassTag("pantsColors", ColoredDetails.class);
         json.addClassTag("shirtDetails", ShirtDetails.class);
-        json.addClassTag("shirtColorDetails", ShirtColorDetails.class);
-        json.addClassTag("hairStyleDetails", HairStyleDetails.class);
-        json.addClassTag("hairColorDetails", HairColorDetails.class);
+        json.addClassTag("shirtColorDetails", ColoredDetails.class);
+        json.addClassTag("hairStyleDetails", BaseDetails.class);
+        json.addClassTag("hairColorDetails", BaseDetails.class);
     }
     
     public static final <T extends BaseDetails> DetailsCollection<T> fromJson(final Class<T> clazz, final FileHandle fh) {

@@ -24,16 +24,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.github.skittishSloth.openSkies.engine.player.details.EarDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.EyeDetails;
+import com.github.skittishSloth.openSkies.engine.player.details.BaseDetails;
+import com.github.skittishSloth.openSkies.engine.player.details.ColoredDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
-import com.github.skittishSloth.openSkies.engine.player.details.HairColorDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.HairStyleDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.NoseDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.PantsColorDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.RaceDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.ShirtColorDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.ShoeColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,7 +74,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         skinColorsNode = buildSkinColorNode(null);
         actionsTree.add(skinColorsNode);
 
-        eyesNode = buildEyesNode(null, null);
+        eyesNode = buildEyesNode(null);
         actionsTree.add(eyesNode);
 
         earsNode = buildEarsNode(null);
@@ -120,7 +113,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
     public void update(final CharacterAppearanceData buildData) {
 
-        final Collection<RaceDetails> races = parent.getAvailableRaces();
+        final Collection<BaseDetails> races = parent.getAvailableRaces();
         if (availableRaces == null) {
             availableRaces = races;
             buildRaceNode();
@@ -139,10 +132,10 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
         if (availableEyes == null) {
             availableEyes = parent.getAvailableEyeDetails();
-            buildEyesNode(availableEyes, buildData.getEyeDetails());
+            buildEyesNode(buildData.getEyeDetails());
         }
 
-        final Collection<EarDetails> ears = parent.getAvailableEarDetails();
+        final Collection<BaseDetails> ears = parent.getAvailableEarDetails();
         final boolean differentEars = differentCollections(availableEars, ears);
 
         if (differentEars) {
@@ -154,7 +147,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             availableNoses = parent.getAvailableNoses();
             buildNoseNode(buildData.getNose());
         }
-        final Collection<NoseDetails> noses = parent.getAvailableNoses();
+        final Collection<BaseDetails> noses = parent.getAvailableNoses();
         final boolean differentNoses = differentCollections(availableNoses, noses);
 
         if (differentNoses) {
@@ -162,14 +155,14 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             buildNoseNode(buildData.getNose());
         }
 
-        final Collection<HairStyleDetails> hairStyles = parent.getAvailableHairStyles();
+        final Collection<BaseDetails> hairStyles = parent.getAvailableHairStyles();
         final boolean differentStyles = differentCollections(availableHairStyles, hairStyles);
 
         if (differentStyles) {
             availableHairStyles = hairStyles;
         }
 
-        final Collection<HairColorDetails> hairColors = parent.getAvailableHairColors();
+        final Collection<BaseDetails> hairColors = parent.getAvailableHairColors();
         final boolean differentHairColors = differentCollections(availableHairColors, hairColors);
 
         if (differentHairColors) {
@@ -180,7 +173,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             buildHairNode(buildData.getHairStyle(), buildData.getHairColor());
         }
 
-        final Collection<ShirtColorDetails> shirtColors = parent.getAvailableShirtColors();
+        final Collection<ColoredDetails> shirtColors = parent.getAvailableShirtColors();
         final boolean differentShirtColors = differentCollections(availableShirtColors, shirtColors);
 
         if (differentShirtColors) {
@@ -188,7 +181,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             buildShirtColorNode(buildData.getShirtColor());
         }
 
-        final Collection<PantsColorDetails> pantsColors = parent.getAvailablePantsColors();
+        final Collection<ColoredDetails> pantsColors = parent.getAvailablePantsColors();
         final boolean differentPantsColors = differentCollections(availablePantsColors, pantsColors);
 
         if (differentPantsColors) {
@@ -368,7 +361,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         final Table raceTbl = new Table(skin);
         raceTbl.defaults().left();
 
-        for (final RaceDetails race : availableRaces) {
+        for (final BaseDetails race : availableRaces) {
             final CheckBox btn = new CheckBox(race.getName(), skin);
             btn.addListener(new ClickListener() {
 
@@ -390,7 +383,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         return raceNode;
     }
     
-    private Tree.Node buildEyesNode(final Collection<EyeDetails> availableEyes, final EyeDetails activeEyes) {
+    private Tree.Node buildEyesNode(final ColoredDetails activeEyes) {
         Gdx.app.log(getClass().getSimpleName(), "Building Eyes Node.");
         if (eyesNode == null) {
             eyesNode = buildLabeledNode("Eyes", skin);
@@ -406,7 +399,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
         final Table btnTable = new Table(skin);
         int count = 1;
-        for (final EyeDetails eye : availableEyes) {
+        for (final ColoredDetails eye : availableEyes) {
             final Button btn = new Button(skin, "colored");
             final CheckBox cb = new CheckBox("", skin);
             eyesGroup.add(cb);
@@ -450,7 +443,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         return eyesNode;
     }
 
-    private Tree.Node buildEarsNode(final EarDetails activeEars) {
+    private Tree.Node buildEarsNode(final BaseDetails activeEars) {
         if (earsNode == null) {
             earsNode = buildLabeledNode("Ears", skin);
         } else {
@@ -463,7 +456,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         }
 
         final Table btnTable = new Table(skin);
-        for (final EarDetails ear : availableEars) {
+        for (final BaseDetails ear : availableEars) {
             
             final String earName = StringUtils.capitalize(ear.getName().toLowerCase());
             final CheckBox cb = new CheckBox(earName, skin);
@@ -492,7 +485,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         return earsNode;
     }
 
-    private Tree.Node buildNoseNode(final NoseDetails activeNose) {
+    private Tree.Node buildNoseNode(final BaseDetails activeNose) {
         if (noseNode == null) {
             noseNode = buildLabeledNode("Nose", skin);
         } else {
@@ -505,7 +498,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         }
 
         final Table btnTable = new Table(skin);
-        for (final NoseDetails nose : availableNoses) {
+        for (final BaseDetails nose : availableNoses) {
             final String earName = StringUtils.capitalize(nose.getName().toLowerCase());
             final CheckBox cb = new CheckBox(earName, skin);
             noseGroup.add(cb);
@@ -533,7 +526,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         return noseNode;
     }
 
-    private Tree.Node buildHairNode(final HairStyleDetails activeHairStyle, final HairColorDetails activeHairColor) {
+    private Tree.Node buildHairNode(final BaseDetails activeHairStyle, final BaseDetails activeHairColor) {
         if (hairNode == null) {
             hairNode = buildLabeledNode("Hair", skin);
         } else {
@@ -547,7 +540,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         final Label styleLabel = new Label("Style:", skin);
         final SelectBox<String> stylesSelection = new SelectBox<String>(skin);
         final List<String> hairStylesList = new ArrayList<String>(availableHairStyles.size());
-        for (final HairStyleDetails style : availableHairStyles) {
+        for (final BaseDetails style : availableHairStyles) {
             final String dispName = style.getDisplayName();
             hairStylesList.add(dispName);
         }
@@ -556,7 +549,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 final String selected = stylesSelection.getSelected();
-                final HairStyleDetails style = parent.getHairStyleByDisplayName(selected);
+                final BaseDetails style = parent.getHairStyleByDisplayName(selected);
                 parent.setCharacterHairStyle(style);
             }
         });
@@ -579,7 +572,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         } else {
             colorsSelection.setDisabled(false);
             final List<String> colorsList = new ArrayList<String>(availableHairColors.size());
-            for (final HairColorDetails color : availableHairColors) {
+            for (final BaseDetails color : availableHairColors) {
                 final String dispName = color.getDisplayName();
                 colorsList.add(dispName);
             }
@@ -588,7 +581,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     final String selected = colorsSelection.getSelected();
-                    final HairColorDetails color = parent.getHairColorByDisplayName(selected);
+                    final BaseDetails color = parent.getHairColorByDisplayName(selected);
                     parent.setCharacterHairColor(color);
                 }
             });
@@ -609,7 +602,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         return hairNode;
     }
 
-    private Tree.Node buildShirtColorNode(final ShirtColorDetails activeColor) {
+    private Tree.Node buildShirtColorNode(final ColoredDetails activeColor) {
         if (shirtColorNode == null) {
             shirtColorNode = buildLabeledNode("Shirt Color", skin);
         } else {
@@ -624,7 +617,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
         final Table btnTable = new Table(skin);
         int count = 1;
-        for (final ShirtColorDetails color : availableShirtColors) {
+        for (final ColoredDetails color : availableShirtColors) {
             final Button btn = new Button(skin, "colored");
             final CheckBox cb = new CheckBox("", skin);
             shirtColorGroup.add(cb);
@@ -668,7 +661,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         return shirtColorNode;
     }
 
-    private Tree.Node buildPantsColorNode(final PantsColorDetails activeColor) {
+    private Tree.Node buildPantsColorNode(final ColoredDetails activeColor) {
         if (pantsColorNode == null) {
             pantsColorNode = buildLabeledNode("Pants Color", skin);
         } else {
@@ -683,7 +676,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
         final Table btnTable = new Table(skin);
         int count = 1;
-        for (final PantsColorDetails color : availablePantsColors) {
+        for (final ColoredDetails color : availablePantsColors) {
             final Button btn = new Button(skin, "colored");
             final CheckBox cb = new CheckBox("", skin);
             pantsColorGroup.add(cb);
@@ -727,7 +720,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         return pantsColorNode;
     }
 
-    private Tree.Node buildShoeColorNode(final ShoeColorDetails activeColor) {
+    private Tree.Node buildShoeColorNode(final ColoredDetails activeColor) {
         if (shoeColorNode == null) {
             shoeColorNode = buildLabeledNode("Shoe Color", skin);
         } else {
@@ -742,7 +735,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
         final Table btnTable = new Table(skin);
         int count = 1;
-        for (final ShoeColorDetails color : availableShoeColors) {
+        for (final ColoredDetails color : availableShoeColors) {
             final Button btn = new Button(skin, "colored");
             final CheckBox cb = new CheckBox("", skin);
             shoeColorGroup.add(cb);
@@ -784,22 +777,6 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         shoeColorNode.add(tableNode);
 
         return shoeColorNode;
-    }
-
-    private static final class RaceButtonClickListener extends ClickListener {
-
-        public RaceButtonClickListener(final CharacterAppearanceTable parent, final RaceDetails race) {
-            this.parent = parent;
-            this.race = race;
-        }
-
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            parent.setCharacterRace(race);
-        }
-
-        private final CharacterAppearanceTable parent;
-        private final RaceDetails race;
     }
 
     private static Tree.Node buildLabeledNode(final String text, final Skin skin) {
@@ -861,14 +838,14 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
     private boolean validName = true;
     private final Label invalidNameLbl;
 
-    private Collection<RaceDetails> availableRaces = null;
+    private Collection<BaseDetails> availableRaces = null;
     private Collection<SkinColorDetails> availableSkinColors = null;
-    private Collection<EyeDetails> availableEyes = null;
-    private Collection<EarDetails> availableEars = null;
-    private Collection<NoseDetails> availableNoses = null;
-    private Collection<HairStyleDetails> availableHairStyles = null;
-    private Collection<HairColorDetails> availableHairColors = null;
-    private Collection<ShirtColorDetails> availableShirtColors = null;
-    private Collection<PantsColorDetails> availablePantsColors = null;
-    private Collection<ShoeColorDetails> availableShoeColors = null;
+    private Collection<ColoredDetails> availableEyes = null;
+    private Collection<BaseDetails> availableEars = null;
+    private Collection<BaseDetails> availableNoses = null;
+    private Collection<BaseDetails> availableHairStyles = null;
+    private Collection<BaseDetails> availableHairColors = null;
+    private Collection<ColoredDetails> availableShirtColors = null;
+    private Collection<ColoredDetails> availablePantsColors = null;
+    private Collection<ColoredDetails> availableShoeColors = null;
 }

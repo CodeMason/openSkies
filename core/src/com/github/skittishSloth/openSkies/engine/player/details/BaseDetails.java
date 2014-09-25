@@ -11,9 +11,10 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author mcory01
  */
-public abstract class BaseDetails {
+public class BaseDetails {
 
-    protected BaseDetails() {
+    public BaseDetails() {
+        
     }
 
     public final String getName() {
@@ -28,7 +29,7 @@ public abstract class BaseDetails {
         if (StringUtils.isBlank(displayName)) {
             return name;
         }
-        
+
         return displayName;
     }
 
@@ -97,17 +98,16 @@ public abstract class BaseDetails {
         final Gender gender = appearanceData.getGender();
         if (StringUtils.isNotBlank(texturePathPattern)) {
 
-            final RaceDetails race = appearanceData.getRace();
-            final SkinColorDetails skin = appearanceData.getSkinColor();
-            final ShirtDetails shirt = appearanceData.getShirt();
-            
-            final HairStyleDetails hairStyle = appearanceData.getHairStyle();
-            
+            final BaseDetails race = appearanceData.getRace();
+            final BaseDetails skin = appearanceData.getSkinColor();
+            final BaseDetails shirt = appearanceData.getShirt();
+            final BaseDetails hairStyle = appearanceData.getHairStyle();
+
             final String withGender = texturePathPattern.replace("${gender}", gender.name().toLowerCase());
             final String withRace = withGender.replace("${race}", race.getName().toLowerCase());
             final String withSkin = withRace.replace("${skinColor}", skin.getName().toLowerCase());
             final String withShirt = withSkin.replace("${shirt}", shirt.getName().toLowerCase());
-            
+
             final String withHairStyle;
             if (hairStyle != null) {
                 withHairStyle = withShirt.replace("${hair}", hairStyle.getName().toLowerCase());

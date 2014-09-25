@@ -27,11 +27,11 @@ public class CharacterAppearanceData {
         this.gender = gender;
     }
 
-    public RaceDetails getRace() {
+    public BaseDetails getRace() {
         return race;
     }
 
-    public void setRace(RaceDetails race) {
+    public void setRace(BaseDetails race) {
         this.race = race;
     }
 
@@ -43,43 +43,43 @@ public class CharacterAppearanceData {
         this.skinColor = skinColor;
     }
 
-    public EyeDetails getEyeDetails() {
+    public ColoredDetails getEyeDetails() {
         return eyeDetails;
     }
 
-    public void setEyeDetails(final EyeDetails eyeDetails) {
+    public void setEyeDetails(final ColoredDetails eyeDetails) {
         this.eyeDetails = eyeDetails;
     }
 
-    public EarDetails getEarDetails() {
+    public BaseDetails getEarDetails() {
         return earDetails;
     }
 
-    public void setEarDetails(final EarDetails earDetails) {
+    public void setEarDetails(final BaseDetails earDetails) {
         this.earDetails = earDetails;
     }
 
-    public NoseDetails getNose() {
+    public BaseDetails getNose() {
         return nose;
     }
 
-    public void setNose(final NoseDetails nose) {
+    public void setNose(final BaseDetails nose) {
         this.nose = nose;
     }
 
-    public HairStyleDetails getHairStyle() {
+    public BaseDetails getHairStyle() {
         return hairStyle;
     }
 
-    public void setHairStyle(final HairStyleDetails hairStyle) {
+    public void setHairStyle(final BaseDetails hairStyle) {
         this.hairStyle = hairStyle;
     }
 
-    public HairColorDetails getHairColor() {
+    public BaseDetails getHairColor() {
         return hairColor;
     }
 
-    public void setHairColor(HairColorDetails hairColor) {
+    public void setHairColor(BaseDetails hairColor) {
         this.hairColor = hairColor;
     }
 
@@ -91,41 +91,41 @@ public class CharacterAppearanceData {
         this.shirt = shirt;
     }
 
-    public ShirtColorDetails getShirtColor() {
+    public ColoredDetails getShirtColor() {
         return shirtColor;
     }
 
-    public void setShirtColor(ShirtColorDetails shirtColor) {
+    public void setShirtColor(ColoredDetails shirtColor) {
         this.shirtColor = shirtColor;
     }
 
-    public PantsColorDetails getPantsColor() {
+    public ColoredDetails getPantsColor() {
         return pantsColor;
     }
 
-    public void setPantsColor(PantsColorDetails pantsColor) {
+    public void setPantsColor(ColoredDetails pantsColor) {
         this.pantsColor = pantsColor;
     }
 
-    public ShoeColorDetails getShoeColor() {
+    public ColoredDetails getShoeColor() {
         return shoeColor;
     }
 
-    public void setShoeColor(ShoeColorDetails shoeColor) {
+    public void setShoeColor(ColoredDetails shoeColor) {
         this.shoeColor = shoeColor;
     }
 
     private String name;
     private Gender gender;
-    private RaceDetails race;
+    private BaseDetails race;
     private SkinColorDetails skinColor;
-    private EyeDetails eyeDetails;
-    private EarDetails earDetails;
-    private NoseDetails nose;
-    private HairStyleDetails hairStyle;
-    private HairColorDetails hairColor;
+    private ColoredDetails eyeDetails;
+    private BaseDetails earDetails;
+    private BaseDetails nose;
+    private BaseDetails hairStyle;
+    private BaseDetails hairColor;
     private ShirtDetails shirt;
-    private ShirtColorDetails shirtColor;
-    private PantsColorDetails pantsColor;
-    private ShoeColorDetails shoeColor;
+    private ColoredDetails shirtColor;
+    private ColoredDetails pantsColor;
+    private ColoredDetails shoeColor;
 }
