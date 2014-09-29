@@ -70,6 +70,10 @@ public class UDSActor extends Actor {
         this.hairSprite = hairSprite;
     }
     
+    public void setFacialHairSprite(final UniversalDirectionalSprite hairSprite) {
+        this.facialHairSprite = hairSprite;
+    }
+    
     public void setShirtSprite(final UniversalDirectionalSprite shirtSprite) {
         this.shirtSprite = shirtSprite;
     }
@@ -96,6 +100,7 @@ public class UDSActor extends Actor {
         safeDraw(batch, shirtSprite);
         safeDraw(batch, shoeSprite);
         safeDraw(batch, pantsSprite);
+        safeDraw(batch, facialHairSprite);
         safeDraw(batch, hairSprite);
     }
     
@@ -107,5 +112,5 @@ public class UDSActor extends Actor {
     }
     
     private float deltaTime = 0f;
-    private UniversalDirectionalSprite sprite, eyeSprite, earSprite, noseSprite, hairSprite, shirtSprite, pantsSprite, shoeSprite;
+    private UniversalDirectionalSprite sprite, eyeSprite, earSprite, noseSprite, hairSprite, facialHairSprite, shirtSprite, pantsSprite, shoeSprite;
 }

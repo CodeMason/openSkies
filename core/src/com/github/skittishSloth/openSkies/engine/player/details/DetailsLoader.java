@@ -27,10 +27,21 @@ public class DetailsLoader {
         json.addClassTag("shirtColorDetails", ColoredDetails.class);
         json.addClassTag("hairStyleDetails", BaseDetails.class);
         json.addClassTag("hairColorDetails", BaseDetails.class);
+        json.addClassTag("facialHairStyleDetails", BaseDetails.class);
+        json.addClassTag("facialHairColorDetails", BaseDetails.class);
     }
     
     public static final <T extends BaseDetails> DetailsCollection<T> fromJson(final Class<T> clazz, final FileHandle fh) {
         final DetailsCollection<T> res = json.fromJson(DetailsCollection.class, clazz, fh);
         return res;
+    }
+    
+    public static CharacterData loadCharacterData(final FileHandle fh) {
+        final CharacterData res = json.fromJson(CharacterData.class, fh);
+        return res;
+    }
+    
+    public static void saveJson(final Object obj, final FileHandle outputFile) {
+        json.toJson(obj, outputFile);
     }
 }

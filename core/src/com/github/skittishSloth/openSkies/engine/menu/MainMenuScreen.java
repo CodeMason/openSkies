@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.ui.AbstractScreen;
-import com.github.skittishSloth.openSkies.engine.ui.characterBuilder.CharacterBuilderScreenManager;
+import com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder.CharacterBuilderScreenManager;
 
 /**
  *

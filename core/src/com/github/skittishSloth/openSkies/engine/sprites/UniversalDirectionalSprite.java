@@ -27,8 +27,8 @@ public class UniversalDirectionalSprite implements Disposable {
     public static final int SPRITE_WIDTH = 64;
     public static final int SPRITE_HEIGHT = 64;
     
-    public static UniversalDirectionalSprite createdMergedSprite(final Texture... textures) {
-        return createMergedSprite(AnimationState.values());
+    public static UniversalDirectionalSprite createdMergedSprite(final Texture[] textures) {
+        return createdMergedSprite(AnimationState.values(), textures);
     }
 
     public static UniversalDirectionalSprite createdMergedSprite(final AnimationState[] availableAnimations, final Texture[] textures) {

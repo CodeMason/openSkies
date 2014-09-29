@@ -15,21 +15,18 @@ import com.badlogic.gdx.utils.Json;
 public class InformationLoader {
     private static final Json json = new Json();
     
-    public static PlayerClassCollection playerClassesFromJsonFile(final FileHandle file) {
+    static {
+        json.addClassTag("backStories", BackStory.class);
         json.addClassTag("classes", PlayerClass.class);
+    }
+    
+    public static PlayerClassCollection playerClassesFromJsonFile(final FileHandle file) {
         final PlayerClassCollection res = json.fromJson(PlayerClassCollection.class, file);
-        
-        System.err.println("Res found? " + (res != null));
-        System.err.println("Count? " + res.size());
         return res;
     }
     
     public static BackStoryCollection backStoriesFromJsonFile(final FileHandle file) {
-        json.addClassTag("backStories", BackStory.class);
-        
         final BackStoryCollection res = json.fromJson(BackStoryCollection.class, file);
-        System.err.println("Res found? " + (res != null));
-        System.err.println("Count? " + res.size());
         return res;
     }
 }

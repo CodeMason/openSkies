@@ -18,6 +18,8 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
@@ -25,6 +27,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.github.skittishSloth.openSkies.engine.common.Direction;
 import com.github.skittishSloth.openSkies.engine.player.Player;
+import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +56,7 @@ public class ManagedMap {
         this.worldHeight = mapHeight * tilePixelHeight;
 
         this.characterRectangle = new Rectangle();
-        
+
         initializeItems();
     }
 
@@ -103,6 +106,10 @@ public class ManagedMap {
 
     public MapLayer getPlayerLayer() {
         return map.getLayers().get("player");
+    }
+
+    public MapLayer getWaterLayer() {
+        return map.getLayers().get("water");
     }
 
     public MapLayers getAllLayers() {
@@ -172,10 +179,11 @@ public class ManagedMap {
 
     public void initializePlayer(final String source, final Integer index, final float deltaTime, final Player player) {
         final MapObject entryPoint = getEntryPoint(source, index);
-        final TextureRegion textureRegion = player.getTextureRegion(deltaTime);
+        final PlayerGraphics playerGraphics = player.getPlayerGraphics();
+        final TextureRegion textureRegion = playerGraphics.getTextureRegion(deltaTime);
         final RectangleMapObject rectStartPoint;
         if (entryPoint == null) {
-            rectStartPoint = new RectangleMapObject(0, 0, player.getWidth(), player.getHeight());
+            rectStartPoint = new RectangleMapObject(0, 0, playerGraphics.getWidth(), playerGraphics.getHeight());
         } else {
             rectStartPoint = RectangleMapObject.class.cast(entryPoint);
         }
@@ -194,7 +202,8 @@ public class ManagedMap {
     }
 
     public void updatePlayer(final Player player, final float deltaTime) {
-        if (!player.needsUpdate()) {
+        final PlayerGraphics playerGraphics = player.getPlayerGraphics();
+        if (!playerGraphics.needsUpdate()) {
             return;
         }
 
@@ -203,7 +212,7 @@ public class ManagedMap {
             mapObjects.remove(0);
         }
 
-        final TextureRegion textureRegion = player.getTextureRegion(deltaTime);
+        final TextureRegion textureRegion = playerGraphics.getTextureRegion(deltaTime);
 
         final PositionInformation playerPos = player.getPositionInformation();
         final float x = playerPos.getX();
@@ -256,12 +265,12 @@ public class ManagedMap {
         // just checks collisions layer
         final MapLayer collisionsLayer = getCollisionsLayer();
         final MapObjects collisions = collisionsLayer.getObjects();
-        
+
         characterRectangle.x = x;
         characterRectangle.y = y;
         characterRectangle.width = w;
         characterRectangle.height = h;
-        
+
         // there are several other types, Rectangle is probably the most common one
         for (final RectangleMapObject rectangleObject : collisions.getByType(RectangleMapObject.class)) {
             final Rectangle rectangle = rectangleObject.getRectangle();
@@ -377,8 +386,10 @@ public class ManagedMap {
         // start at the player
         searchRect.x = playerPos.getX();
         searchRect.y = playerPos.getY();
-        searchRect.width = player.getWidth();
-        searchRect.height = player.getHeight();
+
+        final PlayerGraphics playerGraphics = player.getPlayerGraphics();
+        searchRect.width = playerGraphics.getWidth();
+        searchRect.height = playerGraphics.getHeight();
 
         switch (facing) {
             case UP:

@@ -5,6 +5,9 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.details;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author mcory01
@@ -83,36 +86,38 @@ public class CharacterAppearanceData {
         this.hairColor = hairColor;
     }
 
-    public ShirtDetails getShirt() {
-        return shirt;
+    public BaseDetails getFacialHairStyle() {
+        return facialHairStyle;
     }
 
-    public void setShirt(final ShirtDetails shirt) {
-        this.shirt = shirt;
+    public void setFacialHairStyle(final BaseDetails facialHairStyle) {
+        this.facialHairStyle = facialHairStyle;
     }
 
-    public ColoredDetails getShirtColor() {
-        return shirtColor;
+    public BaseDetails getFacialHairColor() {
+        return facialHairColor;
     }
 
-    public void setShirtColor(final ColoredDetails shirtColor) {
-        this.shirtColor = shirtColor;
+    public void setFacialHairColor(final BaseDetails facialHairColor) {
+        this.facialHairColor = facialHairColor;
     }
+    
+    public Map<String, String> getPatternVariables() {
+        final Map<String, String> res = new HashMap<String, String>();
 
-    public ColoredDetails getPantsColor() {
-        return pantsColor;
-    }
+        res.put("${gender}", gender.name().toLowerCase());
+        res.put("${race}", race.getName().toLowerCase());
+        res.put("${skinColor}", skinColor.getName().toLowerCase());
+        
+        if ((hairStyle != null) && (hairStyle.hasTexture())) {
+            res.put("${hair}", hairStyle.getName().toLowerCase());
+        }
+        
+        if ((facialHairStyle != null) && (facialHairStyle.hasTexture())) {
+            res.put("${facialHair}", facialHairStyle.getName().toLowerCase());
+        }
 
-    public void setPantsColor(final ColoredDetails pantsColor) {
-        this.pantsColor = pantsColor;
-    }
-
-    public ColoredDetails getShoeColor() {
-        return shoeColor;
-    }
-
-    public void setShoeColor(final ColoredDetails shoeColor) {
-        this.shoeColor = shoeColor;
+        return res;
     }
 
     private String name;
@@ -124,8 +129,6 @@ public class CharacterAppearanceData {
     private BaseDetails nose;
     private BaseDetails hairStyle;
     private BaseDetails hairColor;
-    private ShirtDetails shirt;
-    private ColoredDetails shirtColor;
-    private ColoredDetails pantsColor;
-    private ColoredDetails shoeColor;
+    private BaseDetails facialHairStyle;
+    private BaseDetails facialHairColor;
 }

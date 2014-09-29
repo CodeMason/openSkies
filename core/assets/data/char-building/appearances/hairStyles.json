@@ -3,7 +3,8 @@
 		{
 			class: "hairStyleDetails",
 			name: Bald,
-			defaultDetails: true
+			defaultDetails: true,
+			nullTexture: true
 		},
 	    {
 			class: "hairStyleDetails",

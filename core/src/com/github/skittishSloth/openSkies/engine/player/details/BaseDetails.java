@@ -5,6 +5,8 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.details;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -69,8 +71,16 @@ public class BaseDetails {
         this.femaleTexturePath = femaleTexturePath;
     }
 
+    public boolean isNullTexture() {
+        return nullTexture;
+    }
+
+    public void setNullTexture(final boolean nullTexture) {
+        this.nullTexture = nullTexture;
+    }
+    
     public final boolean isValidForGender(final Gender gender) {
-        if (StringUtils.isNotBlank(texturePathPattern)) {
+        if (StringUtils.isNotBlank(texturePathPattern) || nullTexture) {
             return true;
         }
 
@@ -89,33 +99,19 @@ public class BaseDetails {
 
         return res;
     }
-
-    public final String getTexturePath(final CharacterAppearanceData appearanceData) {
+    
+    public final String getTexturePath(final Gender gender, final Map<String, String> patternVariables) {
         if (!hasTexture()) {
             return null;
         }
-
-        final Gender gender = appearanceData.getGender();
+        
         if (StringUtils.isNotBlank(texturePathPattern)) {
-
-            final BaseDetails race = appearanceData.getRace();
-            final BaseDetails skin = appearanceData.getSkinColor();
-            final BaseDetails shirt = appearanceData.getShirt();
-            final BaseDetails hairStyle = appearanceData.getHairStyle();
-
-            final String withGender = texturePathPattern.replace("${gender}", gender.name().toLowerCase());
-            final String withRace = withGender.replace("${race}", race.getName().toLowerCase());
-            final String withSkin = withRace.replace("${skinColor}", skin.getName().toLowerCase());
-            final String withShirt = withSkin.replace("${shirt}", shirt.getName().toLowerCase());
-
-            final String withHairStyle;
-            if (hairStyle != null) {
-                withHairStyle = withShirt.replace("${hair}", hairStyle.getName().toLowerCase());
-            } else {
-                withHairStyle = withShirt;
+            String res = texturePathPattern;
+            for (final String patternVar : patternVariables.keySet()) {
+                res = res.replace(patternVar, patternVariables.get(patternVar));
             }
-
-            return withHairStyle;
+            
+            return res;
         } else {
             if (gender == Gender.MALE) {
                 return maleTexturePath;
@@ -123,12 +119,30 @@ public class BaseDetails {
                 return femaleTexturePath;
             }
         }
-
+        
         return null;
     }
 
+    public final String getTexturePath(final CharacterData characterData) {
+        if (!hasTexture()) {
+            return null;
+        }
+
+        final CharacterAppearanceData appearanceData = characterData.getAppearanceData();
+        final CharacterClothingData clothingData = characterData.getClothingData();
+        final Gender gender = appearanceData.getGender();
+        
+        final Map<String, String> appearanceVars = appearanceData.getPatternVariables();
+        final Map<String, String> clothingVars = clothingData.getPatternVariables();
+        final Map<String, String> patternVars = new HashMap<String, String>(appearanceVars.size() + clothingVars.size());
+        patternVars.putAll(appearanceVars);
+        patternVars.putAll(clothingVars);
+        
+        return getTexturePath(gender, patternVars);
+    }
+
     public final boolean hasTexture() {
-        return (StringUtils.isNotBlank(texturePathPattern) || StringUtils.isNotBlank(maleTexturePath) || StringUtils.isNotBlank(femaleTexturePath));
+        return (!(nullTexture) || StringUtils.isNotBlank(texturePathPattern) || StringUtils.isNotBlank(maleTexturePath) || StringUtils.isNotBlank(femaleTexturePath));
     }
 
     private String name;
@@ -137,4 +151,5 @@ public class BaseDetails {
     private String texturePathPattern;
     private String maleTexturePath;
     private String femaleTexturePath;
+    private boolean nullTexture;
 }

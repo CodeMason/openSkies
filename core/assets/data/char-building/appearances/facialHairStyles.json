@@ -1,0 +1,30 @@
+{
+	items: [
+		{
+			class: "facialHairStyleDetails",
+			name: None,
+			defaultDetails: true,
+			nullTexture: true
+		},
+	    {
+			class: "facialHairStyleDetails",
+			name: Beard
+		},
+	    {
+			class: "facialHairStyleDetails",
+			name: BigStache
+		},
+	    {
+			class: "facialHairStyleDetails",
+			name: FiveOClock
+		},
+	    {
+			class: "facialHairStyleDetails",
+			name: FrenchStache
+		},
+	    {
+			class: "facialHairStyleDetails",
+			name: Mustache
+		}
+	]
+}

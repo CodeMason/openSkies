@@ -14,8 +14,9 @@ public class CharacterData {
     public CharacterData() {
     }
 
-    public CharacterData(final CharacterAppearanceData appearanceData, final CharacterInformationData informationData) {
+    public CharacterData(final CharacterAppearanceData appearanceData, final CharacterClothingData clothingData, final CharacterInformationData informationData) {
         this.appearanceData = appearanceData;
+        this.clothingData = clothingData;
         this.informationData = informationData;
     }
 
@@ -27,6 +28,14 @@ public class CharacterData {
         this.appearanceData = appearanceData;
     }
 
+    public CharacterClothingData getClothingData() {
+        return clothingData;
+    }
+
+    public void setClothingData(final CharacterClothingData clothingData) {
+        this.clothingData = clothingData;
+    }
+
     public CharacterInformationData getInformationData() {
         return informationData;
     }
@@ -36,5 +45,6 @@ public class CharacterData {
     }
 
     private CharacterAppearanceData appearanceData;
+    private CharacterClothingData clothingData;
     private CharacterInformationData informationData;
 }

@@ -8,6 +8,7 @@ package com.github.skittishSloth.openSkies.engine.maps.local;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
@@ -15,7 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.player.Player;
+import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
+import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
 import com.github.skittishSloth.openSkies.engine.ui.AbstractScreen;
 
 /**
@@ -27,8 +30,8 @@ public class LocalScreen extends AbstractScreen {
     public LocalScreen(OpenSkies game) {
         super(game);
         
-        mapManager.addMap("first_world", "gfx/maps/first_world.tmx");
-        currentMap = mapManager.getMap("first_world");
+        mapManager.addMap("island", "gfx/maps/prologue/island.tmx");
+        currentMap = mapManager.getMap("island");
         camera = OrthographicCamera.class.cast(getStage().getCamera());
         
 
@@ -37,7 +40,15 @@ public class LocalScreen extends AbstractScreen {
         camera.setToOrtho(false, w, h);
         camera.update();
         
-        player = new Player();
+        
+        playerGraphicsAssets = new AssetManager();
+        
+        final CharacterData currentCharacterData = game.getCurrentCharacter();
+        player = new Player(currentCharacterData);
+        
+        playerGraphics = new PlayerGraphics(playerGraphicsAssets);
+        player.setPlayerGraphics(playerGraphics);
+        
         currentMap.initializePlayer(null, null, 0, player);
         mapRenderer = new OrthogonalTiledMapRendererWithSprites(currentMap, getStage().getBatch());
         
@@ -75,10 +86,11 @@ public class LocalScreen extends AbstractScreen {
 
     private void handleTransition(final float deltaTime) {
         final PositionInformation playerPos = player.getPositionInformation();
+        
         float charX = playerPos.getX();
         float charY = playerPos.getY();
-        final float width = player.getWidth();
-        final float collisionHeight = player.getHeight() / 2;
+        final float width = playerGraphics.getWidth();
+        final float collisionHeight = playerGraphics.getHeight() / 2;
         final Transition nextMap = currentMap.getTransition(charX, charY, width, collisionHeight);
         if (nextMap != null) {
             inTransition = true;
@@ -138,8 +150,8 @@ public class LocalScreen extends AbstractScreen {
     }
     
     private void handleCollisions() {
-        final float width = player.getWidth();
-        final float collisionHeight = player.getHeight() / 2;
+        final float width = 32;
+        final float collisionHeight = playerGraphics.getHeight() / 2;
 
         final PositionInformation playerPos = player.getPositionInformation();
         float charX = playerPos.getX();
@@ -147,7 +159,7 @@ public class LocalScreen extends AbstractScreen {
         final PositionInformation previousPosition = player.getPreviousPosition();
         float prevX = previousPosition.getX();
         float prevY = previousPosition.getY();
-        if (currentMap.isCollision(charX, charY, width, collisionHeight) || currentMap.isOutOfBounds(charX, charY, width, collisionHeight)) {
+        if (currentMap.isCollision(charX + (width / 2), charY, width, collisionHeight) || currentMap.isOutOfBounds(charX, charY, width, collisionHeight)) {
             charX = prevX;
             charY = prevY;
         }
@@ -181,7 +193,7 @@ public class LocalScreen extends AbstractScreen {
             player.setMoving(false);
         }
 
-        if (player.isAllAnimationFinished()) {
+        if (playerGraphics.isAllAnimationFinished()) {
             player.setMoving(false);
         }
     }
@@ -230,4 +242,6 @@ public class LocalScreen extends AbstractScreen {
 
     private final OrthographicCamera camera;
 
+    private final AssetManager playerGraphicsAssets;
+    private final PlayerGraphics playerGraphics;
 }
