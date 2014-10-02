@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="75" height="75" tilewidth="32" tileheight="32">
- <tileset firstgid="1" source="../../tilesets/Terrain.tsx"/>
+ <tileset firstgid="1" source="../../tilesets/terrain-anim-water.tsx"/>
  <tileset firstgid="1025" name="hyptosis_tile-art-batch-3" tilewidth="32" tileheight="32">
   <image source="../../tilesets/hyptosis_tile-art-batch-3.png" width="960" height="960"/>
  </tileset>
@@ -10,6 +10,24 @@
  <tileset firstgid="2949" name="light_forest_tileset_0" tilewidth="32" tileheight="32">
   <image source="../../tilesets/light_forest_tileset_0.png" width="256" height="608"/>
  </tileset>
+ <tileset firstgid="3101" name="obj_misk_atlas" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/obj_misk_atlas.png" width="1024" height="1024"/>
+ </tileset>
+ <tileset firstgid="4125" name="wateranimate2" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/wateranimate2.png" width="576" height="386"/>
+  <tile id="86">
+   <properties>
+    <property name="animation" value="water"/>
+    <property name="randomized" value="true"/>
+   </properties>
+  </tile>
+  <tile id="120">
+   <properties>
+    <property name="animation" value="water"/>
+    <property name="randomized" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
  <layer name="ground" width="75" height="75">
   <data encoding="base64" compression="zlib">
    eJztwzENAAAMA6BOT/37q4b9kNBLqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr4PusTG+g==
@@ -17,7 +35,7 @@
  </layer>
  <layer name="ground-decorations" width="75" height="75">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <layer name="water" width="75" height="75">
@@ -27,33 +45,39 @@
  </layer>
  <layer name="buildings-bases" width="75" height="75">
   <data encoding="base64" compression="zlib">
-   eJzt0DsKgEAMQMEU27ilnzPpRfT++OkN2AjWYuEMPAipQiIAAAAAAAAAAAAAAAAAAIC7sURM5Tn/3dpEbNmeHc21m/M3S3nOf9fWiC7rs6F+fQ0AAAAAAABvOgEtwgc9
+   eJzt0DkKwmAUhdFXpElEAw6LULfhtBCHtaudQ+8DG0GQNJKI58BHflI9bgQAAAAAAAAAAAAAAAAAAPBqXURsivf3v7uUEdfslt3L579dbrMv3t//alw/v8MqYpSNs0nV7k0AAAB8x7EfccrO/bYv6b5yEFFlvUHbl3SfrZqzVXO2as5WzU1zo1k2t9VHizpima2ydd32Nd22zX122T472Iof9ABjIA95
   </data>
  </layer>
  <layer name="jungle" width="75" height="75">
   <data encoding="base64" compression="zlib">
-   eJztlAtPE0EUhRcFEXYSHvL//w4VUORlLdq0GhoeUR7lXYp6N51JL7fTLYmRZprvS05mO3d6s/fkzGYZAAAAAAAAAAAAAAAAAAAAAAAAAAAAjJPVPMsqovdqXROt5+N+s5fDelDxHmg+yu9N0RdRTa3bop0J8yqWibAWHnwSbRkPKuZMVdQUfVer9ms3cc8+5IOZ0LkIa9U/Bw8a6vmHP9MoqX+dAL/25N0/m0zoXMRmL84eio5Ex6ITv6/3YvXCr2/++7WRoGd1lRmbBf2sZy/OnYnORReitt/Xe7H6SeL3saU8slnQz3r24tyt6E50L+r4fb0Xqxee7at8pUbdzx6yVfPztE0u9OzaN+tJ6BH2b31v2/8gQa9afnZ7/zrGg7CeR/wp+841fW/b/2eCXtX97MPuX8hPWO/UzG9dls25wbNt9f8j39v2TzVX9l6F+5eJD1OuVw85ypQ3i/K85HqeXeRPs2Z9tP1TzNUveefTyL26VPOemlnDeiV6FP0W/VHevhK9dj0vh33XrhL06lre+SYyy4PKzbB6VzQj9TeiWdf3dl6Uu/Le3QS9KsvFtBtdDyy4vrfL7nm9U6MsF86Nrv9L71SJ5aKsHnwchq6N6j3JvJN5V0pmTjkzAAAAAAAAAAAAAAAA/5O/aRFGRg==
+   eJztlP1OU0EQxbcFFbyboOLf5VH0SdBH4e0oKojyZYWm1dhQGoS2FlprQc9Nd9Nx2N6SGCzbnF9yspedZbJzcrbGEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghs0Uhb8wK9CI/7Zvcf17Bo9fQS3o1kVXnU+pXJTft29xvCu79rTFXt2Y9MaYIbYj1DfQ2mfbN/h/ag6LzQLKFv99Dn6CSWD9COzPmVSgTfk092IY+KA+K6swBVIW+iFX6tRu5Z5vJzUzIXPj1wH17Dyri+6s7U8moH86AX3u4+77KhMxFaPb07DFUh06ghtuXe6F66teR+/16F6FnZZEZnQX5LWdPz51DTagFtd2+3AvVG5G/x5rwSGdBfsvZ03NdqAf9hPpuX+6F6qlnn0W+YqPsZvfZKrl52ioXcnbpm/bE9/D7Xddb9/8WoVc1N7t+f33lgV+bAX+yfueqrrfufxqhV2U3+7j35/Pj156YecEas2hvnm2L/6+73rp/rLnS78q/PwMfcnZY9zkywpsn+H5qh561kr+zpn3U/WPM1Xfc+Szwrn6Iec/UrH7tQFfQNfRbeJuH5uzQy3G/a50IvbrAnS8Ds/wSuRlXH0APUH8IPbIjbx9Dic3uPYjQq6xczNvJdc+SHXn7zN6ud2xk5cLayfV/6R0roVxk1b2P45C1Sb1nmWXM+zxj5pgzQwghhBBCCCGEEEIIIYQQcpf8AZmXSpQ=
   </data>
  </layer>
  <layer name="jungle-2" width="75" height="75">
   <data encoding="base64" compression="zlib">
-   eJzt0jEKwCAQBMDr/f8T05ku6SzUByQELCTcTHscLMtGAAAAAAAAAAAAAAAAAJDBVSLOsjvFP9TR0/3Q1bwdiXpc3U2mzbWX3Xyx8gsAAAAAAADAPh1UtgvM
+   eJzt0jsKwlAQhtEhbVYcwYVEyEJ8bMTE1k477SwcF6ARUtxozoG/CoHLx0QAAAAAAAAAAADAf2mqiFVum9tVpV8zb2322eSOuV6rUftsdMittRo1ZKNTrtMKAABm5VZHXOvSr/gNl+x0f9Pq9e28oI5T72ZJN/f4cDffmPIvAAAAAAAAAOU8AWayFXw=
   </data>
  </layer>
  <objectgroup name="player" width="75" height="75"/>
+ <objectgroup name="npcs" width="75" height="75">
+  <object name="researcher" type="npc" x="1749" y="1697" width="32" height="32">
+   <properties>
+    <property name="sprite" value="researcher.png"/>
+   </properties>
+  </object>
+ </objectgroup>
  <layer name="buildings-tops" width="75" height="75">
   <data encoding="base64" compression="zlib">
-   eJzt0jEKwkAURdFfpAlxI2a5iW5Ek41osp88xEJQLMXAOXCZYprhMVUAAAAAAAAAAAAAAAAAAPswtFVjOqVz+37fNVWH5vfv+keX7HNNU5qfW73uc8zZ2+rhln3uaUnrh38FAAAAAAAA8M0GkDoJcA==
+   eJzt0jEKwkAURdFfpAkG96HLNXEjajZi4k5cQB5iIWitEc6ByxTTDI+pAgAAAAAAAAAAAAAAAAD4D4e2qk9DOrbv95umqmu+/641OmWfc7qk8bnV6z67nHtbPVyzz5TmdPvwr6i6b3/9AgAAAAAAAFivBRhwCnI=
   </data>
  </layer>
  <objectgroup name="events" width="75" height="75">
   <object name="start" type="map_entry" x="1611" y="2021" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="objects" width="75" height="75"/>
+ <objectgroup name="objects" width="75" height="75">
+  <object name="scar_node" x="1664" y="1600" width="32" height="96"/>
+ </objectgroup>
  <objectgroup name="collisions" width="75" height="75">
-  <object x="1231" y="2321">
-   <polygon points="0,0 9,-30 5,-47 16,-62 123,-61 129,-61 144,-91 160,-92 176,-124 190,-126 210,-154 252,-156 273,-188 289,-188 304,-220 433,-221 453,-190 459,-183 495,-185 514,-161 518,-157 532,-155 544,-134 547,-126 560,-123 570,-112 575,-3 577,71"/>
-  </object>
   <object x="1811" y="2395">
    <polygon points="0,0 0,-75 152,-70 175,-102 190,-102 205,-133 224,-136 232,-165 230,-193 227,-220 238,-229 252,-230 266,-260 262,-281 272,-291 288,-293 586,-293 521,-46"/>
   </object>
@@ -135,5 +159,9 @@
   <object x="1271" y="1582">
    <polygon points="0,0 19,13 34,-26 9,-37"/>
   </object>
+  <object x="1227" y="2331">
+   <polygon points="0,0 15,-34 13,-59 24,-68 126,-68 144,-69 146,-101 164,-105 184,-134 199,-136 214,-163 257,-167 277,-196 294,-197 309,-227 350,-229 361,-231 362,-71 416,-73 419,-234 439,-231 450,-210 452,-202 463,-198 480,-195 493,-200 503,-199 515,-168 534,-165 545,-141 553,-136 567,-132 575,-120 578,-20 580,-4 602,-7 610,2 533,62"/>
+  </object>
+  <object x="1673" y="1654" width="13" height="37"/>
  </objectgroup>
 </map>

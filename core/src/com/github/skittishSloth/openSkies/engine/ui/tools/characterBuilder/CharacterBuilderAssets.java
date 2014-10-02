@@ -7,10 +7,8 @@ package com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder;
 
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppearanceData;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.player.details.BaseDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterClothingData;
 import com.github.skittishSloth.openSkies.engine.player.details.ColoredDetails;
@@ -25,6 +23,7 @@ import com.github.skittishSloth.openSkies.engine.player.info.PlayerClass;
 import com.github.skittishSloth.openSkies.engine.player.info.PlayerClassCollection;
 import com.github.skittishSloth.openSkies.engine.player.info.InformationLoader;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import com.github.skittishSloth.openSkies.engine.ui.BaseGameAssets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,11 +37,10 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author mcory01
  */
-public class CharacterBuilderAssets implements Disposable {
+public class CharacterBuilderAssets extends BaseGameAssets {
 
     private static final String BASE_CB_PATH = "gfx/char-building";
     private static final String BODY_PATH = BASE_CB_PATH + "/body";
-    private static final String HAIR_PATH = BASE_CB_PATH + "/hair";
     private static final String FEMALE_BODY_PATH = BODY_PATH + "/female";
     private static final String MALE_BODY_PATH = BODY_PATH + "/male";
 
@@ -56,24 +54,8 @@ public class CharacterBuilderAssets implements Disposable {
     private static final String SHOE_PATH = FEET_PATH + "/shoes";
 
     public CharacterBuilderAssets() {
-        this.assets = new AssetManager();
+        super();
         registerAssets();
-    }
-
-    public boolean isFinishedLoading() {
-        return assets.update();
-    }
-
-    public int getLoadedAssetsCount() {
-        return assets.getLoadedAssets();
-    }
-
-    public int getQueuedAssetsCount() {
-        return assets.getQueuedAssets();
-    }
-
-    public float getProgress() {
-        return assets.getProgress();
     }
 
     public UniversalDirectionalSprite getBodySprite(final CharacterAppearanceData appearance) {
@@ -98,7 +80,7 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
         
-        final Texture texture = assets.get(assetPath, Texture.class);
+        final Texture texture = getAssets().get(assetPath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
         return res;
     }
@@ -122,7 +104,7 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
 
-        final Texture texture = assets.get(assetPath, Texture.class);
+        final Texture texture = getAssets().get(assetPath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
         return res;
     }
@@ -163,7 +145,7 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
         
-        final Texture texture = assets.get(texturePath, Texture.class);
+        final Texture texture = getAssets().get(texturePath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
 
         return res;
@@ -200,7 +182,7 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
         
-        final Texture texture = assets.get(texturePath, Texture.class);
+        final Texture texture = getAssets().get(texturePath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
 
         return res;
@@ -230,7 +212,7 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
         
-        final Texture texture = assets.get(texturePath, Texture.class);
+        final Texture texture = getAssets().get(texturePath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
 
         return res;
@@ -270,7 +252,7 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
         
-        final Texture texture = assets.get(texturePath, Texture.class);
+        final Texture texture = getAssets().get(texturePath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
 
         return res;
@@ -309,7 +291,7 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
         
-        final Texture texture = assets.get(texturePath, Texture.class);
+        final Texture texture = getAssets().get(texturePath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
 
         return res;
@@ -348,7 +330,7 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
         
-        final Texture texture = assets.get(texturePath, Texture.class);
+        final Texture texture = getAssets().get(texturePath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
 
         return res;
@@ -378,7 +360,7 @@ public class CharacterBuilderAssets implements Disposable {
             return null;
         }
         
-        final Texture texture = assets.get(texturePath, Texture.class);
+        final Texture texture = getAssets().get(texturePath, Texture.class);
         final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
 
         return res;
@@ -510,27 +492,22 @@ public class CharacterBuilderAssets implements Disposable {
         return raceColors.get(0);
     }
 
-    @Override
-    public void dispose() {
-        assets.dispose();
-    }
-
     private void registerAssets() {
 
         final String elfPath = "/elf";
         final String humanPath = "/human";
 
-        loadFilesInPath(FEMALE_BODY_PATH + elfPath);
-        loadFilesInPath(MALE_BODY_PATH + elfPath);
+        loadPngFilesInPath(FEMALE_BODY_PATH + elfPath);
+        loadPngFilesInPath(MALE_BODY_PATH + elfPath);
 
-        loadFilesInPath(FEMALE_BODY_PATH + humanPath);
-        loadFilesInPath(MALE_BODY_PATH + humanPath);
+        loadPngFilesInPath(FEMALE_BODY_PATH + humanPath);
+        loadPngFilesInPath(MALE_BODY_PATH + humanPath);
 
-        loadFilesInPath(SHIRT_PATH);
+        loadPngFilesInPath(SHIRT_PATH);
 
-        loadFilesInPath(PANTS_PATH);
+        loadPngFilesInPath(PANTS_PATH);
 
-        loadFilesInPath(SHOE_PATH);
+        loadPngFilesInPath(SHOE_PATH);
 
         loadPlayerClasses();
 
@@ -563,25 +540,6 @@ public class CharacterBuilderAssets implements Disposable {
         loadFacialHairColorDetails();
         
         loadFacialHairStyleDetails();
-    }
-
-    private void loadFilesInPath(final String path) {
-        final FileHandle dir = Gdx.files.internal(path);
-        for (final FileHandle file : dir.list()) {
-            final String filePath = file.path();
-            if (loadedPaths.contains(filePath)) {
-                continue;
-            }
-
-            if (file.extension().equalsIgnoreCase("png")) {
-                assets.load(file.path(), Texture.class);
-                loadedPaths.add(file.path());
-            } else if (file.isDirectory() && !(file.name().endsWith("_ignore"))) {
-                loadFilesInPath(file.path());
-            } else {
-                Gdx.app.log(getClass().getSimpleName(), "Unrecognized file: " + file.name());
-            }
-        }
     }
 
     private void loadPlayerClasses() {
@@ -672,26 +630,6 @@ public class CharacterBuilderAssets implements Disposable {
         loadAppearanceDetails("facialHairStyles.json", BaseDetails.class, facialHairStyleDetails);
     }
     
-    private boolean isTexturePathAvailable(final String texturePath) {
-        if (StringUtils.isBlank(texturePath)) {
-            return false;
-        }
-        
-        if (texturePath.contains("${")) {
-            return false;
-        }
-        
-        if (!assets.isLoaded(texturePath)) {
-            assets.load(texturePath, Texture.class);
-            assets.finishLoading();
-            if (!assets.isLoaded(texturePath)) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
     private static <T extends BaseDetails> T getDefaultDetails(final Collection<T> detailCollection) {
         T res = null;
         for (final T details : detailCollection) {
@@ -732,7 +670,6 @@ public class CharacterBuilderAssets implements Disposable {
         return res;
     }
 
-    private final AssetManager assets;
     private final Set<String> loadedPaths = new HashSet<String>();
     private final Collection<PlayerClass> playerClasses = new ArrayList<PlayerClass>();
     private final Collection<BackStory> backStories = new ArrayList<BackStory>();

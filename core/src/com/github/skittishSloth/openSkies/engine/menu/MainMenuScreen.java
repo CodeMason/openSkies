@@ -31,7 +31,7 @@ public class MainMenuScreen extends AbstractScreen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                characterBuilderManager.startCharacterBuilder();
+                characterBuilderManager.start();
             }
             
         });

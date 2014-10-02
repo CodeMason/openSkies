@@ -7,7 +7,6 @@ package com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Json;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
@@ -18,6 +17,8 @@ import com.github.skittishSloth.openSkies.engine.player.details.CharacterClothin
 import com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder.appearance.CharacterAppearanceScreen;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterInformationData;
 import com.github.skittishSloth.openSkies.engine.player.details.DetailsLoader;
+import com.github.skittishSloth.openSkies.engine.ui.BaseGameAssets;
+import com.github.skittishSloth.openSkies.engine.ui.BaseScreenManager;
 import com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder.information.CharacterInformationScreen;
 import java.util.Collection;
 
@@ -25,35 +26,33 @@ import java.util.Collection;
  *
  * @author mcory01
  */
-public class CharacterBuilderScreenManager implements Disposable {
+public class CharacterBuilderScreenManager extends BaseScreenManager {
     
     public CharacterBuilderScreenManager(final OpenSkies game) {
-        this.game = game;
+        super(game);
     }
     
-    public void startCharacterBuilder() {
-        if (cbAssets == null) {
-            cbAssets = new CharacterBuilderAssets();
-        }
-        
-        if (loadScreen == null) {
-            loadScreen = new CharacterBuilderLoadScreen(game, this, cbAssets);
-        }
-        game.setScreen(loadScreen);
-    }
-    
+    @Override
     public void loadingScreenFinished() {
+        final OpenSkies game = getGame();
+        
         if (appearanceScreen == null) {
+            if (cbAssets == null) {
+                getAssets();
+            }
             appearanceScreen = new CharacterAppearanceScreen(game, this, cbAssets);
         }
-        game.setScreen(appearanceScreen);
+        
+        setGameScreen(appearanceScreen);
     }
+    
     
     public void appearanceScreenNext() {
         if (informationScreen == null) {
-            informationScreen = new CharacterInformationScreen(game, this);
+            informationScreen = new CharacterInformationScreen(getGame(), this);
         }
-        game.setScreen(informationScreen);
+        
+        setGameScreen(informationScreen);
     }
     
     public void appearanceScreenCancel() {
@@ -91,14 +90,20 @@ public class CharacterBuilderScreenManager implements Disposable {
     
     @Override
     public void dispose() {
-        GdxUtils.safeDispose(cbAssets);
-        GdxUtils.safeScreenDispose(loadScreen);
+        super.dispose();
+        
         GdxUtils.safeScreenDispose(appearanceScreen);
     }
+
+    @Override
+    protected BaseGameAssets getAssets() {
+        if (cbAssets == null) {
+            cbAssets = new CharacterBuilderAssets();
+        }
+        return cbAssets;
+    }
     
-    private final OpenSkies game;
     private CharacterBuilderAssets cbAssets;
-    private CharacterBuilderLoadScreen loadScreen;
     private CharacterAppearanceScreen appearanceScreen;
     private CharacterInformationScreen informationScreen;
 }

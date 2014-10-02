@@ -1,0 +1,15 @@
+{
+
+	name: "Island",
+	startingMap: "island",
+	maps: [
+		{
+			name: "island",
+			relativePath: "island/island.tmx"
+		},
+		{
+			name: "arthurs_tent",
+			relativePath: "island/arthurs_tent.tmx"
+		}
+	]
+}

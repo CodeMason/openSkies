@@ -1,0 +1,2 @@
+#./rulemap.tmx
+../common-collision-rules.tmx

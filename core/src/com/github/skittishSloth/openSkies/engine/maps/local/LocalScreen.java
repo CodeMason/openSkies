@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.github.skittishSloth.openSkies.engine.maps.local;
 
 import com.badlogic.gdx.Gdx;
@@ -15,11 +14,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.github.skittishSloth.openSkies.OpenSkies;
+import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetails;
+import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
 import com.github.skittishSloth.openSkies.engine.ui.AbstractScreen;
+import com.github.skittishSloth.openSkies.engine.ui.maps.MapAssets;
 
 /**
  *
@@ -27,31 +29,47 @@ import com.github.skittishSloth.openSkies.engine.ui.AbstractScreen;
  */
 public class LocalScreen extends AbstractScreen {
 
-    public LocalScreen(OpenSkies game) {
+    public LocalScreen(final OpenSkies game, final MapAssets mapAssets) {
         super(game);
-        
-        mapManager.addMap("island", "gfx/maps/prologue/island.tmx");
-        currentMap = mapManager.getMap("island");
-        camera = OrthographicCamera.class.cast(getStage().getCamera());
-        
 
-        final float w = Gdx.graphics.getWidth();
-        final float h = Gdx.graphics.getHeight();
-        camera.setToOrtho(false, w, h);
+        this.mapManager = new TiledMapManager(mapAssets);
+        currentArea = game.getCurrentArea();
+
+//        currentMap = mapManager.getMap("arthurs_tent");
+        camera = OrthographicCamera.class.cast(getStage().getCamera());
+
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
+        camera.setToOrtho(false, width, height);
         camera.update();
-        
-        
+
         playerGraphicsAssets = new AssetManager();
-        
+
         final CharacterData currentCharacterData = game.getCurrentCharacter();
         player = new Player(currentCharacterData);
-        
+
         playerGraphics = new PlayerGraphics(playerGraphicsAssets);
         player.setPlayerGraphics(playerGraphics);
-        
-        currentMap.initializePlayer(null, null, 0, player);
-        mapRenderer = new OrthogonalTiledMapRendererWithSprites(currentMap, getStage().getBatch());
-        
+
+        camera.update(true);
+    }
+
+    public void setCurrentArea(final AreaDetails areaDetails) {
+        this.currentArea = areaDetails;
+    }
+
+    @Override
+    public void show() {
+        super.show();
+
+        if (currentMap == null) {
+            for (final MapDetails md : currentArea.getMaps()) {
+                mapManager.addMap(md.getName(), "gfx/maps/" + md.getRelativePath());
+            }
+            currentMap = mapManager.getMap(currentArea.getStartingMap());
+            currentMap.initializePlayer(null, null, 0, player);
+            mapRenderer = new OrthogonalTiledMapRendererWithSprites(currentMap, getStage().getBatch());
+        }
     }
 
     @Override
@@ -74,24 +92,31 @@ public class LocalScreen extends AbstractScreen {
 
         mapRenderer.setView(camera);
         mapRenderer.render();
-        
+
         getStage().act(delta);
         getStage().draw();
     }
-    
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        mapManager.dispose();
+    }
+
     private void updateMap(final float deltaTime) {
         currentMap.updatePlayer(player, deltaTime);
+        currentMap.updateNPCs(deltaTime);
         currentMap.updateItems();
     }
 
     private void handleTransition(final float deltaTime) {
         final PositionInformation playerPos = player.getPositionInformation();
-        
+
         float charX = playerPos.getX();
         float charY = playerPos.getY();
-        final float width = playerGraphics.getWidth();
+        final float playerGraphicsWidth = playerGraphics.getWidth();
         final float collisionHeight = playerGraphics.getHeight() / 2;
-        final Transition nextMap = currentMap.getTransition(charX, charY, width, collisionHeight);
+        final Transition nextMap = currentMap.getTransition(charX, charY, playerGraphicsWidth, collisionHeight);
         if (nextMap != null) {
             inTransition = true;
 
@@ -117,14 +142,14 @@ public class LocalScreen extends AbstractScreen {
             fade.runEffect(afterFadeOut, afterFadeIn);
         }
     }
-    
+
     private void updateCamera() {
         // calc total map size
         final int worldSizeWidth = currentMap.getWorldWidth();
         final int worldSizeHeight = currentMap.getWorldHeight();
         final float viewportWidth = camera.viewportWidth;
         final float viewportHeight = camera.viewportHeight;
-        
+
         if ((worldSizeWidth < viewportWidth) && (worldSizeHeight < viewportHeight)) {
             camera.position.set(worldSizeWidth / 2, worldSizeHeight / 2, 0);
         } else {
@@ -148,9 +173,9 @@ public class LocalScreen extends AbstractScreen {
 
         camera.update();
     }
-    
+
     private void handleCollisions() {
-        final float width = 32;
+        final float collisionWidth = 32;
         final float collisionHeight = playerGraphics.getHeight() / 2;
 
         final PositionInformation playerPos = player.getPositionInformation();
@@ -159,7 +184,7 @@ public class LocalScreen extends AbstractScreen {
         final PositionInformation previousPosition = player.getPreviousPosition();
         float prevX = previousPosition.getX();
         float prevY = previousPosition.getY();
-        if (currentMap.isCollision(charX + (width / 2), charY, width, collisionHeight) || currentMap.isOutOfBounds(charX, charY, width, collisionHeight)) {
+        if (currentMap.isCollision(charX + (collisionWidth / 2), charY, collisionWidth, collisionHeight) || currentMap.isOutOfBounds(charX, charY, collisionWidth, collisionHeight)) {
             charX = prevX;
             charY = prevY;
         }
@@ -175,10 +200,6 @@ public class LocalScreen extends AbstractScreen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             performAction();
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            player.attack();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -197,7 +218,7 @@ public class LocalScreen extends AbstractScreen {
             player.setMoving(false);
         }
     }
-    
+
     private void performAction() {
         // based on the player's position and facing direction,
         // get any items within x tiles from their current position
@@ -218,7 +239,7 @@ public class LocalScreen extends AbstractScreen {
         displayItemContents(item);
         item.setActionPerformed(true);
     }
-    
+
     private void displayItemContents(final Item item) {
         final String contains = item.getContains();
         final Rectangle itemRect = item.getRectangle();
@@ -231,17 +252,21 @@ public class LocalScreen extends AbstractScreen {
         System.err.println("You just got " + contains);
     }
 
-    private final OrthogonalTiledMapRendererWithSprites mapRenderer;
-    private final TiledMapManager mapManager = new TiledMapManager();
-    
+    private OrthogonalTiledMapRendererWithSprites mapRenderer;
+    private final TiledMapManager mapManager;
+
     private ManagedMap currentMap = null;
 
     private boolean inTransition;
-    
+
+    private AreaDetails currentArea;
+
     private final Player player;
 
     private final OrthographicCamera camera;
 
     private final AssetManager playerGraphicsAssets;
     private final PlayerGraphics playerGraphics;
+
+    private final float width, height;
 }

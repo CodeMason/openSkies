@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="6" height="8" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" source="../../tilesets/terrain-anim-water.tsx"/>
+ <tileset firstgid="1025" name="house_inside" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/house_inside.png" width="512" height="448"/>
+ </tileset>
+ <tileset firstgid="1249" name="house_objects_revised" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/house_objects_revised.png" width="192" height="192"/>
+ </tileset>
+ <tileset firstgid="1285" name="obj_misk_atlas" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/obj_misk_atlas.png" width="1024" height="1024"/>
+ </tileset>
+ <tileset firstgid="2309" name="hyptosis_tile-art-batch-4" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/hyptosis_tile-art-batch-4.png" width="960" height="960"/>
+ </tileset>
+ <tileset firstgid="3209" name="WaterAndFire" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/WaterAndFire.png" width="192" height="256"/>
+  <tile id="42">
+   <properties>
+    <property name="animation" value="candle"/>
+    <property name="frame" value="1"/>
+    <property name="randomized" value="true"/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="animation" value="candle"/>
+    <property name="frame" value="2"/>
+    <property name="randomized" value="true"/>
+   </properties>
+  </tile>
+  <tile id="44">
+   <properties>
+    <property name="animation" value="candle"/>
+    <property name="frame" value="3"/>
+    <property name="randomized" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="ground" width="6" height="8">
+  <data encoding="base64" compression="zlib">
+   eJxjYCANLIPiJVCcCsXLkHAqVG4pFC/Dwl6CxF+GxMamF9kemDxMLQBCDhU6
+  </data>
+ </layer>
+ <layer name="decorations-lower" width="6" height="8">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgYsJqLOuYAADOeALY=
+  </data>
+ </layer>
+ <layer name="decorations" width="6" height="8">
+  <data encoding="base64" compression="zlib">
+   eJxjYECAKawIdjo3A0MGEGcC8RageA8XRLwVyG8D4nYgvgIUXwUU/8vCgBUwI+lDB6twiO/iROXD3HEDTRzmDgAQIwx/
+  </data>
+ </layer>
+ <layer name="decorations-2" width="6" height="8">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAObOYhUiEa6OUiTx+xAACqsgFX
+  </data>
+ </layer>
+ <objectgroup name="player" width="6" height="8"/>
+ <objectgroup name="npcs" width="6" height="8"/>
+ <objectgroup name="events" width="6" height="8">
+  <object name="start_point" type="map_entry" x="96" y="224" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="objects" width="6" height="8"/>
+ <objectgroup name="collisions" width="6" height="8"/>
+</map>

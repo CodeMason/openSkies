@@ -20,17 +20,24 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.github.skittishSloth.openSkies.engine.common.Direction;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
+import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -42,10 +49,13 @@ public class ManagedMap {
     private static final TmxMapLoader MAP_LOADER = new TmxMapLoader();
 
     public ManagedMap(final String name, final String path) {
+        this(name, MAP_LOADER.load(path));
+    }
+    
+    public ManagedMap(final String name, final TiledMap map) {
         this.name = name;
-
-        this.map = MAP_LOADER.load(path);
-
+        this.map = map;
+        
         final MapProperties prop = map.getProperties();
         this.mapWidth = prop.get("width", Integer.class); //how many tiles in map
         this.mapHeight = prop.get("height", Integer.class);
@@ -58,6 +68,8 @@ public class ManagedMap {
         this.characterRectangle = new Rectangle();
 
         initializeItems();
+        initializeNPCs();
+        initializeAnimations();
     }
 
     public String getName() {
@@ -108,8 +120,8 @@ public class ManagedMap {
         return map.getLayers().get("player");
     }
 
-    public MapLayer getWaterLayer() {
-        return map.getLayers().get("water");
+    public MapLayer getNPCLayer() {
+        return map.getLayers().get("npcs");
     }
 
     public MapLayers getAllLayers() {
@@ -222,6 +234,39 @@ public class ManagedMap {
         tmo.setX(x);
         tmo.setY(y);
         mapObjects.add(tmo);
+    }
+
+    public void updateNPCs(final float delta) {
+        final MapLayer npcLayer = getNPCLayer();
+        if (npcLayer == null) {
+            return;
+        }
+
+        final MapObjects npcObjects = npcLayer.getObjects();
+        for (final TextureMapObject textureObj : npcObjects.getByType(TextureMapObject.class)) {
+            final String type = textureObj.getProperties().get("type", String.class);
+            if (StringUtils.equals(type, "item")) {
+                npcObjects.remove(textureObj);
+            }
+        }
+
+        for (final RectangleMapObject obj : npcObjects.getByType(RectangleMapObject.class)) {
+            final MapProperties props = obj.getProperties();
+            final String type = props.get("type", String.class);
+            if (!(StringUtils.equals(type, "npc"))) {
+                continue;
+            }
+
+            final String id = props.get("id", String.class);
+            final NPC npc = npcs.get(id);
+
+            final TextureRegion region = npc.getSprite().getTextureRegion(delta);
+            final TextureMapObject tmo = new TextureMapObject(region);
+            final Rectangle rect = npc.getRectangle();
+            tmo.setX(rect.getX());
+            tmo.setY(rect.getY());
+            npcObjects.add(tmo);
+        }
     }
 
     public void updateItems() {
@@ -465,7 +510,143 @@ public class ManagedMap {
         }
     }
 
+    private void initializeNPCs() {
+        final MapLayer npcLayer = getNPCLayer();
+        if (npcLayer == null) {
+            return;
+        }
+
+        final MapObjects npcObjects = npcLayer.getObjects();
+
+        for (final RectangleMapObject obj : npcObjects.getByType(RectangleMapObject.class)) {
+            final MapProperties props = obj.getProperties();
+
+            final String type = props.get("type", String.class);
+            if (!(StringUtils.equals(type, "npc"))) {
+                continue;
+            }
+
+            final String spritePath = props.get("sprite", String.class);
+            if (StringUtils.isBlank(spritePath)) {
+                continue;
+            }
+            final Texture initialTexture = new Texture(Gdx.files.internal("gfx/characters/" + spritePath));
+
+            final String id = props.get("id", String.class);
+            final UniversalDirectionalSprite sprite = new UniversalDirectionalSprite(initialTexture);
+            final Rectangle rectangle = obj.getRectangle();
+            final NPC npc = new NPC(sprite, rectangle);
+            npcs.put(id, npc);
+        }
+    }
+
+    private void initializeAnimations() {
+        // get all tile sets in the map.
+        final TiledMapTileSets allSets = map.getTileSets();
+        final Map<String, Array<StaticTiledMapTile>> randomTemp = new HashMap<String, Array<StaticTiledMapTile>>();
+        for (final TiledMapTileSet tileSet : allSets) {
+            for (final TiledMapTile tile : tileSet) {
+                final MapProperties properties = tile.getProperties();
+                final String animation = properties.get("animation", String.class);
+                if (animation == null) {
+                    continue;
+                }
+
+                final Array<StaticTiledMapTile> tiles;
+                if (animatedTiles.containsKey(animation)) {
+                    tiles = animatedTiles.get(animation);
+                } else {
+                    tiles = new Array<StaticTiledMapTile>();
+                    animatedTiles.put(animation, tiles);
+                }
+
+                tiles.add(new StaticTiledMapTile(tile.getTextureRegion()));
+
+                final String randomizedObj = properties.get("randomized", "false", String.class);
+                if (Boolean.valueOf(randomizedObj)) {
+                    if (!randomTemp.containsKey(animation)) {
+                        randomTemp.put(animation, tiles);
+                    }
+                }
+            }
+        }
+
+        for (final String animName : randomTemp.keySet()) {
+            final Array<StaticTiledMapTile> tiles = randomTemp.get(animName);
+            final int numTiles = tiles.size;
+
+            final Array<Array<StaticTiledMapTile>> shuffled;
+            if (randomizedAnimatedTiles.containsKey(animName)) {
+                shuffled = randomizedAnimatedTiles.get(animName);
+            } else {
+                shuffled = new Array<Array<StaticTiledMapTile>>(numTiles);
+                randomizedAnimatedTiles.put(animName, shuffled);
+            }
+
+            for (int i = 0; i < numTiles; ++i) {
+                final Array<StaticTiledMapTile> copy = new Array<StaticTiledMapTile>(tiles);
+                copy.shuffle();
+                shuffled.add(copy);
+            }
+        }
+
+        final MapLayers layers = map.getLayers();
+        final Random r = new Random();
+        for (final MapLayer layer : layers) {
+            if (!(layer instanceof TiledMapTileLayer)) {
+                continue;
+            }
+
+            final TiledMapTileLayer tiledLayer = (TiledMapTileLayer) layer;
+            final int layerWidth = tiledLayer.getWidth();
+            final int layerHeight = tiledLayer.getHeight();
+            for (int x = 0; x < layerWidth; ++x) {
+                for (int y = 0; y < layerHeight; ++y) {
+                    final TiledMapTileLayer.Cell cell = tiledLayer.getCell(x, y);
+                    if (cell == null) {
+                        continue;
+                    }
+
+                    final TiledMapTile tile = cell.getTile();
+                    if (tile == null) {
+                        continue;
+                    }
+
+                    final MapProperties properties = tile.getProperties();
+                    if (properties == null) {
+                        continue;
+                    }
+
+                    final String animation = properties.get("animation", String.class);
+                    if (animation == null) {
+                        continue;
+                    }
+                    
+                    if (!animation.equals("water")) {
+                        System.err.println("Animation: " + animation);
+                    }
+
+                    final Array<StaticTiledMapTile> tiles;
+                    final String randomizedObj = properties.get("randomized", "false", String.class);
+                    if (Boolean.valueOf(randomizedObj)) {
+                        final Array<Array<StaticTiledMapTile>> shuffledTiles = randomizedAnimatedTiles.get(animation);
+                        final int numShuffles = shuffledTiles.size;
+                        final int rndIdx = r.nextInt(numShuffles);
+                        tiles = shuffledTiles.get(rndIdx);
+                    } else {
+                        tiles = animatedTiles.get(animation);
+                    }
+
+                    cell.setTile(new AnimatedTiledMapTile(0.10f, tiles));
+                }
+            }
+        }
+    }
+
     private final Map<String, Item> items = new HashMap<String, Item>();
+    private final Map<String, NPC> npcs = new HashMap<String, NPC>();
+    private final Map<String, Array<StaticTiledMapTile>> animatedTiles = new HashMap<String, Array<StaticTiledMapTile>>();
+    private final Map<String, Array<Array<StaticTiledMapTile>>> randomizedAnimatedTiles = new HashMap<String, Array<Array<StaticTiledMapTile>>>();
     private final TiledMap map;
     private final String name;
 
