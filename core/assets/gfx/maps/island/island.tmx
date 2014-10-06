@@ -43,13 +43,7 @@
    eJzt0jsKwlAQhtEhbVYcwYVEyEJ8bMTE1k477SwcF6ARUtxozoG/CoHLx0QAAAAAAAAAAADAf2mqiFVum9tVpV8zb2322eSOuV6rUftsdMittRo1ZKNTrtMKAABm5VZHXOvSr/gNl+x0f9Pq9e28oI5T72ZJN/f4cDffmPIvAAAAAAAAAOU8AWayFXw=
   </data>
  </layer>
- <objectgroup name="npcs" width="75" height="75">
-  <object name="researcher" type="npc" x="1728" y="1696" width="32" height="32">
-   <properties>
-    <property name="sprite" value="researcher.png"/>
-   </properties>
-  </object>
- </objectgroup>
+ <objectgroup name="npcs" width="75" height="75"/>
  <objectgroup name="player" width="75" height="75"/>
  <layer name="buildings-tops" width="75" height="75">
   <data encoding="base64" compression="zlib">
@@ -58,7 +52,7 @@
  </layer>
  <objectgroup name="events" width="75" height="75">
   <object name="start" type="map_entry" x="1598" y="1661" width="32" height="32"/>
-  <object name="go_arthurs_tent" type="transition" x="1782" y="1678" width="18" height="24">
+  <object name="go_arthurs_tent" type="transition" x="1782" y="1665" width="18" height="24">
    <properties>
     <property name="dest" value="arthurs_tent"/>
    </properties>

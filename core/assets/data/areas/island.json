@@ -5,7 +5,16 @@
 	maps: [
 		{
 			name: "island",
-			relativePath: "island/island.tmx"
+			relativePath: "island/island.tmx",
+			npcs: [
+				{
+					id: arthur,
+					location: {
+						x: 54,
+						y: 54
+					}
+				}
+			]
 		},
 		{
 			name: "arthurs_tent",

@@ -47,7 +47,7 @@ public class AreaDetails {
         }
         
         if (maps != null) {
-            this.maps = new ArrayList<MapDetails>(maps);
+            this.maps.addAll(maps);
         }
     }
     

@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.local;
 
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPC;
 import com.github.skittishSloth.openSkies.engine.lighting.LightTile;
 import box2dLight.Light;
 import box2dLight.PointLight;
@@ -27,6 +28,7 @@ import com.github.skittishSloth.openSkies.engine.lighting.LightingAnimation;
 import com.github.skittishSloth.openSkies.engine.lighting.LightingAnimationFactory;
 import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetails;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
@@ -52,6 +54,8 @@ public class LocalScreen extends AbstractScreen {
         this.mapManager = new TiledMapManager(mapAssets);
         currentArea = game.getCurrentArea();
 
+        this.npcDetails = game.getNPCDetails();
+        
         camera = OrthographicCamera.class.cast(getStage().getCamera());
 
         width = Gdx.graphics.getWidth();
@@ -123,7 +127,7 @@ public class LocalScreen extends AbstractScreen {
         getStage().act(delta);
         getStage().draw();
 
-        handleLightPulse(delta);
+        handleLightAnimation(delta);
         rayHandler.setCombinedMatrix(camera.combined);
         rayHandler.updateAndRender();
 
@@ -141,7 +145,7 @@ public class LocalScreen extends AbstractScreen {
         rayHandler.dispose();
     }
 
-    private void handleLightPulse(final float deltaTime) {
+    private void handleLightAnimation(final float deltaTime) {
         for (final LightingAnimation anim : lightingAnimations.values()) {
             anim.update(deltaTime);
         }
@@ -247,16 +251,6 @@ public class LocalScreen extends AbstractScreen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             performAction();
-            
-            for (final LightTile tile : lightingTilesByName.values()) {
-                System.err.println("Toggling lights for " + tile.getName());
-                final LightingAnimation anim = lightingAnimations.get(tile);
-                if (anim != null) {
-                    anim.setLightActive(!anim.isLightActive());
-                } else {
-                    System.err.println("No animation...");
-                }
-            }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -296,9 +290,7 @@ public class LocalScreen extends AbstractScreen {
 
         final NPC npc = currentMap.getNearbyNPC(player);
         if (npc != null) {
-            if (npc.hasDialog()) {
-                displayNPCDialog(npc.getDialog());
-            }
+            System.err.println("NPC found...");
         }
     }
 
@@ -344,7 +336,7 @@ public class LocalScreen extends AbstractScreen {
 
     private void initializeMap(final String nextMap, final String prevMap, final Integer mapIndex, final float deltaTime) {
         for (final MapDetails md : currentArea.getMaps()) {
-            mapManager.addMap(md.getName(), "gfx/maps/" + md.getRelativePath());
+            mapManager.addMap(md.getName(), "gfx/maps/" + md.getRelativePath(), npcDetails, md);
         }
 
         final String mapName;
@@ -418,4 +410,6 @@ public class LocalScreen extends AbstractScreen {
     private final Map<String, LightTile> lightingTilesByName = new HashMap<String, LightTile>();
 
     private final FadeInOutEffect fade;
+    
+    private final Map<String, NPCDetails> npcDetails;
 }

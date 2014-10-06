@@ -1,0 +1,10 @@
+{
+	npcs: [
+		{
+			id: arthur,
+			name: Arthur,
+			description: "Researcher in charge of your expedition to the island.",
+			imageFile: researcher.png
+		}
+	]
+}

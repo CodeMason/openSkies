@@ -7,11 +7,17 @@ import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
 import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetails;
 import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetailsLoader;
 import com.github.skittishSloth.openSkies.engine.maps.local.LocalScreen;
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetailsCollection;
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetailsLoader;
 import com.github.skittishSloth.openSkies.engine.menu.MainMenuScreen;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
 import com.github.skittishSloth.openSkies.engine.player.details.DetailsLoader;
 import com.github.skittishSloth.openSkies.engine.ui.dialog.DialogTestScreen;
 import com.github.skittishSloth.openSkies.engine.ui.maps.MapScreenManager;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class OpenSkies extends Game {
     
@@ -36,6 +42,14 @@ public final class OpenSkies extends Game {
         currentArea = AreaDetailsLoader.fromJson(areaDetailsFile);
         mapScreenManager = new MapScreenManager(this);
         
+        final FileHandle npcDetailsFile = Gdx.files.internal("data/npcs.json");
+        final NPCDetailsCollection npcColl = NPCDetailsLoader.fromJson(npcDetailsFile);
+        System.err.println("Number of npcs: " + npcColl.size());
+        final List<NPCDetails> npcDetailsList = npcColl.getNpcs();
+        for (final NPCDetails npc : npcDetailsList) {
+            this.npcDetails.put(npc.getId(), npc);
+        }
+        
 //        dlgTest = new DialogTestScreen(this);
 //        setScreen(dlgTest);
         
@@ -55,6 +69,10 @@ public final class OpenSkies extends Game {
     public AreaDetails getCurrentArea() {
         return currentArea;
     }
+    
+    public Map<String, NPCDetails> getNPCDetails() {
+        return npcDetails;
+    }
 
     @Override
     public void dispose() {
@@ -70,4 +88,5 @@ public final class OpenSkies extends Game {
     
     private CharacterData characterData;
     private AreaDetails currentArea;
+    private final Map<String, NPCDetails> npcDetails = new HashMap<String, NPCDetails>();
 }

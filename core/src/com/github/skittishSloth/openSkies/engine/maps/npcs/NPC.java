@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.skittishSloth.openSkies.engine.maps.local;
+package com.github.skittishSloth.openSkies.engine.maps.npcs;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
@@ -14,13 +14,16 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author mcory01
  */
-public class NPC implements Disposable {
+public class NPC {
 
-    public NPC(final UniversalDirectionalSprite sprite, final Rectangle rectangle) {
+    public NPC(final String npcName, final UniversalDirectionalSprite sprite, final Rectangle rectangle) {
+        this.npcName = npcName;
         this.sprite = sprite;
         this.rectangle = rectangle;
-        
-        this.dialog = "Hey there!  I'm an NPC! :)";
+    }
+
+    public String getNpcName() {
+        return npcName;
     }
 
     public UniversalDirectionalSprite getSprite() {
@@ -30,22 +33,8 @@ public class NPC implements Disposable {
     public Rectangle getRectangle() {
         return rectangle;
     }
-    
-    public boolean hasDialog() {
-        return (StringUtils.isNotBlank(dialog));
-    }
-    
-    public String getDialog() {
-        return dialog;
-    }
 
-    @Override
-    public void dispose() {
-        
-    }
-    
+    private final String npcName;
     private final UniversalDirectionalSprite sprite;
     private final Rectangle rectangle;
-    
-    private final String dialog;
 }

@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.local;
 
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPC;
 import com.github.skittishSloth.openSkies.engine.lighting.LightTile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -31,10 +32,14 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.github.skittishSloth.openSkies.engine.common.Direction;
 import com.github.skittishSloth.openSkies.engine.lighting.FlickerLightTile;
 import com.github.skittishSloth.openSkies.engine.lighting.PulsingLightTile;
+import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetailNPCEntry;
+import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
@@ -54,13 +59,18 @@ public class ManagedMap {
 
     private static final TmxMapLoader MAP_LOADER = new TmxMapLoader();
 
-    public ManagedMap(final String name, final String path) {
-        this(name, MAP_LOADER.load(path));
+    public ManagedMap(final String name, final String path, final Map<String, NPCDetails> npcDetails, final MapDetails mapDetails) {
+        this(name, MAP_LOADER.load(path), npcDetails, mapDetails);
     }
 
-    public ManagedMap(final String name, final TiledMap map) {
+    public ManagedMap(final String name, final TiledMap map, final Map<String, NPCDetails> npcDetails, final MapDetails mapDetails) {
         this.name = name;
         this.map = map;
+        this.mapDetails = mapDetails;
+        this.npcDetails = new HashMap<String, NPCDetails>();
+        if (npcDetails != null) {
+            this.npcDetails.putAll(npcDetails);
+        }
 
         final MapProperties prop = map.getProperties();
         this.mapWidth = prop.get("width", Integer.class); //how many tiles in map
@@ -257,23 +267,18 @@ public class ManagedMap {
         }
 
         final MapObjects npcObjects = npcLayer.getObjects();
-        for (final TextureMapObject textureObj : npcObjects.getByType(TextureMapObject.class)) {
-            final String type = textureObj.getProperties().get("type", String.class);
-            if (StringUtils.equals(type, "item")) {
-                npcObjects.remove(textureObj);
-            }
-        }
-
         for (final RectangleMapObject obj : npcObjects.getByType(RectangleMapObject.class)) {
             final MapProperties props = obj.getProperties();
-            final String type = props.get("type", String.class);
-            if (!(StringUtils.equals(type, "npc"))) {
+            
+            final String id = props.get("id", String.class);
+            if (StringUtils.isBlank(id)) {
                 continue;
             }
-
-            final String id = props.get("id", String.class);
+            
             final NPC npc = npcs.get(id);
-
+            if (npc == null) {
+                continue;
+            }
             final TextureRegion region = npc.getSprite().getTextureRegion(delta);
             final TextureMapObject tmo = new TextureMapObject(region);
             final Rectangle rect = npc.getRectangle();
@@ -528,12 +533,11 @@ public class ManagedMap {
 
         for (final RectangleMapObject obj : npcObjects.getByType(RectangleMapObject.class)) {
             final MapProperties props = obj.getProperties();
-            final String type = props.get("type", String.class);
-            if (!(StringUtils.equals(type, "npc"))) {
+            final String id = props.get("id", String.class);
+            if (StringUtils.isBlank(id)) {
                 continue;
             }
-
-            final String id = props.get("id", String.class);
+            
             final NPC npc = npcs.get(id);
 
             if (Intersector.overlaps(searchRect, npc.getRectangle())) {
@@ -550,7 +554,6 @@ public class ManagedMap {
     }
 
     private void initializeItems() {
-        System.err.println("Map " + name + ": Initilizing items.");
         final MapLayer objectsLayer = getObjectsLayer();
         final MapObjects objects = objectsLayer.getObjects();
 
@@ -587,39 +590,50 @@ public class ManagedMap {
     }
 
     private void initializeNPCs() {
-        System.err.println("Map " + name + ": Initilizing NPCs.");
         final MapLayer npcLayer = getNPCLayer();
         if (npcLayer == null) {
+            System.err.println("NPC Layer was null.");
             return;
         }
 
+        final List<MapDetailNPCEntry> npcEntries = mapDetails.getNpcs();
+        if (npcEntries == null) {
+            System.err.println("No NPC entries found on map details object.");
+            return;
+        }
+        
         final MapObjects npcObjects = npcLayer.getObjects();
 
-        for (final RectangleMapObject obj : npcObjects.getByType(RectangleMapObject.class)) {
-            final MapProperties props = obj.getProperties();
-
-            final String type = props.get("type", String.class);
-            if (!(StringUtils.equals(type, "npc"))) {
-                continue;
-            }
-
-            final String spritePath = props.get("sprite", String.class);
-            if (StringUtils.isBlank(spritePath)) {
-                continue;
-            }
-            final Texture initialTexture = new Texture(Gdx.files.internal("gfx/characters/" + spritePath));
-
-            final String id = props.get("id", String.class);
+        for (final MapDetailNPCEntry mapNpc : npcEntries) {
+            final String id = mapNpc.getId();
+            final NPCDetails entryDetails = npcDetails.get(id);
+            final String imageFile = entryDetails.getImageFile();
+            
+            final Texture initialTexture = new Texture(Gdx.files.internal("gfx/characters/" + imageFile));
             final UniversalDirectionalSprite sprite = new UniversalDirectionalSprite(initialTexture);
-            final Rectangle rectangle = obj.getRectangle();
-            final NPC npc = new NPC(sprite, rectangle);
+            final int width = sprite.getWidth();
+            final int height = sprite.getHeight();
+            final Rectangle rect = new Rectangle();
+            final Vector2 location = mapNpc.getLocation();
+            
+            final int maxTileNum = this.mapHeight;
+            rect.x = location.x * tilePixelWidth;
+            rect.y = (maxTileNum - location.y) * tilePixelHeight;
+            rect.width = width;
+            rect.height = height;
+            
+            final NPC npc = new NPC(id, sprite, rect);
             npcs.put(id, npc);
+            
+            final RectangleMapObject rectObj = new RectangleMapObject(rect.x, rect.y, width, height);
+            System.err.println("Adding sprite " + id + " at " + rect.x + ", " + rect.y);
+            rectObj.getProperties().put("id", id);
+            npcObjects.add(rectObj);
         }
     }
 
     private void initializeAnimations() {
         // get all tile sets in the map.
-        System.err.println("Map " + name + ": Initilizing Animations.");
         final TiledMapTileSets allSets = map.getTileSets();
         final Map<String, Array<StaticTiledMapTile>> randomTemp = new HashMap<String, Array<StaticTiledMapTile>>();
         for (final TiledMapTileSet tileSet : allSets) {
@@ -722,7 +736,6 @@ public class ManagedMap {
     }
 
     private void initializeLights() {
-        System.err.println("Map " + name + ": Initilizing Lighting.");
         final MapLayer lightingLayer = getLightingLayer();
         if (lightingLayer == null) {
             return;
@@ -799,6 +812,8 @@ public class ManagedMap {
     private final List<LightTile> lights = new ArrayList<LightTile>();
     private final TiledMap map;
     private final String name;
+    private final MapDetails mapDetails;
+    private final Map<String, NPCDetails> npcDetails;
 
     private final int mapWidth;
     private final int mapHeight;

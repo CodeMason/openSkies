@@ -1,0 +1,8 @@
+{
+	name: "First Quest",
+	giver: {
+		type: NPC,
+		name: "Arthur"
+	},
+	description: "I need you to get my things from the boat.  I'll dig out your SCAR chip when you you get them."
+}
