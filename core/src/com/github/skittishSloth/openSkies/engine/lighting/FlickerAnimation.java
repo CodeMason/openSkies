@@ -21,9 +21,12 @@ public class FlickerAnimation extends LightingAnimation<FlickerLightTile, Light>
 
     @Override
     public void update(final float delta) {
+        final Light light = getLight();
+        if (!light.isActive()) {
+            return;
+        }
         currentFlickerTime += delta;
         final FlickerLightTile tile = getTile();
-        final Light light = getLight();
         
         if (currentFlickerTime > currentDuration) {
             if (!flickerUp) {

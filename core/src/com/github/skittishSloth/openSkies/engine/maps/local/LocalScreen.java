@@ -247,6 +247,16 @@ public class LocalScreen extends AbstractScreen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             performAction();
+            
+            for (final LightTile tile : lightingTilesByName.values()) {
+                System.err.println("Toggling lights for " + tile.getName());
+                final LightingAnimation anim = lightingAnimations.get(tile);
+                if (anim != null) {
+                    anim.setLightActive(!anim.isLightActive());
+                } else {
+                    System.err.println("No animation...");
+                }
+            }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -356,6 +366,7 @@ public class LocalScreen extends AbstractScreen {
         rayHandler.removeAll();
         currentLights.clear();
         lightingAnimations.clear();
+        lightingTilesByName.clear();
         final List<LightTile> lights = currentMap.getLights();
         for (final LightTile light : lights) {
             final Rectangle rect = light.getRectangle();

@@ -21,17 +21,17 @@ public class PulseAnimation extends LightingAnimation<PulsingLightTile, Light> {
     
     @Override
     public void update(final float delta) {
+        final Light light = getLight();
+        if (!light.isActive()) {
+            return;
+        }
+        
         lightPulseTime += delta;
         final PulsingLightTile tile = getTile();
-        final Light light = getLight();
         
         if (lightPulseTime > tile.getPulseCycleTime()) {
             lightPulseUp = !(lightPulseUp);
             lightPulseTime = 0f;
-        }
-
-        if (!light.isActive()) {
-            return;
         }
         
         final float startDistance;

@@ -28,6 +28,14 @@ public abstract class LightingAnimation<T extends LightTile, K extends Light> {
         return light;
     }
     
+    public boolean isLightActive() {
+        return light.isActive();
+    }
+    
+    public void setLightActive(final boolean active) {
+        light.setActive(active);
+    }
+    
     public abstract void update(final float delta);
     
     private final T tile;
