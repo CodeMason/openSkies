@@ -37,8 +37,10 @@ public class MapAssets extends BaseGameAssets {
     public TiledMap getMap(final String path) {
         final TiledMap res;
         if (getAssets().isLoaded(path)) {
+            System.err.println("Map at path " + path + " IS loaded!");
             res = getAssets().get(path, TiledMap.class);
         } else {
+            System.err.println("Map at path " + path + " not loaded.");
             res = null;
         }
         

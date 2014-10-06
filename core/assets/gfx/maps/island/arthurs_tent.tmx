@@ -60,8 +60,28 @@
  <objectgroup name="player" width="6" height="8"/>
  <objectgroup name="npcs" width="6" height="8"/>
  <objectgroup name="events" width="6" height="8">
-  <object name="start_point" type="map_entry" x="96" y="224" width="32" height="32"/>
+  <object name="start_point" type="map_entry" x="93" y="128" width="32" height="32"/>
+  <object name="enter_island" type="map_entry" x="95" y="191" width="32" height="32">
+   <properties>
+    <property name="source" value="island"/>
+   </properties>
+  </object>
+  <object name="go_island" type="transition" x="96" y="224" width="32" height="32">
+   <properties>
+    <property name="dest" value="island"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="objects" width="6" height="8"/>
  <objectgroup name="collisions" width="6" height="8"/>
+ <objectgroup name="lighting" width="6" height="8">
+  <object name="candle" x="140" y="33" width="7" height="14">
+   <properties>
+    <property name="animation" value="flicker"/>
+    <property name="color" value="F02222"/>
+    <property name="maxDistance" value="30"/>
+    <property name="maxFlickerTime" value="0.25"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

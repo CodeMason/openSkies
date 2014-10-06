@@ -8,6 +8,7 @@ package com.github.skittishSloth.openSkies.engine.maps.local;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -18,6 +19,8 @@ public class NPC implements Disposable {
     public NPC(final UniversalDirectionalSprite sprite, final Rectangle rectangle) {
         this.sprite = sprite;
         this.rectangle = rectangle;
+        
+        this.dialog = "Hey there!  I'm an NPC! :)";
     }
 
     public UniversalDirectionalSprite getSprite() {
@@ -27,6 +30,14 @@ public class NPC implements Disposable {
     public Rectangle getRectangle() {
         return rectangle;
     }
+    
+    public boolean hasDialog() {
+        return (StringUtils.isNotBlank(dialog));
+    }
+    
+    public String getDialog() {
+        return dialog;
+    }
 
     @Override
     public void dispose() {
@@ -35,4 +46,6 @@ public class NPC implements Disposable {
     
     private final UniversalDirectionalSprite sprite;
     private final Rectangle rectangle;
+    
+    private final String dialog;
 }

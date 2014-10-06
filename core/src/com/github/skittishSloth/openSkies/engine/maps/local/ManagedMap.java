@@ -5,7 +5,9 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.local;
 
+import com.github.skittishSloth.openSkies.engine.lighting.LightTile;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
@@ -31,11 +33,15 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.github.skittishSloth.openSkies.engine.common.Direction;
+import com.github.skittishSloth.openSkies.engine.lighting.FlickerLightTile;
+import com.github.skittishSloth.openSkies.engine.lighting.PulsingLightTile;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
@@ -51,11 +57,11 @@ public class ManagedMap {
     public ManagedMap(final String name, final String path) {
         this(name, MAP_LOADER.load(path));
     }
-    
+
     public ManagedMap(final String name, final TiledMap map) {
         this.name = name;
         this.map = map;
-        
+
         final MapProperties prop = map.getProperties();
         this.mapWidth = prop.get("width", Integer.class); //how many tiles in map
         this.mapHeight = prop.get("height", Integer.class);
@@ -70,6 +76,7 @@ public class ManagedMap {
         initializeItems();
         initializeNPCs();
         initializeAnimations();
+        initializeLights();
     }
 
     public String getName() {
@@ -122,6 +129,10 @@ public class ManagedMap {
 
     public MapLayer getNPCLayer() {
         return map.getLayers().get("npcs");
+    }
+
+    public MapLayer getLightingLayer() {
+        return map.getLayers().get("lighting");
     }
 
     public MapLayers getAllLayers() {
@@ -182,6 +193,7 @@ public class ManagedMap {
             return event;
         }
 
+        System.err.println("No entry found.");
         return null;
     }
 
@@ -195,8 +207,10 @@ public class ManagedMap {
         final TextureRegion textureRegion = playerGraphics.getTextureRegion(deltaTime);
         final RectangleMapObject rectStartPoint;
         if (entryPoint == null) {
+            System.err.println("Entry point was null.");
             rectStartPoint = new RectangleMapObject(0, 0, playerGraphics.getWidth(), playerGraphics.getHeight());
         } else {
+            System.err.println("Entry point was not null.");
             rectStartPoint = RectangleMapObject.class.cast(entryPoint);
         }
 
@@ -330,6 +344,13 @@ public class ManagedMap {
             }
 
             final Rectangle rectangle = item.getRectangle();
+            if (Intersector.overlaps(rectangle, characterRectangle)) {
+                return true;
+            }
+        }
+
+        for (final NPC npc : npcs.values()) {
+            final Rectangle rectangle = npc.getRectangle();
             if (Intersector.overlaps(rectangle, characterRectangle)) {
                 return true;
             }
@@ -474,7 +495,62 @@ public class ManagedMap {
         return res;
     }
 
+    public NPC getNearbyNPC(final Player player) {
+        final PositionInformation playerPos = player.getPositionInformation();
+        final Direction facing = playerPos.getDirection();
+        final Rectangle searchRect = new Rectangle();
+        // start at the player
+        searchRect.x = playerPos.getX();
+        searchRect.y = playerPos.getY();
+
+        final PlayerGraphics playerGraphics = player.getPlayerGraphics();
+        searchRect.width = playerGraphics.getWidth();
+        searchRect.height = playerGraphics.getHeight();
+
+        switch (facing) {
+            case UP:
+                searchRect.y += tilePixelHeight;
+                break;
+            case RIGHT:
+                searchRect.x += tilePixelWidth;
+                break;
+            case DOWN:
+                searchRect.y -= tilePixelHeight;
+                break;
+            case LEFT:
+                searchRect.x -= tilePixelWidth;
+                break;
+        }
+
+        final MapLayer npcLayer = getNPCLayer();
+        final MapObjects npcObjects = npcLayer.getObjects();
+        NPC res = null;
+
+        for (final RectangleMapObject obj : npcObjects.getByType(RectangleMapObject.class)) {
+            final MapProperties props = obj.getProperties();
+            final String type = props.get("type", String.class);
+            if (!(StringUtils.equals(type, "npc"))) {
+                continue;
+            }
+
+            final String id = props.get("id", String.class);
+            final NPC npc = npcs.get(id);
+
+            if (Intersector.overlaps(searchRect, npc.getRectangle())) {
+                res = npc;
+                break;
+            }
+        }
+
+        return res;
+    }
+
+    public List<LightTile> getLights() {
+        return lights;
+    }
+
     private void initializeItems() {
+        System.err.println("Map " + name + ": Initilizing items.");
         final MapLayer objectsLayer = getObjectsLayer();
         final MapObjects objects = objectsLayer.getObjects();
 
@@ -511,6 +587,7 @@ public class ManagedMap {
     }
 
     private void initializeNPCs() {
+        System.err.println("Map " + name + ": Initilizing NPCs.");
         final MapLayer npcLayer = getNPCLayer();
         if (npcLayer == null) {
             return;
@@ -542,6 +619,7 @@ public class ManagedMap {
 
     private void initializeAnimations() {
         // get all tile sets in the map.
+        System.err.println("Map " + name + ": Initilizing Animations.");
         final TiledMapTileSets allSets = map.getTileSets();
         final Map<String, Array<StaticTiledMapTile>> randomTemp = new HashMap<String, Array<StaticTiledMapTile>>();
         for (final TiledMapTileSet tileSet : allSets) {
@@ -621,7 +699,7 @@ public class ManagedMap {
                     if (animation == null) {
                         continue;
                     }
-                    
+
                     if (!animation.equals("water")) {
                         System.err.println("Animation: " + animation);
                     }
@@ -643,10 +721,82 @@ public class ManagedMap {
         }
     }
 
+    private void initializeLights() {
+        System.err.println("Map " + name + ": Initilizing Lighting.");
+        final MapLayer lightingLayer = getLightingLayer();
+        if (lightingLayer == null) {
+            return;
+        }
+
+        final MapObjects lightingObjs = lightingLayer.getObjects();
+        for (final RectangleMapObject rectObj : lightingObjs.getByType(RectangleMapObject.class)) {
+            final Rectangle rect = rectObj.getRectangle();
+            final MapProperties props = rectObj.getProperties();
+            final String animationString = props.get("animation", String.class);
+            if (StringUtils.isBlank(animationString)) {
+                System.err.println("Animation string was blank.");
+                continue;
+            }
+
+            final String tileName = rectObj.getName();
+            if (StringUtils.isBlank(tileName)) {
+                System.err.println("Tile name was blank.");
+                continue;
+            }
+
+            final String colorStr = props.get("color", String.class);
+            final Color lightColor;
+            if (StringUtils.isBlank(colorStr)) {
+                lightColor = Color.WHITE;
+            } else {
+                lightColor = Color.valueOf(colorStr);
+            }
+
+            if (StringUtils.equalsIgnoreCase(animationString, "pulse")) {
+
+                final String pulseCycleStr = props.get("pulseCycleTime", String.class);
+                if (StringUtils.isBlank(pulseCycleStr)) {
+                    System.err.println("Pulse Cycle Time was blank.");
+                    continue;
+                }
+
+                final float pulseCycleTime = new Float(pulseCycleStr);
+
+                final String maxDistanceStr = props.get("maxDistance", String.class);
+                if (StringUtils.isBlank(maxDistanceStr)) {
+                    continue;
+                }
+
+                final float maxDistance = new Float(maxDistanceStr);
+                final PulsingLightTile light = new PulsingLightTile(tileName, rect, pulseCycleTime, maxDistance, lightColor);
+                lights.add(light);
+            } else if (StringUtils.equalsIgnoreCase(animationString, "flicker")) {
+
+                final String maxDistanceStr = props.get("maxDistance", String.class);
+                if (StringUtils.isBlank(maxDistanceStr)) {
+                    continue;
+                }
+
+                final float maxDistance = new Float(maxDistanceStr);
+                
+                final String maxFlickerTimeStr = props.get("maxFlickerTime", String.class);
+                if (StringUtils.isBlank(maxFlickerTimeStr)) {
+                    System.err.println("Max Flicker Time was blank.");
+                    continue;
+                }
+
+                final float maxFlickerTime = new Float(maxFlickerTimeStr);
+                final FlickerLightTile light = new FlickerLightTile(tileName, rect, maxFlickerTime, maxDistance, lightColor);
+                lights.add(light);
+            }
+        }
+    }
+
     private final Map<String, Item> items = new HashMap<String, Item>();
     private final Map<String, NPC> npcs = new HashMap<String, NPC>();
     private final Map<String, Array<StaticTiledMapTile>> animatedTiles = new HashMap<String, Array<StaticTiledMapTile>>();
     private final Map<String, Array<Array<StaticTiledMapTile>>> randomizedAnimatedTiles = new HashMap<String, Array<Array<StaticTiledMapTile>>>();
+    private final List<LightTile> lights = new ArrayList<LightTile>();
     private final TiledMap map;
     private final String name;
 

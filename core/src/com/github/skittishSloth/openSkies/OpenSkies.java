@@ -10,12 +10,15 @@ import com.github.skittishSloth.openSkies.engine.maps.local.LocalScreen;
 import com.github.skittishSloth.openSkies.engine.menu.MainMenuScreen;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
 import com.github.skittishSloth.openSkies.engine.player.details.DetailsLoader;
+import com.github.skittishSloth.openSkies.engine.ui.dialog.DialogTestScreen;
 import com.github.skittishSloth.openSkies.engine.ui.maps.MapScreenManager;
 
 public final class OpenSkies extends Game {
     
     private MainMenuScreen mainMenu;
     private LocalScreen localScreen;
+    
+    private DialogTestScreen dlgTest;
     
     private MapScreenManager mapScreenManager;
     
@@ -33,11 +36,13 @@ public final class OpenSkies extends Game {
         currentArea = AreaDetailsLoader.fromJson(areaDetailsFile);
         mapScreenManager = new MapScreenManager(this);
         
+//        dlgTest = new DialogTestScreen(this);
+//        setScreen(dlgTest);
+        
         localScreen = new LocalScreen(this, mapScreenManager.getMapAssets());        
         mapScreenManager.setAfterLoadingScreen(localScreen);
         mapScreenManager.start();
 
-//        setScreen(localScreen);
         
 //        mainMenu = new MainMenuScreen(this);
 //        setScreen(mainMenu);
@@ -57,6 +62,9 @@ public final class OpenSkies extends Game {
         GdxUtils.safeScreenDispose(mainMenu);
         GdxUtils.safeScreenDispose(localScreen);
         GdxUtils.safeDispose(mapScreenManager);
+        
+        GdxUtils.safeScreenDispose(dlgTest);
+        
         super.dispose();
     }
     

@@ -6,9 +6,6 @@
 package com.github.skittishSloth.openSkies.engine.maps.local;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,19 +18,16 @@ public class FadeInOutEffect {
 
     public FadeInOutEffect(final Stage stage) {
         this.stage = stage;
-        final Pixmap pm = new Pixmap(800, 800, Pixmap.Format.RGBA8888);
-        pm.setColor(Color.BLACK);
-        pm.fillRectangle(0, 0, pm.getWidth(), pm.getHeight());
-        final Texture t = new Texture(pm);
-        pm.dispose();
-        img = new Image(t);
-        t.dispose();
-
-        img.setColor(0, 0, 0, 0);
+        img = new Image();
+        img.setColor(Color.WHITE);
         img.setSize(stage.getWidth(), stage.getHeight());
-        stage.addActor(img);
-        img.addAction(Actions.alpha(1f, 0.5f));
-        actor = new Actor();
+    }
+    
+    public FadeInOutEffect(final Stage stage, final Runnable afterFadeOut, final Runnable afterFadeIn) {
+        this(stage);
+        
+        this.afterFadeOut = afterFadeOut;
+        this.afterFadeIn = afterFadeIn;
     }
     
     public void runEffect() {
@@ -41,33 +35,33 @@ public class FadeInOutEffect {
     }
 
     public void runEffect(final Runnable afterFadeOut, final Runnable afterFadeIn) {
-        actor.getActions().clear();
-
-        actor.addAction(
+        img.getActions().clear();
+        img.addAction(
                 Actions.sequence(
-                        Actions.delay(0.5f),
+                        Actions.alpha(0f, 0.5f),
                         Actions.run(new Runnable() {
                             @Override
                             public void run() {
                                 if (afterFadeOut != null) {
                                     afterFadeOut.run();
                                 }
-                                
-                                img.addAction(Actions.alpha(0f, 0.5f));
                             }
                         }),
-                        Actions.delay(0.5f),
+                        Actions.alpha(1f, 0.5f),
                         Actions.run(new Runnable() {
                             @Override
                             public void run() {
-                                stage.getActors().removeValue(actor, true);
-                                stage.getActors().removeValue(img, true);
                                 if (afterFadeIn != null) {
+                                    System.err.println("Running after fade in.");
                                     afterFadeIn.run();
+                                    System.err.println("After fade in executed.");
                                 }
+                                stage.getActors().removeValue(img, true);
+                                
+                                System.err.println("All fade effects finished.");
                             }
                         })));
-        stage.addActor(actor);
+        stage.addActor(img);
     }
 
     public void setAfterFadeOut(final Runnable afterFadeOut) {
@@ -80,6 +74,5 @@ public class FadeInOutEffect {
 
     private Runnable afterFadeOut, afterFadeIn;
     private final Stage stage;
-    private final Actor actor;
     private final Image img;
 }

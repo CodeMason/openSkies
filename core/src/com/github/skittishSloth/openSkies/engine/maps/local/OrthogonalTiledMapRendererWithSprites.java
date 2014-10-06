@@ -41,6 +41,8 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
     }
     
     public void setMap(final ManagedMap currentMap) {
+        System.err.println("Setting map: " + currentMap.getName());
+        System.err.println("Map null? " + (currentMap.getMap() == null));
         setMap(currentMap.getMap());
     }
 }

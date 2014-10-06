@@ -5,15 +5,26 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.local;
 
+import com.github.skittishSloth.openSkies.engine.lighting.LightTile;
+import box2dLight.Light;
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.skittishSloth.openSkies.OpenSkies;
+import com.github.skittishSloth.openSkies.engine.lighting.LightingAnimation;
+import com.github.skittishSloth.openSkies.engine.lighting.LightingAnimationFactory;
 import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetails;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
 import com.github.skittishSloth.openSkies.engine.player.Player;
@@ -21,7 +32,13 @@ import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
 import com.github.skittishSloth.openSkies.engine.ui.AbstractScreen;
+import com.github.skittishSloth.openSkies.engine.ui.dialog.BaseDialog;
+import com.github.skittishSloth.openSkies.engine.ui.dialog.DialogOption;
 import com.github.skittishSloth.openSkies.engine.ui.maps.MapAssets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -35,7 +52,6 @@ public class LocalScreen extends AbstractScreen {
         this.mapManager = new TiledMapManager(mapAssets);
         currentArea = game.getCurrentArea();
 
-//        currentMap = mapManager.getMap("arthurs_tent");
         camera = OrthographicCamera.class.cast(getStage().getCamera());
 
         width = Gdx.graphics.getWidth();
@@ -51,7 +67,23 @@ public class LocalScreen extends AbstractScreen {
         playerGraphics = new PlayerGraphics(playerGraphicsAssets);
         player.setPlayerGraphics(playerGraphics);
 
-        camera.update(true);
+        uiStage = new Stage();
+        uiCamera = OrthographicCamera.class.cast(uiStage.getCamera());
+        uiCamera.setToOrtho(false, width, height);
+        uiCamera.update();
+        dialog = new BaseDialog("Dialog", getSkin());
+        dialog.setVisible(false);
+
+        world = new World(new Vector2(), false);
+        RayHandler.setGammaCorrection(true);
+        RayHandler.useDiffuseLight(true);
+        rayHandler = new RayHandler(world);
+        rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 1.0f);
+        rayHandler.setCulling(true);
+        rayHandler.setBlur(true);
+        rayHandler.setBlurNum(3);
+
+        fade = new FadeInOutEffect(getStage());
     }
 
     public void setCurrentArea(final AreaDetails areaDetails) {
@@ -63,19 +95,14 @@ public class LocalScreen extends AbstractScreen {
         super.show();
 
         if (currentMap == null) {
-            for (final MapDetails md : currentArea.getMaps()) {
-                mapManager.addMap(md.getName(), "gfx/maps/" + md.getRelativePath());
-            }
-            currentMap = mapManager.getMap(currentArea.getStartingMap());
-            currentMap.initializePlayer(null, null, 0, player);
-            mapRenderer = new OrthogonalTiledMapRendererWithSprites(currentMap, getStage().getBatch());
+            initializeMap();
         }
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        // clear the screen with the given RGB color (black)
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (!inTransition) {
@@ -95,12 +122,29 @@ public class LocalScreen extends AbstractScreen {
 
         getStage().act(delta);
         getStage().draw();
+
+        handleLightPulse(delta);
+        rayHandler.setCombinedMatrix(camera.combined);
+        rayHandler.updateAndRender();
+
+        if (dialog.isVisible()) {
+            uiStage.act(delta);
+            uiStage.draw();
+        }
     }
 
     @Override
     public void dispose() {
         super.dispose();
         mapManager.dispose();
+        world.dispose();
+        rayHandler.dispose();
+    }
+
+    private void handleLightPulse(final float deltaTime) {
+        for (final LightingAnimation anim : lightingAnimations.values()) {
+            anim.update(deltaTime);
+        }
     }
 
     private void updateMap(final float deltaTime) {
@@ -120,15 +164,13 @@ public class LocalScreen extends AbstractScreen {
         if (nextMap != null) {
             inTransition = true;
 
-            final FadeInOutEffect fade = new FadeInOutEffect(getStage());
             final Runnable afterFadeOut = new Runnable() {
                 @Override
                 public void run() {
                     final String prevMap = currentMap.getName();
                     currentMap.removePlayer();
-                    currentMap = mapManager.getMap(nextMap.getMapName());
-                    currentMap.initializePlayer(prevMap, nextMap.getIndex(), deltaTime, player);
-                    mapRenderer.setMap(currentMap);
+                    initializeMap(nextMap.getMapName(), prevMap, nextMap.getIndex(), deltaTime);
+                    System.err.println("Current map name: " + currentMap.getName());
                 }
             };
 
@@ -136,6 +178,7 @@ public class LocalScreen extends AbstractScreen {
                 @Override
                 public void run() {
                     inTransition = false;
+                    System.err.println("Transition finished.");
                 }
             };
 
@@ -144,19 +187,23 @@ public class LocalScreen extends AbstractScreen {
     }
 
     private void updateCamera() {
+        updateCamera(camera);
+    }
+
+    private void updateCamera(final OrthographicCamera theCamera) {
         // calc total map size
         final int worldSizeWidth = currentMap.getWorldWidth();
         final int worldSizeHeight = currentMap.getWorldHeight();
-        final float viewportWidth = camera.viewportWidth;
-        final float viewportHeight = camera.viewportHeight;
+        final float viewportWidth = theCamera.viewportWidth;
+        final float viewportHeight = theCamera.viewportHeight;
 
         if ((worldSizeWidth < viewportWidth) && (worldSizeHeight < viewportHeight)) {
-            camera.position.set(worldSizeWidth / 2, worldSizeHeight / 2, 0);
+            theCamera.position.set(worldSizeWidth / 2, worldSizeHeight / 2, 0);
         } else {
             // calc min/max camera points inside the map
-            final float minCameraX = camera.zoom * (viewportWidth / 2);
+            final float minCameraX = theCamera.zoom * (viewportWidth / 2);
             final float maxCameraX = worldSizeWidth - minCameraX;
-            final float minCameraY = camera.zoom * (viewportHeight / 2);
+            final float minCameraY = theCamera.zoom * (viewportHeight / 2);
             final float maxCameraY = worldSizeHeight - minCameraY;
 
             final PositionInformation playerPos = player.getPositionInformation();
@@ -164,14 +211,14 @@ public class LocalScreen extends AbstractScreen {
             float charX = playerPos.getX();
             float charY = playerPos.getY();
 
-            camera.position.set(
+            theCamera.position.set(
                     Math.min(maxCameraX, Math.max(charX, minCameraX)),
                     Math.min(maxCameraY, Math.max(charY, minCameraY)),
                     0
             );
         }
 
-        camera.update();
+        theCamera.update();
     }
 
     private void handleCollisions() {
@@ -224,20 +271,25 @@ public class LocalScreen extends AbstractScreen {
         // get any items within x tiles from their current position
         // in the direction they're facing.
         final Item item = currentMap.getNearbyItems(player);
-        if (item == null) {
-            return;
+        if (item != null) {
+            if (item.isActionPerformed()) {
+                return;
+            }
+
+            if (!item.isAlive()) {
+                return;
+            }
+
+            displayItemContents(item);
+            item.setActionPerformed(true);
         }
 
-        if (item.isActionPerformed()) {
-            return;
+        final NPC npc = currentMap.getNearbyNPC(player);
+        if (npc != null) {
+            if (npc.hasDialog()) {
+                displayNPCDialog(npc.getDialog());
+            }
         }
-
-        if (!item.isAlive()) {
-            return;
-        }
-
-        displayItemContents(item);
-        item.setActionPerformed(true);
     }
 
     private void displayItemContents(final Item item) {
@@ -252,6 +304,79 @@ public class LocalScreen extends AbstractScreen {
         System.err.println("You just got " + contains);
     }
 
+    private void displayNPCDialog(final String dialogText) {
+        if (dialog.isVisible()) {
+            return;
+        }
+
+        dialog.setText(dialogText);
+        final DialogOption option = new DialogOption("Okay", getSkin());
+        option.addListener(new ClickListener() {
+            ;
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.err.println("Clicked!");
+                dialog.setVisible(false);
+                uiStage.getActors().removeValue(dialog, false);
+                Gdx.input.setInputProcessor(getStage());
+            }
+        });
+
+        dialog.setOptions(option);
+        dialog.setVisible(true);
+        uiStage.addActor(dialog);
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    private void initializeMap() {
+        initializeMap(null, null, null, 0);
+    }
+
+    private void initializeMap(final String nextMap, final String prevMap, final Integer mapIndex, final float deltaTime) {
+        for (final MapDetails md : currentArea.getMaps()) {
+            mapManager.addMap(md.getName(), "gfx/maps/" + md.getRelativePath());
+        }
+
+        final String mapName;
+        if (StringUtils.isBlank(nextMap)) {
+            mapName = currentArea.getStartingMap();
+        } else {
+            mapName = nextMap;
+        }
+
+        currentMap = mapManager.getMap(mapName);
+        currentMap.initializePlayer(prevMap, mapIndex, deltaTime, player);
+
+        if (mapRenderer == null) {
+            mapRenderer = new OrthogonalTiledMapRendererWithSprites(currentMap, getStage().getBatch());
+        } else {
+            mapRenderer.setMap(currentMap);
+        }
+
+        rayHandler.removeAll();
+        currentLights.clear();
+        lightingAnimations.clear();
+        final List<LightTile> lights = currentMap.getLights();
+        for (final LightTile light : lights) {
+            final Rectangle rect = light.getRectangle();
+            final Vector2 origin = new Vector2();
+            rect.getCenter(origin);
+            final Light pointLight = new PointLight(rayHandler, 128);
+            pointLight.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+            pointLight.setPosition(origin);
+            pointLight.setDistance(26f);
+            pointLight.setSoft(false);
+            pointLight.setStaticLight(true);
+            currentLights.put(origin, pointLight);
+            final LightingAnimation anim = LightingAnimationFactory.createAnimation(light, pointLight);
+            if (anim != null) {
+                lightingAnimations.put(light, anim);
+            }
+        }
+    }
+
+    private final Stage uiStage;
     private OrthogonalTiledMapRendererWithSprites mapRenderer;
     private final TiledMapManager mapManager;
 
@@ -263,10 +388,20 @@ public class LocalScreen extends AbstractScreen {
 
     private final Player player;
 
-    private final OrthographicCamera camera;
+    private final OrthographicCamera camera, uiCamera;
 
     private final AssetManager playerGraphicsAssets;
     private final PlayerGraphics playerGraphics;
 
+    private final BaseDialog dialog;
+
     private final float width, height;
+
+    private final World world;
+    private final RayHandler rayHandler;
+
+    private final Map<Vector2, Light> currentLights = new HashMap<Vector2, Light>();
+    private final Map<LightTile, LightingAnimation> lightingAnimations = new HashMap<LightTile, LightingAnimation>();
+
+    private final FadeInOutEffect fade;
 }
