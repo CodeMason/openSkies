@@ -79,7 +79,7 @@
    <properties>
     <property name="animation" value="flicker"/>
     <property name="color" value="F02222"/>
-    <property name="maxDistance" value="30"/>
+    <property name="maxDistance" value="64"/>
     <property name="maxFlickerTime" value="0.25"/>
    </properties>
   </object>

@@ -373,6 +373,8 @@ public class LocalScreen extends AbstractScreen {
             if (anim != null) {
                 lightingAnimations.put(light, anim);
             }
+            
+            lightingTilesByName.put(light.getName(), light);
         }
     }
 
@@ -402,6 +404,7 @@ public class LocalScreen extends AbstractScreen {
 
     private final Map<Vector2, Light> currentLights = new HashMap<Vector2, Light>();
     private final Map<LightTile, LightingAnimation> lightingAnimations = new HashMap<LightTile, LightingAnimation>();
+    private final Map<String, LightTile> lightingTilesByName = new HashMap<String, LightTile>();
 
     private final FadeInOutEffect fade;
 }

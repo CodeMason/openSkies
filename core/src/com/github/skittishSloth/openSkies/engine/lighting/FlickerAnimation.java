@@ -28,6 +28,7 @@ public class FlickerAnimation extends LightingAnimation<FlickerLightTile, Light>
         if (currentFlickerTime > currentDuration) {
             if (!flickerUp) {
                 currentDuration = MathUtils.random(tile.getMaxFlickerTime());
+                currentDistance = MathUtils.random(tile.getMaxFlickerDistance());
             }
             flickerUp = !(flickerUp);
             currentFlickerTime = 0f;
@@ -41,9 +42,9 @@ public class FlickerAnimation extends LightingAnimation<FlickerLightTile, Light>
         final float endDistance;
         if (flickerUp) {
             startDistance = 0f;
-            endDistance = tile.getMaxFlickerDistance();
+            endDistance = currentDistance;
         } else {
-            startDistance = tile.getMaxFlickerDistance();
+            startDistance = currentDistance;
             endDistance = 0f;
         }
         
@@ -54,4 +55,5 @@ public class FlickerAnimation extends LightingAnimation<FlickerLightTile, Light>
     private boolean flickerUp = true;
     private float currentDuration = 0f;
     private float currentFlickerTime = 0f;
+    private float currentDistance = 0f;
 }
