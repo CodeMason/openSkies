@@ -48,7 +48,7 @@ public class LoadingScreen extends AbstractScreen {
         super.render(delta);
         if (isFinished()) {
             manager.loadingScreenFinished();
-            Gdx.app.log(getName(), "Loading Screen is finished!");
+            log.debug("Loading Screen is finished!");
             return;
         }
         

@@ -39,17 +39,19 @@ import com.github.skittishSloth.openSkies.engine.lighting.FlickerLightTile;
 import com.github.skittishSloth.openSkies.engine.lighting.PulsingLightTile;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetailNPCEntry;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
-import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import com.github.skittishSloth.openSkies.engine.ui.maps.MapAssets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -58,19 +60,17 @@ import org.apache.commons.lang3.StringUtils;
 public class ManagedMap {
 
     private static final TmxMapLoader MAP_LOADER = new TmxMapLoader();
+    private static final Logger log = LoggerFactory.getLogger(ManagedMap.class);
 
-    public ManagedMap(final String name, final String path, final Map<String, NPCDetails> npcDetails, final MapDetails mapDetails) {
-        this(name, MAP_LOADER.load(path), npcDetails, mapDetails);
+    public ManagedMap(final String name, final String path, final MapAssets mapAssets, final MapDetails mapDetails) {
+        this(name, MAP_LOADER.load(path), mapAssets, mapDetails);
     }
 
-    public ManagedMap(final String name, final TiledMap map, final Map<String, NPCDetails> npcDetails, final MapDetails mapDetails) {
+    public ManagedMap(final String name, final TiledMap map, final MapAssets mapAssets, final MapDetails mapDetails) {
         this.name = name;
         this.map = map;
+        this.mapAssets = mapAssets;
         this.mapDetails = mapDetails;
-        this.npcDetails = new HashMap<String, NPCDetails>();
-        if (npcDetails != null) {
-            this.npcDetails.putAll(npcDetails);
-        }
 
         final MapProperties prop = map.getProperties();
         this.mapWidth = prop.get("width", Integer.class); //how many tiles in map
@@ -197,9 +197,9 @@ public class ManagedMap {
             }
 
             if (index == null) {
-                System.err.println("Index was null.");
+                log.debug("Index was null.");
                 if (eventIdx == null) {
-                    System.err.println("But event index was also null, so we're good.");
+                    log.debug("But event index was also null, so we're good.");
                     return event;
                 } else {
                     continue;
@@ -207,19 +207,19 @@ public class ManagedMap {
             }
 
             if (eventIdx == null) {
-                System.err.println("Original index wasn't null, but event index was.");
+                log.debug("Original index wasn't null, but event index was.");
                 continue; // this is probably indicative of a misformed map.
             }
 
             if (!(eventIdx.equals(index))) {
-                System.err.println("Event idx (" + eventIdx + ") wasn't the same as index (" + index + ").");
+                log.debug("Event idx ({}) wasn't the same as index ({}).", eventIdx, index);
                 continue;
             }
 
             return event;
         }
 
-        System.err.println("No entry found.");
+        log.debug("No entry found.");
         return null;
     }
 
@@ -233,10 +233,10 @@ public class ManagedMap {
         final TextureRegion textureRegion = playerGraphics.getTextureRegion(deltaTime);
         final RectangleMapObject rectStartPoint;
         if (entryPoint == null) {
-            System.err.println("Entry point was null.");
+            log.debug("Entry point was null.");
             rectStartPoint = new RectangleMapObject(0, 0, playerGraphics.getWidth(), playerGraphics.getHeight());
         } else {
-            System.err.println("Entry point was not null.");
+            log.debug("Entry point was not null.");
             rectStartPoint = RectangleMapObject.class.cast(entryPoint);
         }
 
@@ -608,13 +608,13 @@ public class ManagedMap {
     private void initializeNPCs() {
         final MapLayer npcLayer = getNPCLayer();
         if (npcLayer == null) {
-            System.err.println("NPC Layer was null.");
+            log.debug("NPC Layer was null.");
             return;
         }
 
         final List<MapDetailNPCEntry> npcEntries = mapDetails.getNpcs();
         if (npcEntries == null) {
-            System.err.println("No NPC entries found on map details object.");
+            log.debug("No NPC entries found on map details object.");
             return;
         }
         
@@ -622,11 +622,12 @@ public class ManagedMap {
 
         for (final MapDetailNPCEntry mapNpc : npcEntries) {
             final String id = mapNpc.getId();
-            final NPCDetails entryDetails = npcDetails.get(id);
-            final String imageFile = entryDetails.getImageFile();
+            final UniversalDirectionalSprite sprite = mapAssets.getNPC(id);
+            if (sprite == null) {
+                log.warn("Sprite was null for id '{}'", id);
+                continue;
+            }
             
-            final Texture initialTexture = new Texture(Gdx.files.internal("gfx/characters/" + imageFile));
-            final UniversalDirectionalSprite sprite = new UniversalDirectionalSprite(initialTexture);
             final int width = sprite.getWidth();
             final int height = sprite.getHeight();
             final Rectangle rect = new Rectangle();
@@ -642,7 +643,7 @@ public class ManagedMap {
             npcs.put(id, npc);
             
             final RectangleMapObject rectObj = new RectangleMapObject(rect.x, rect.y, width, height);
-            System.err.println("Adding sprite " + id + " at " + rect.x + ", " + rect.y);
+            log.debug("Adding sprite {} at {}, {}", id, rect.x, rect.y);
             rectObj.getProperties().put("id", id);
             npcObjects.add(rectObj);
         }
@@ -731,7 +732,7 @@ public class ManagedMap {
                     }
 
                     if (!animation.equals("water")) {
-                        System.err.println("Animation: " + animation);
+                        log.debug("Animation: " + animation);
                     }
 
                     final Array<StaticTiledMapTile> tiles;
@@ -763,13 +764,13 @@ public class ManagedMap {
             final MapProperties props = rectObj.getProperties();
             final String animationString = props.get("animation", String.class);
             if (StringUtils.isBlank(animationString)) {
-                System.err.println("Animation string was blank.");
+                log.debug("Animation string was blank.");
                 continue;
             }
 
             final String tileName = rectObj.getName();
             if (StringUtils.isBlank(tileName)) {
-                System.err.println("Tile name was blank.");
+                log.debug("Tile name was blank.");
                 continue;
             }
 
@@ -785,7 +786,7 @@ public class ManagedMap {
 
                 final String pulseCycleStr = props.get("pulseCycleTime", String.class);
                 if (StringUtils.isBlank(pulseCycleStr)) {
-                    System.err.println("Pulse Cycle Time was blank.");
+                    log.debug("Pulse Cycle Time was blank.");
                     continue;
                 }
 
@@ -810,7 +811,7 @@ public class ManagedMap {
                 
                 final String maxFlickerTimeStr = props.get("maxFlickerTime", String.class);
                 if (StringUtils.isBlank(maxFlickerTimeStr)) {
-                    System.err.println("Max Flicker Time was blank.");
+                    log.debug("Max Flicker Time was blank.");
                     continue;
                 }
 
@@ -829,7 +830,7 @@ public class ManagedMap {
     private final TiledMap map;
     private final String name;
     private final MapDetails mapDetails;
-    private final Map<String, NPCDetails> npcDetails;
+    private final MapAssets mapAssets;
 
     private final int mapWidth;
     private final int mapHeight;

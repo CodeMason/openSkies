@@ -14,7 +14,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetails;
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
 import com.github.skittishSloth.openSkies.engine.ui.AbstractScreen;
+import java.util.Map;
 
 /**
  *
@@ -30,7 +32,8 @@ public class AreaLoadScreen extends AbstractScreen {
 
         this.assets = assets;
         final AreaDetails currentArea = game.getCurrentArea();
-        assets.registerArea(currentArea);
+        final Map<String, NPCDetails> npcDetails = game.getNPCDetails();
+        assets.registerArea(currentArea, npcDetails);
         final Skin skin = super.getSkin();
         font = skin.getFont("default-font");
         emptyTexture = new Texture("gfx/ui/loading/empty.png");
@@ -50,8 +53,7 @@ public class AreaLoadScreen extends AbstractScreen {
     public void render(float delta) {
         super.render(delta);
         if (isFinished()) {
-//            manager.loadingScreenFinished();
-            Gdx.app.log(getName(), "Loading Screen is finished!");
+            log.debug("Loading Screen is finished!");
             return;
         }
         

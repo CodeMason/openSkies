@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Disposable;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -23,6 +25,7 @@ public abstract class BaseGameAssets implements Disposable {
     protected BaseGameAssets() {
         assets = new AssetManager();
         loadedPaths = new HashSet<String>();
+        log = LoggerFactory.getLogger(getClass());
     }
     
     public final boolean isFinishedLoading() {
@@ -64,7 +67,7 @@ public abstract class BaseGameAssets implements Disposable {
             } else if (file.isDirectory() && !(file.name().endsWith("_ignore"))) {
                 loadPngFilesInPath(file.path());
             } else {
-                Gdx.app.log(getClass().getSimpleName(), "Unrecognized file: " + file.name());
+                log.warn("Unrecognized file: {}", file.name());
             }
         }
     }
@@ -78,7 +81,6 @@ public abstract class BaseGameAssets implements Disposable {
             return false;
         }
         
-        final AssetManager assets = getAssets();
         if (!assets.isLoaded(texturePath)) {
             assets.load(texturePath, Texture.class);
             assets.finishLoading();
@@ -92,4 +94,5 @@ public abstract class BaseGameAssets implements Disposable {
     
     private final AssetManager assets;
     private final Set<String> loadedPaths;
+    protected final Logger log;
 }

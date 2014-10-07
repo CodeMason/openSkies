@@ -15,12 +15,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.github.skittishSloth.openSkies.engine.player.info.BackStory;
 import java.util.Collection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author mcory01
  */
 public class CharacterBackStorySelector extends Table {
+    
+    private static final Logger log = LoggerFactory.getLogger(CharacterBackStorySelector.class);
 
     public CharacterBackStorySelector(final Skin skin, final CharacterInformationTable parent) {
         super(skin);
@@ -52,7 +56,7 @@ public class CharacterBackStorySelector extends Table {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     if (backStoryBtn.isChecked()) {
-                        System.err.println("Selected: " + bs.getName());
+                        log.debug("Selected: {}", bs.getName());
                         selectedBackStory = bs;
                     }
                 }

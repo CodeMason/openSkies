@@ -177,7 +177,7 @@ public class LocalScreen extends AbstractScreen {
                     final String prevMap = currentMap.getName();
                     currentMap.removePlayer();
                     initializeMap(nextMap.getMapName(), prevMap, nextMap.getIndex(), deltaTime);
-                    System.err.println("Current map name: " + currentMap.getName());
+                    log.debug("Current map name: {}", currentMap.getName());
                 }
             };
 
@@ -185,7 +185,7 @@ public class LocalScreen extends AbstractScreen {
                 @Override
                 public void run() {
                     inTransition = false;
-                    System.err.println("Transition finished.");
+                    log.debug("Transition finished.");
                 }
             };
 
@@ -293,7 +293,7 @@ public class LocalScreen extends AbstractScreen {
 
         final NPC npc = currentMap.getNearbyNPC(player);
         if (npc != null) {
-            System.err.println("NPC found...");
+            log.debug("NPC found...");
         }
     }
 
@@ -306,7 +306,7 @@ public class LocalScreen extends AbstractScreen {
         lbl.setY(itemRect.y);
         lbl.addAction(Actions.sequence(Actions.fadeIn(0.5f), Actions.delay(1.0f), Actions.fadeOut(0.5f)));
         getStage().addActor(lbl);
-        System.err.println("You just got " + contains);
+        log.debug("You just got ", contains);
     }
 
     private void displayNPCDialog(final String dialogText) {
@@ -320,7 +320,7 @@ public class LocalScreen extends AbstractScreen {
             ;
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.err.println("Clicked!");
+                log.debug("Clicked!");
                 dialog.setVisible(false);
                 uiStage.getActors().removeValue(dialog, false);
                 Gdx.input.setInputProcessor(getStage());
@@ -360,10 +360,10 @@ public class LocalScreen extends AbstractScreen {
 
         final Color ambientLight;
         if (currentMap.isAmbientLightDefined()) {
-            System.err.println("Current map had ambient light.");
+            log.debug("Current map had ambient light.");
             ambientLight = currentMap.getAmbientLight();
         } else {
-            System.err.println("Current map DID NOT HAVE ambient light.");
+            log.debug("Current map DID NOT HAVE ambient light.");
             ambientLight = DEFAULT_AMBIENT_COLOR;
         }
         rayHandler.setAmbientLight(ambientLight);

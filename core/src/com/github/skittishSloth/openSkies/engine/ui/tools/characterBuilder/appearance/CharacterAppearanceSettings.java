@@ -6,7 +6,6 @@
 package com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder.appearance;
 
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppearanceData;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -33,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -41,6 +42,8 @@ import org.apache.commons.lang3.StringUtils;
 public class CharacterAppearanceSettings extends Table implements Disposable {
 
     private static final int PRESET_BTNS_PER_ROW = 3;
+    
+    private static final Logger log = LoggerFactory.getLogger(CharacterAppearanceSettings.class);
 
     public CharacterAppearanceSettings(final Skin skin, final CharacterAppearanceTable parent) {
         super(skin);
@@ -127,11 +130,11 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         final boolean differentSkinColors = differentCollections(availableSkinColors, skinColors);
 
         if (differentSkinColors) {
-            Gdx.app.log(getClass().getSimpleName(), "Different skin colors!");
+            log.debug("Different skin colors!");
             availableSkinColors = skinColors;
             buildSkinColorNode(buildData.getSkinColor());
         } else {
-            Gdx.app.log(getClass().getSimpleName(), "Skin colors were the same :/");
+            log.debug("Skin colors were the same :/");
         }
 
         if (availableEyes == null) {
@@ -234,7 +237,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             nameField.setTextFieldListener(new TextField.TextFieldListener() {
                 @Override
                 public void keyTyped(TextField textField, char c) {
-                    Gdx.app.log(getClass().getSimpleName(), "Textfield changed - " + nameField.getText());
+                    log.debug("Textfield changed - {}", nameField.getText());
                     parent.setCharacterName(nameField.getText());
                     parent.validateSettings();
                 }
@@ -406,7 +409,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
     }
     
     private Tree.Node buildEyesNode(final ColoredDetails activeEyes) {
-        Gdx.app.log(getClass().getSimpleName(), "Building Eyes Node.");
+        log.debug("Building Eyes Node.");
         if (eyesNode == null) {
             eyesNode = buildLabeledNode("Eyes", skin);
         } else {
@@ -415,7 +418,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
 
         clearButtonGroup(eyesGroup);
         if (availableEyes == null) {
-            Gdx.app.log(getClass().getSimpleName(), "--Available eyes were null; returning.");
+            log.debug("--Available eyes were null; returning.");
             return eyesNode;
         }
 
@@ -957,4 +960,5 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
     private Collection<ColoredDetails> availableShirtColors = null;
     private Collection<ColoredDetails> availablePantsColors = null;
     private Collection<ColoredDetails> availableShoeColors = null;
+    
 }

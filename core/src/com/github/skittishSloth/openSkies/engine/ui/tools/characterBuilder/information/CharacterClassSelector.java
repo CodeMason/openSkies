@@ -15,12 +15,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.github.skittishSloth.openSkies.engine.player.info.PlayerClass;
 import java.util.Collection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author mcory01
  */
 public class CharacterClassSelector extends Table {
+    
+    private static final Logger log = LoggerFactory.getLogger(CharacterClassSelector.class);
 
     public CharacterClassSelector(final Skin skin, final CharacterInformationTable parent) {
         super(skin);
@@ -54,7 +58,7 @@ public class CharacterClassSelector extends Table {
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                     if (playerClassBtn.isChecked()) {
                         selectedClass = pc;
-                        System.err.println("Selected: " + pc.getName());
+                        log.debug("Selected: {}", pc.getName());
                     }
                 }
             });

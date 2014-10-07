@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -33,6 +35,8 @@ public abstract class AbstractScreen implements Screen {
         final Viewport viewport = new ExtendViewport(width, height, getStage().getCamera());
         getStage().setViewport(viewport);
         Gdx.input.setInputProcessor(getStage());
+        
+        log = LoggerFactory.getLogger(getClass());
     }
 
     protected final String getName() {
@@ -49,7 +53,7 @@ public abstract class AbstractScreen implements Screen {
     // Screen implementation
     @Override
     public void show() {
-        Gdx.app.log(getName(), "Showing screen: " + getName());
+        log.debug("Showing screen: {}", getName());
 
         // set the stage as the input processor
         Gdx.input.setInputProcessor(stage);
@@ -57,7 +61,7 @@ public abstract class AbstractScreen implements Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        Gdx.app.log(getName(), "Resizing screen: " + getName() + " to: " + width + " x " + height);
+        log.debug("Resizing screen {} to {} x {}.", getName(), width, height);
         getStage().getViewport().update(width, height);
     }
 
@@ -79,22 +83,22 @@ public abstract class AbstractScreen implements Screen {
 
     @Override
     public void hide() {
-        Gdx.app.log(getName(), "Hiding screen: " + getName());
+        log.debug("Hiding screen {}", getName());
     }
 
     @Override
     public void pause() {
-        Gdx.app.log(getName(), "Pausing screen: " + getName());
+        log.debug("Pausing screen {}", getName());
     }
 
     @Override
     public void resume() {
-        Gdx.app.log(getName(), "Resuming screen: " + getName());
+        log.debug("Resuming screen {}", getName());
     }
 
     @Override
     public void dispose() {
-        Gdx.app.log(getName(), "Disposing screen: " + getName());
+        log.debug("Disposing screen {}", getName());
         GdxUtils.safeDispose(stage);
         GdxUtils.safeDispose(font);
         GdxUtils.safeDispose(batch);
@@ -123,4 +127,6 @@ public abstract class AbstractScreen implements Screen {
     private Skin skin;
     private BitmapFont font;
     private SpriteBatch batch;
+    
+    protected final Logger log;
 }

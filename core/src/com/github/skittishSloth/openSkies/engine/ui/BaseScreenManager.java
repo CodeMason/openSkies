@@ -9,6 +9,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -18,6 +20,7 @@ public abstract class BaseScreenManager implements Disposable {
     
     protected BaseScreenManager(final OpenSkies game) {
         this.game = game;
+        log = LoggerFactory.getLogger(getClass());
     }
     
     public void start() {
@@ -49,6 +52,8 @@ public abstract class BaseScreenManager implements Disposable {
     public abstract void loadingScreenFinished();
     
     protected abstract BaseGameAssets getAssets();
+    
+    protected final Logger log;
     
     private final OpenSkies game;
     private BaseGameAssets gameAssets;

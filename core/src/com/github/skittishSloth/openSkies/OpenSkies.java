@@ -18,6 +18,8 @@ import com.github.skittishSloth.openSkies.engine.ui.maps.MapScreenManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class OpenSkies extends Game {
     
@@ -27,6 +29,8 @@ public final class OpenSkies extends Game {
     private DialogTestScreen dlgTest;
     
     private MapScreenManager mapScreenManager;
+    
+    private static final Logger log = LoggerFactory.getLogger(OpenSkies.class);
     
     public OpenSkies() {
         
@@ -40,15 +44,16 @@ public final class OpenSkies extends Game {
         
         final FileHandle areaDetailsFile = Gdx.files.internal("data/areas/island.json");
         currentArea = AreaDetailsLoader.fromJson(areaDetailsFile);
-        mapScreenManager = new MapScreenManager(this);
         
         final FileHandle npcDetailsFile = Gdx.files.internal("data/npcs.json");
         final NPCDetailsCollection npcColl = NPCDetailsLoader.fromJson(npcDetailsFile);
-        System.err.println("Number of npcs: " + npcColl.size());
+        log.debug("Number of npcs: {}", npcColl.size());
         final List<NPCDetails> npcDetailsList = npcColl.getNpcs();
         for (final NPCDetails npc : npcDetailsList) {
             this.npcDetails.put(npc.getId(), npc);
         }
+        
+        mapScreenManager = new MapScreenManager(this);
         
 //        dlgTest = new DialogTestScreen(this);
 //        setScreen(dlgTest);

@@ -15,12 +15,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author mcory01
  */
 public class BaseDialog extends Table {
+    
+    private static final Logger log = LoggerFactory.getLogger(BaseDialog.class);
 
     public BaseDialog(final String title, final Skin skin) {
         super(skin);
@@ -50,9 +54,9 @@ public class BaseDialog extends Table {
     
     @Override
     public void layout() {
-        System.err.println("Height: " + getHeight());
-        System.err.println("Width: " + getWidth());
-        System.err.println("X, Y: " + getX() + ", " + getY());
+        log.debug("Height: {}", getHeight());
+        log.debug("Width: {}", getWidth());
+        log.debug("X, Y: {}, {}", getX(), getY());
         getCell(textScroll).height(getHeight() * 0.6f).width(getWidth()).left();
         getCell(optionsScroll).height(getHeight() * 0.4f).width(getWidth()).left();
         super.layout();

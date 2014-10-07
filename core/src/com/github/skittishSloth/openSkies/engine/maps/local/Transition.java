@@ -5,17 +5,22 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.local;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author mcory01
  */
 public class Transition {
+    
+    private static final Logger log = LoggerFactory.getLogger(Transition.class);
 
     public Transition(final String mapName, final Integer index) {
         this.mapName = mapName;
         this.index = index;
         
-        System.err.println("New transition: n: '" + mapName + "', index: '" + index + "'");
+        log.debug("New transition: n: '{}', index: '{}'", mapName, index);
     }
 
     public String getMapName() {

@@ -26,7 +26,7 @@ public class TiledMapManager implements Disposable {
     
     public void addMap(final String name, final String path, final Map<String, NPCDetails> npcDetails, final MapDetails mapDetails) {
         final TiledMap tiledMap = mapAssets.getMap(path);
-        final ManagedMap map = new ManagedMap(name, tiledMap, npcDetails, mapDetails);
+        final ManagedMap map = new ManagedMap(name, tiledMap, mapAssets, mapDetails);
         maps.put(name, map);
     }
     

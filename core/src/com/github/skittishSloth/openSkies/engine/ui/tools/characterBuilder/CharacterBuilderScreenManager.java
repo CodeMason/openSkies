@@ -7,7 +7,6 @@ package com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
-import com.badlogic.gdx.utils.Json;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
 import com.github.skittishSloth.openSkies.engine.player.info.BackStory;
@@ -83,9 +82,6 @@ public class CharacterBuilderScreenManager extends BaseScreenManager {
         final CharacterData data = new CharacterData(appearanceData, clothing, infoData);
         final FileHandle outputFile = new FileHandle("/Users/mcory01/character.json");
         DetailsLoader.saveJson(data, outputFile);
-        final Json json = new Json();
-        final String output = json.prettyPrint(data);
-        System.err.println(output);
     }
     
     @Override

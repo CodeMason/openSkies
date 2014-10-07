@@ -9,12 +9,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author mcory01
  */
 public class FadeInOutEffect {
+    
+    private static final Logger log = LoggerFactory.getLogger(FadeInOutEffect.class);
 
     public FadeInOutEffect(final Stage stage) {
         this.stage = stage;
@@ -52,13 +56,13 @@ public class FadeInOutEffect {
                             @Override
                             public void run() {
                                 if (afterFadeIn != null) {
-                                    System.err.println("Running after fade in.");
+                                    log.debug("Running after fade in.");
                                     afterFadeIn.run();
-                                    System.err.println("After fade in executed.");
+                                    log.debug("After fade in executed.");
                                 }
                                 stage.getActors().removeValue(img, true);
                                 
-                                System.err.println("All fade effects finished.");
+                                log.debug("All fade effects finished.");
                             }
                         })));
         stage.addActor(img);

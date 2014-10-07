@@ -7,9 +7,11 @@ package com.github.skittishSloth.openSkies.engine.ui.maps;
 
 import com.badlogic.gdx.Gdx;
 import com.github.skittishSloth.openSkies.OpenSkies;
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
 import com.github.skittishSloth.openSkies.engine.ui.AbstractScreen;
 import com.github.skittishSloth.openSkies.engine.ui.BaseGameAssets;
 import com.github.skittishSloth.openSkies.engine.ui.BaseScreenManager;
+import java.util.Map;
 
 /**
  *
@@ -20,7 +22,9 @@ public class MapScreenManager extends BaseScreenManager {
     public MapScreenManager(final OpenSkies game) {
         super(game);
         mapAssets = new MapAssets();
-        mapAssets.registerArea(game.getCurrentArea());
+        
+        npcDetails = game.getNPCDetails();
+        mapAssets.registerArea(game.getCurrentArea(), npcDetails);
     }
 
     public AbstractScreen getAfterLoadingScreen() {
@@ -37,9 +41,9 @@ public class MapScreenManager extends BaseScreenManager {
 
     @Override
     public void loadingScreenFinished() {
-        Gdx.app.log(getClass().getSimpleName(), "Finished loading!");
+        log.debug("Finished loading!");
         if (afterLoadingScreen == null) {
-            Gdx.app.log(getClass().getSimpleName(), "Next screen was null :/");
+            log.warn("Next screen was null :/");
         }
         setGameScreen(afterLoadingScreen);
     }
@@ -51,4 +55,5 @@ public class MapScreenManager extends BaseScreenManager {
     
     private final MapAssets mapAssets;
     private AbstractScreen afterLoadingScreen;
+    private final Map<String, NPCDetails> npcDetails;
 }

@@ -10,6 +10,8 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -17,6 +19,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
  * @author mcory01
  */
 public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
+    
+    private static final Logger log = LoggerFactory.getLogger(OrthogonalTiledMapRendererWithSprites.class);
 
     public OrthogonalTiledMapRendererWithSprites(final TiledMap map) {
         super(map);
@@ -41,8 +45,8 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
     }
     
     public void setMap(final ManagedMap currentMap) {
-        System.err.println("Setting map: " + currentMap.getName());
-        System.err.println("Map null? " + (currentMap.getMap() == null));
+        log.debug("Setting map: {}", currentMap.getName());
+        log.debug("Map null? {}", (currentMap.getMap() == null));
         setMap(currentMap.getMap());
     }
 }

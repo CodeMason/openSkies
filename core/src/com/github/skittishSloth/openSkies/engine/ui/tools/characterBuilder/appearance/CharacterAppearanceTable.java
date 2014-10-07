@@ -20,12 +20,16 @@ import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder.CharacterBuilderAssets;
 import java.util.Collection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author mcory01
  */
 public final class CharacterAppearanceTable extends Table implements Disposable {
+    
+    private static final Logger log = LoggerFactory.getLogger(CharacterAppearanceTable.class);
     
     public CharacterAppearanceTable(final Skin skin, final CharacterAppearanceScreen parentScreen, final CharacterBuilderAssets assets) {
         super(skin);
@@ -203,7 +207,7 @@ public final class CharacterAppearanceTable extends Table implements Disposable 
     
     @Override
     public void dispose() {
-        Gdx.app.log(getClass().getSimpleName(), "Disposing");
+        log.debug("Disposing");
         GdxUtils.safeDispose(view);
         GdxUtils.safeDispose(settings);
     }

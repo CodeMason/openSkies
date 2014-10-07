@@ -16,12 +16,16 @@ import com.github.skittishSloth.openSkies.engine.player.details.CharacterClothin
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author mcory01
  */
 public class PlayerGraphics {
+    
+    private static final Logger log = LoggerFactory.getLogger(PlayerGraphics.class);
     
     public PlayerGraphics(final AssetManager assets) {
         this.assets = assets;
@@ -86,7 +90,7 @@ public class PlayerGraphics {
         }
         
         if (appearance == null) {
-            Gdx.app.log(getClass().getSimpleName(), "Appearance data is null; nothing to merge.");
+            log.warn("Appearance data is null; nothing to merge.");
             return;
         }
         

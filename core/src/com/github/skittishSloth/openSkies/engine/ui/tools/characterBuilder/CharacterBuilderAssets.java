@@ -60,7 +60,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     public UniversalDirectionalSprite getBodySprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            log.warn("Appearance data was null.");
             return null;
         }
 
@@ -69,7 +69,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         final Gender gender = appearance.getGender();
 
         if ((gender == null) || (race == null) || (skinColor == null)) {
-            Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
+            log.warn("Appearance data incomplete.");
             return null;
         }
 
@@ -87,14 +87,14 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     public UniversalDirectionalSprite getEyeDetailsSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            log.warn("Appearance data was null.");
             return null;
         }
         final Gender gender = appearance.getGender();
         final ColoredDetails buildDataEyes = appearance.getEyeDetails();
 
         if ((gender == null) || (buildDataEyes == null)) {
-            Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
+            log.warn("Appearance data incomplete.");
             return null;
         }
         
@@ -115,12 +115,12 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     public UniversalDirectionalSprite getNoseSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            log.warn("Appearance data was null.");
             return null;
         }
 
         if (appearance.getSkinColor() == null) {
-            Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
+            log.warn("Appearance data incomplete.");
             return null;
         }
 
@@ -131,7 +131,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         final BaseDetails buildNoseDetails = appearance.getNose();
 
         if ((gender == null) || (race == null) || (skinColor == null) || (buildNoseDetails == null)) {
-            Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
+            log.warn("Appearance data incomplete.");
             return null;
         }
 
@@ -141,7 +141,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
         final String texturePath = buildNoseDetails.getTexturePath(gender, appearance.getPatternVariables());
         if (!isTexturePathAvailable(texturePath)) {
-            Gdx.app.log(getClass().getSimpleName(), "Didn't have path loaded: " + texturePath);
+            log.warn("Didn't have path loaded: {}", texturePath);
             return null;
         }
         
@@ -153,13 +153,13 @@ public class CharacterBuilderAssets extends BaseGameAssets {
     
     public UniversalDirectionalSprite getEarDetailsSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            log.warn("Appearance data was null.");
             return null;
         }
         
         final BaseDetails race = appearance.getRace();
         if (race == null) {
-            Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
+            log.warn("Appearance data incomplete.");
             return null;
         }
         
@@ -169,7 +169,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         final BaseDetails buildEarDetails = appearance.getEarDetails();
         
         if ((actualSkinColor == null) || (gender == null) || (buildEarDetails == null)) {
-            Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
+            log.warn("Appearance data incomplete.");
             return null;
         }
         
@@ -190,7 +190,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     public UniversalDirectionalSprite getHairSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            log.warn("Appearance data was null.");
             return null;
         }
 
@@ -199,7 +199,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         final BaseDetails color = appearance.getHairColor();
 
         if ((gender == null) || (style == null) || (color == null)) {
-            Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
+            log.warn("Appearance data incomplete.");
             return null;
         }
 
@@ -220,12 +220,12 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     public UniversalDirectionalSprite getShirtSprite(final CharacterAppearanceData appearance, final CharacterClothingData clothing) {
         if (appearance == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            log.warn("Appearance data was null.");
             return null;
         }
         
         if (clothing == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character clothing data was null!");
+            log.warn("Character clothing data was null!");
             return null;
         }
 
@@ -234,6 +234,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         final ColoredDetails color = clothing.getShirtColor();
 
         if ((gender == null) || (shirt == null) || (color == null)) {
+            log.warn("Appearance and/or clothing data incomplete.");
             return null;
         }
 
@@ -260,12 +261,12 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     public UniversalDirectionalSprite getPantsSprite(final CharacterAppearanceData appearance, final CharacterClothingData clothing) {
         if (appearance == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            log.warn("Appearance data was null.");
             return null;
         }
         
         if (clothing == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character clothing data was null!");
+            log.warn("Clothing was null.");
             return null;
         }
 
@@ -273,6 +274,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         final ColoredDetails color = clothing.getPantsColor();
 
         if ((gender == null) || (color == null)) {
+            log.warn("Appearance and/or clothing data incomplete.");
             return null;
         }
         
@@ -299,12 +301,12 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     public UniversalDirectionalSprite getShoeSprite(final CharacterAppearanceData appearance, final CharacterClothingData clothing) {
         if (appearance == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            log.warn("Appearance data was null.");
             return null;
         }
         
         if (clothing == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character clothing data was null!");
+            log.warn("Clothing was null.");
             return null;
         }
 
@@ -312,6 +314,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         final ColoredDetails color = clothing.getShoeColor();
 
         if ((gender == null) || (color == null)) {
+            log.warn("Appearance and/or clothing data incomplete.");
             return null;
         }
         
@@ -338,7 +341,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
     
     public UniversalDirectionalSprite getFacialHairSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
-            Gdx.app.error(getClass().getSimpleName(), "Character build data was null!");
+            log.warn("Appearance data was null.");
             return null;
         }
 
@@ -347,7 +350,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         final BaseDetails color = appearance.getFacialHairColor();
 
         if ((gender == null) || (style == null) || (color == null)) {
-            Gdx.app.log(getClass().getSimpleName(), "Build data incomplete.");
+            log.warn("Appearance data incomplete.");
             return null;
         }
 

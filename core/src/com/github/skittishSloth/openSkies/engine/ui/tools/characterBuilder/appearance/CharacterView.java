@@ -6,7 +6,6 @@
 package com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder.appearance;
 
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppearanceData;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -21,12 +20,16 @@ import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSpr
 import com.github.skittishSloth.openSkies.engine.ui.UDSActor;
 import com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder.CharacterBuilderAssets;
 import java.util.Collection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author mcory01
  */
 public final class CharacterView extends Table implements Disposable {
+    
+    private static final Logger log = LoggerFactory.getLogger(CharacterView.class);
 
     public CharacterView(final Skin skin, final CharacterAppearanceTable parent, final CharacterBuilderAssets assets) {
         super(skin);
@@ -229,7 +232,7 @@ public final class CharacterView extends Table implements Disposable {
 
     @Override
     public void dispose() {
-        Gdx.app.log(getClass().getSimpleName(), "Disposing.");
+        log.debug(getClass().getSimpleName(), "Disposing.");
     }
 
     private void updateCurrentSprite() {
