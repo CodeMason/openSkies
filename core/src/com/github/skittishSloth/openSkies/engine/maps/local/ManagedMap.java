@@ -77,6 +77,14 @@ public class ManagedMap {
         this.mapHeight = prop.get("height", Integer.class);
         this.tilePixelWidth = prop.get("tilewidth", Integer.class); //size of each tile
         this.tilePixelHeight = prop.get("tileheight", Integer.class);
+        
+        final String ambientStr = prop.get("ambientLight", String.class);
+        if (StringUtils.isBlank(ambientStr)) {
+            this.ambientLight = null;
+        } else {
+            this.ambientLight = Color.valueOf(ambientStr);
+        }
+        
         // calc total map size
         this.worldWidth = mapWidth * tilePixelWidth;
         this.worldHeight = mapHeight * tilePixelHeight;
@@ -119,6 +127,14 @@ public class ManagedMap {
 
     public int getWorldHeight() {
         return worldHeight;
+    }
+    
+    public Color getAmbientLight() {
+        return ambientLight;
+    }
+    
+    public boolean isAmbientLightDefined() {
+        return (ambientLight != null);
     }
 
     public MapLayer getObjectsLayer() {
@@ -821,6 +837,7 @@ public class ManagedMap {
     private final int tilePixelHeight;
     private final int worldWidth;
     private final int worldHeight;
+    private final Color ambientLight;
 
     private final Rectangle characterRectangle;
 }

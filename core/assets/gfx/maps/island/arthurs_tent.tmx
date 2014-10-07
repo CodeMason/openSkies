@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="6" height="8" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="7" height="8" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="ambientLight" value="2f2f2f"/>
+ </properties>
  <tileset firstgid="1" source="../../tilesets/terrain-anim-water.tsx"/>
  <tileset firstgid="1025" name="house_inside" tilewidth="32" tileheight="32">
   <image source="../../tilesets/house_inside.png" width="512" height="448"/>
@@ -37,45 +40,53 @@
    </properties>
   </tile>
  </tileset>
- <layer name="ground" width="6" height="8">
+ <layer name="ground" width="7" height="8">
   <data encoding="base64" compression="zlib">
-   eJxjYCANLIPiJVCcCsXLkHAqVG4pFC/Dwl6CxF+GxMamF9kemDxMLQBCDhU6
+   eJydjUEKADAIw/ysP7N95xhEKDtOKEhStOp/TIY0SWfY9cIJrmev6Dm4cXln+YTr6OzfAxuJFTo=
   </data>
  </layer>
- <layer name="decorations-lower" width="6" height="8">
+ <layer name="decorations-lower" width="7" height="8">
   <data encoding="base64" compression="zlib">
-   eJxjYBgYsJqLOuYAADOeALY=
+   eJxjYBhcYDUXdc0DADlmALY=
   </data>
  </layer>
- <layer name="decorations" width="6" height="8">
+ <layer name="decorations" width="7" height="8">
   <data encoding="base64" compression="zlib">
-   eJxjYECAKawIdjo3A0MGEGcC8RageA8XRLwVyG8D4nYgvgIUXwUU/8vCgBUwI+lDB6twiO/iROXD3HEDTRzmDgAQIwx/
+   eJxjYEAFU1hR+encDAwZQJwJxFuAcj1cCLlWoFgbELcD8RWg3Cqg3F8WBpyAGWo2shnoYBUeuV2c2N0GAjfQ5GBuAwDJmwx/
   </data>
  </layer>
- <layer name="decorations-2" width="6" height="8">
+ <layer name="decorations-2" width="7" height="8">
   <data encoding="base64" compression="zlib">
-   eJxjYCAObOYhUiEa6OUiTx+xAACqsgFX
+   eJxjYCANbOYhUQMW0MtFuRnEAgDDzgFX
   </data>
  </layer>
- <objectgroup name="player" width="6" height="8"/>
- <objectgroup name="npcs" width="6" height="8"/>
- <objectgroup name="events" width="6" height="8">
-  <object name="start_point" type="map_entry" x="93" y="128" width="32" height="32"/>
-  <object name="enter_island" type="map_entry" x="95" y="191" width="32" height="32">
+ <objectgroup name="player" width="7" height="8"/>
+ <objectgroup name="npcs" width="7" height="8"/>
+ <objectgroup name="events" width="7" height="8">
+  <object name="start_point" type="map_entry" x="125" y="128" width="32" height="32"/>
+  <object name="enter_island" type="map_entry" x="127" y="191" width="32" height="32">
    <properties>
     <property name="source" value="island"/>
    </properties>
   </object>
-  <object name="go_island" type="transition" x="96" y="224" width="32" height="32">
+  <object name="go_island" type="transition" x="128" y="224" width="32" height="32">
    <properties>
     <property name="dest" value="island"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="objects" width="6" height="8"/>
- <objectgroup name="collisions" width="6" height="8"/>
- <objectgroup name="lighting" width="6" height="8">
-  <object name="candle" x="140" y="33" width="7" height="14">
+ <objectgroup name="objects" width="7" height="8"/>
+ <objectgroup name="collisions" width="7" height="8">
+  <object x="160" y="224" width="64" height="32"/>
+  <object x="192" y="64" width="32" height="64"/>
+  <object x="160" y="32" width="32" height="32"/>
+  <object x="32" y="32" width="128" height="32"/>
+  <object x="32" y="224" width="32" height="32"/>
+  <object x="32" y="128" width="32" height="32"/>
+  <object x="32" y="64" width="96" height="32"/>
+ </objectgroup>
+ <objectgroup name="lighting" width="7" height="8">
+  <object name="candle" x="172" y="33" width="7" height="14">
    <properties>
     <property name="animation" value="flicker"/>
     <property name="color" value="F02222"/>

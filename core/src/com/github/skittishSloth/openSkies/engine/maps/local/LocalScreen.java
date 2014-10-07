@@ -13,6 +13,7 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
@@ -47,6 +48,8 @@ import org.apache.commons.lang3.StringUtils;
  * @author mcory01
  */
 public class LocalScreen extends AbstractScreen {
+    
+    private static final Color DEFAULT_AMBIENT_COLOR = new Color(0.5f, 0.5f, 0.5f, 1.0f);
 
     public LocalScreen(final OpenSkies game, final MapAssets mapAssets) {
         super(game);
@@ -82,7 +85,7 @@ public class LocalScreen extends AbstractScreen {
         RayHandler.setGammaCorrection(true);
         RayHandler.useDiffuseLight(true);
         rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 1.0f);
+        rayHandler.setAmbientLight(DEFAULT_AMBIENT_COLOR);
         rayHandler.setCulling(true);
         rayHandler.setBlur(true);
         rayHandler.setBlurNum(3);
@@ -355,6 +358,15 @@ public class LocalScreen extends AbstractScreen {
             mapRenderer.setMap(currentMap);
         }
 
+        final Color ambientLight;
+        if (currentMap.isAmbientLightDefined()) {
+            System.err.println("Current map had ambient light.");
+            ambientLight = currentMap.getAmbientLight();
+        } else {
+            System.err.println("Current map DID NOT HAVE ambient light.");
+            ambientLight = DEFAULT_AMBIENT_COLOR;
+        }
+        rayHandler.setAmbientLight(ambientLight);
         rayHandler.removeAll();
         currentLights.clear();
         lightingAnimations.clear();

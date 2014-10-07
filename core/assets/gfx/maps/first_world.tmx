@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="10" height="12" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="ambientLight" value="0F0F0F"/>
+ </properties>
  <tileset firstgid="1" name="house_inside" tilewidth="32" tileheight="32">
   <image source="../tilesets/house_inside.png" width="512" height="448"/>
  </tileset>
