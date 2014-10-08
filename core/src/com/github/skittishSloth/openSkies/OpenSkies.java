@@ -34,7 +34,6 @@ public final class OpenSkies extends Game {
 
     @Override
     public void create() {
-
         final FileHandle outputFile = new FileHandle("/Users/mcory01/character.json");
         this.characterData = DetailsLoader.loadCharacterData(outputFile);
 

@@ -33,12 +33,11 @@ public class BaseDialog extends Window {
         setTitleAlignment(Align.top | Align.left);
         
         textLabel = new Label("<Uninitialized>", skin);
-//        textLabel.setFillParent(true);
+        textLabel.getStyle().font.setMarkupEnabled(true);
         textLabel.setWrap(true);
         
         textScroll = new ScrollPane(textLabel, skin);
         
-//        textScroll.setFillParent(true);
         add(textScroll).top().left();
         row();
         

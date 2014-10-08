@@ -321,7 +321,7 @@ public class LocalScreen extends AbstractScreen {
         lbl.setY(itemRect.y);
         lbl.addAction(Actions.sequence(Actions.fadeIn(0.5f), Actions.delay(1.0f), Actions.fadeOut(0.5f)));
         getStage().addActor(lbl);
-        log.debug("You just got P{}", contains);
+        log.debug("You just got {}", contains);
     }
     
     private void displayQuestDialog(final QuestDetails questDetails) {
