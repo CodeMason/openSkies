@@ -9,8 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,15 +22,23 @@ import org.slf4j.LoggerFactory;
  *
  * @author mcory01
  */
-public class BaseDialog extends Table {
+public class BaseDialog extends Window {
     
-    private static final Logger log = LoggerFactory.getLogger(BaseDialog.class);
-
     public BaseDialog(final String title, final Skin skin) {
-        super(skin);
+        super(title, skin);
+        
+        setMovable(false);
+        setResizable(false);
+        
+        setTitleAlignment(Align.top | Align.left);
         
         textLabel = new Label("<Uninitialized>", skin);
+//        textLabel.setFillParent(true);
+        textLabel.setWrap(true);
+        
         textScroll = new ScrollPane(textLabel, skin);
+        
+//        textScroll.setFillParent(true);
         add(textScroll).top().left();
         row();
         
@@ -48,26 +56,21 @@ public class BaseDialog extends Table {
         
         setX(screenWidth * 0.1f);
         setY(screenHeight * 0.1f);
-        
-        debugAll();
     }
     
     @Override
     public void layout() {
-        log.debug("Height: {}", getHeight());
-        log.debug("Width: {}", getWidth());
-        log.debug("X, Y: {}, {}", getX(), getY());
-        getCell(textScroll).height(getHeight() * 0.6f).width(getWidth()).left();
-        getCell(optionsScroll).height(getHeight() * 0.4f).width(getWidth()).left();
+        getCell(textScroll).height(getHeight() * 0.75f).width(getWidth() * 0.99f).left();
+        getCell(optionsScroll).height(getHeight() * 0.2f).width(getWidth() * 0.99f).left();
         super.layout();
     }
     
-    public void setText(final String text) {
+    public final void setText(final String text) {
         textLabel.setText(text);
         textLabel.setAlignment(Align.top | Align.left);
     }
     
-    public void setOptions(final Collection<DialogOption> options) {
+    public final void setOptions(final Collection<DialogOption> options) {
         this.options.clear();
         
         if (options != null) {
@@ -77,7 +80,7 @@ public class BaseDialog extends Table {
         fillOptionsGroup();
     }
     
-    public void setOptions(final DialogOption... options) {
+    public final void setOptions(final DialogOption... options) {
         this.options.clear();
         
         if (options != null) {
@@ -87,6 +90,14 @@ public class BaseDialog extends Table {
         }
         
         fillOptionsGroup();
+    }
+    
+    protected final ScrollPane getTextScrollPane() {
+        return textScroll;
+    }
+    
+    protected final ScrollPane getOptionsScrollPane() {
+        return optionsScroll;
     }
     
     private void fillOptionsGroup() {
@@ -102,4 +113,6 @@ public class BaseDialog extends Table {
     
     private final List<DialogOption> options;
     private final VerticalGroup optionsGroup;
+    
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 }

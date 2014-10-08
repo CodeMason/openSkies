@@ -331,6 +331,7 @@ public class LocalScreen extends AbstractScreen {
 
         final String text = questDetails.getDescription();
         dialog.setText(text);
+        dialog.setTitle(questDetails.getName());
         final DialogOption acceptQuest = new DialogOption("Accept", getSkin());
         acceptQuest.addListener(new ClickListener() {
             @Override
