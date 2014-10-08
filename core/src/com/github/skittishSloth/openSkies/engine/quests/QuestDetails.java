@@ -15,14 +15,15 @@ import org.apache.commons.lang3.StringUtils;
  * @author mcory01
  */
 public class QuestDetails {
-    
+
     public enum Type {
+
         STORY,
         OPTIONAL
     }
-    
+
     public QuestDetails() {
-        
+
     }
 
     public Type getType() {
@@ -40,7 +41,7 @@ public class QuestDetails {
     public void setId(final int id) {
         this.id = id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -69,13 +70,13 @@ public class QuestDetails {
         return prerequisites;
     }
 
-    public void setPrerequisites(Collection<QuestDetails> prerequisites) {
+    public void setPrerequisites(final Collection<QuestDetails> prerequisites) {
         if (this.prerequisites == null) {
             this.prerequisites = new ArrayList<QuestDetails>();
         } else {
             this.prerequisites.clear();
         }
-        
+
         if (prerequisites != null) {
             this.prerequisites.addAll(prerequisites);
         }
@@ -85,21 +86,37 @@ public class QuestDetails {
         return actions;
     }
 
-    public void setActions(Collection<BaseQuestAction> actions) {
+    public void setActions(final Collection<BaseQuestAction> actions) {
         if (this.actions == null) {
             this.actions = new ArrayList<BaseQuestAction>();
         } else {
             this.actions.clear();
         }
-        
+
         if (actions != null) {
             this.actions.addAll(actions);
         }
     }
-    
+
+    public List<Reward> getRewards() {
+        return rewards;
+    }
+
+    public void setRewards(final Collection<Reward> rewards) {
+        if (this.rewards == null) {
+            this.rewards = new ArrayList<Reward>();
+        } else {
+            this.rewards.clear();
+        }
+
+        if (rewards != null) {
+            this.rewards.addAll(rewards);
+        }
+    }
+
     public List<MapSpecificAction> getMapSpecificActions(final String mapName) {
         final List<MapSpecificAction> res = new ArrayList<MapSpecificAction>();
-        
+
         for (final BaseQuestAction bqa : actions) {
             if (bqa instanceof MapSpecificAction) {
                 final MapSpecificAction msa = MapSpecificAction.class.cast(bqa);
@@ -108,7 +125,7 @@ public class QuestDetails {
                 }
             }
         }
-        
+
         return res;
     }
 
@@ -119,4 +136,5 @@ public class QuestDetails {
     private String description;
     private ArrayList<QuestDetails> prerequisites;
     private ArrayList<BaseQuestAction> actions;
+    private ArrayList<Reward> rewards;
 }

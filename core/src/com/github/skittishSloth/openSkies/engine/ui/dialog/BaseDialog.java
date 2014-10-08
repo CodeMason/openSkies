@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -36,8 +37,10 @@ public class BaseDialog extends Window {
         textLabel.getStyle().font.setMarkupEnabled(true);
         textLabel.setWrap(true);
         
-        textScroll = new ScrollPane(textLabel, skin);
-        
+        textTable = new Table(skin);
+        textTable.add(textLabel).top().left();
+        textTable.row();
+        textScroll = new ScrollPane(textTable, skin);
         add(textScroll).top().left();
         row();
         
@@ -60,6 +63,10 @@ public class BaseDialog extends Window {
     @Override
     public void layout() {
         getCell(textScroll).height(getHeight() * 0.75f).width(getWidth() * 0.99f).left();
+        textTable.align(Align.left | Align.top);
+        textTable.getCell(textLabel).height(getHeight() * 0.75f).width(getWidth() * 0.9f);
+        textLabel.setWrap(true);
+        
         getCell(optionsScroll).height(getHeight() * 0.2f).width(getWidth() * 0.99f).left();
         super.layout();
     }
@@ -99,6 +106,10 @@ public class BaseDialog extends Window {
         return optionsScroll;
     }
     
+    protected final Table getTextTable() {
+        return textTable;
+    }
+    
     private void fillOptionsGroup() {
         optionsGroup.clear();
         for (final DialogOption option : this.options) {
@@ -108,6 +119,7 @@ public class BaseDialog extends Window {
     }
     
     private final Label textLabel;
+    private final Table textTable;
     private final ScrollPane textScroll, optionsScroll;
     
     private final List<DialogOption> options;

@@ -9,7 +9,12 @@
 				id: "arthur",
 				map: "island"
 			},
-			description: "I need you to get my things from the boat.  I'll dig out your SCAR chip when you you get them.\n\nMight want to hurry; the sooner you get everything out, the sooner we can send the boat back to get the rest of the team.\n\n[#FF0000]Rewards:[]\n\t* You might move on to more meaningful quests.",
+			description: "I [RED]need[] you to get my things from the boat.  I'll dig out your SCAR chip when you you get them.\n\nMight want to hurry; the sooner you get everything out, the sooner we can send the boat back to get the rest of the team.",
+			rewards: [
+				{
+					description: "You might move on to more meaningful quests."
+				}
+			],
 			actions: [
 				{
 					class: retrievalAction,
