@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
 import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
+import com.github.skittishSloth.openSkies.engine.quests.QuestManager;
 import com.github.skittishSloth.openSkies.engine.ui.maps.MapAssets;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +25,9 @@ public class TiledMapManager implements Disposable {
         this.mapAssets = mapAssets;
     }
     
-    public void addMap(final String name, final String path, final Map<String, NPCDetails> npcDetails, final MapDetails mapDetails) {
+    public void addMap(final String name, final String path, final Map<String, NPCDetails> npcDetails, final MapDetails mapDetails, final QuestManager questManager) {
         final TiledMap tiledMap = mapAssets.getMap(path);
-        final ManagedMap map = new ManagedMap(name, tiledMap, mapAssets, mapDetails);
+        final ManagedMap map = new ManagedMap(name, tiledMap, mapAssets, mapDetails, questManager);
         maps.put(name, map);
     }
     

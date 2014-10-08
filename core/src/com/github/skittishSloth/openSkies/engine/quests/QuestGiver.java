@@ -27,14 +27,23 @@ public class QuestGiver {
         this.type = type;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public String getMap() {
+        return map;
+    }
+
+    public void setMap(final String map) {
+        this.map = map;
     }
     
     private Type type;
-    private String name;
+    private String id;
+    private String map;
 }

@@ -42,9 +42,13 @@ import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
+import com.github.skittishSloth.openSkies.engine.quests.QuestDetails;
+import com.github.skittishSloth.openSkies.engine.quests.QuestGiver;
+import com.github.skittishSloth.openSkies.engine.quests.QuestManager;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.maps.MapAssets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,11 +66,11 @@ public class ManagedMap {
     private static final TmxMapLoader MAP_LOADER = new TmxMapLoader();
     private static final Logger log = LoggerFactory.getLogger(ManagedMap.class);
 
-    public ManagedMap(final String name, final String path, final MapAssets mapAssets, final MapDetails mapDetails) {
-        this(name, MAP_LOADER.load(path), mapAssets, mapDetails);
+    public ManagedMap(final String name, final String path, final MapAssets mapAssets, final MapDetails mapDetails, final QuestManager questManager) {
+        this(name, MAP_LOADER.load(path), mapAssets, mapDetails, questManager);
     }
 
-    public ManagedMap(final String name, final TiledMap map, final MapAssets mapAssets, final MapDetails mapDetails) {
+    public ManagedMap(final String name, final TiledMap map, final MapAssets mapAssets, final MapDetails mapDetails, final QuestManager questManager) {
         this.name = name;
         this.map = map;
         this.mapAssets = mapAssets;
@@ -90,6 +94,23 @@ public class ManagedMap {
         this.worldHeight = mapHeight * tilePixelHeight;
 
         this.characterRectangle = new Rectangle();
+        this.searchRectangle = new Rectangle();
+        
+        final Collection<QuestDetails> quests = questManager.getAvailableQuestsForMap(name);
+        availableQuests.addAll(quests);
+        
+        for (final QuestDetails qd : availableQuests) {
+            final QuestGiver giver = qd.getGiver();
+            final String id = giver.getId();
+            final List<QuestDetails> giverQuests;
+            if (questsByGiverId.containsKey(id)) {
+                giverQuests = questsByGiverId.get(id);
+            } else {
+                giverQuests = new ArrayList<QuestDetails>();
+                questsByGiverId.put(id, giverQuests);
+            }
+            giverQuests.add(qd);
+        }
 
         initializeItems();
         initializeNPCs();
@@ -276,30 +297,28 @@ public class ManagedMap {
         mapObjects.add(tmo);
     }
 
-    public void updateNPCs(final float delta) {
+    public void updateNPCs(final Player player, final float delta) {
         final MapLayer npcLayer = getNPCLayer();
         if (npcLayer == null) {
             return;
         }
-
+        
         final MapObjects npcObjects = npcLayer.getObjects();
-        for (final RectangleMapObject obj : npcObjects.getByType(RectangleMapObject.class)) {
-            final MapProperties props = obj.getProperties();
-            
-            final String id = props.get("id", String.class);
-            if (StringUtils.isBlank(id)) {
-                continue;
-            }
-            
-            final NPC npc = npcs.get(id);
-            if (npc == null) {
-                continue;
-            }
+        
+        while (npcObjects.getCount() > 0) {
+            npcObjects.remove(0);
+        }
+        
+        getNearbyNPC(player);
+        
+        for (final NPC npc : npcs.values()) {
             final TextureRegion region = npc.getSprite().getTextureRegion(delta);
+            
             final TextureMapObject tmo = new TextureMapObject(region);
             final Rectangle rect = npc.getRectangle();
             tmo.setX(rect.getX());
             tmo.setY(rect.getY());
+            
             npcObjects.add(tmo);
         }
     }
@@ -371,10 +390,10 @@ public class ManagedMap {
         }
 
         for (final NPC npc : npcs.values()) {
-            final Rectangle rectangle = npc.getRectangle();
+            final Rectangle rectangle = npc.getCollisionRectangle();
             if (Intersector.overlaps(rectangle, characterRectangle)) {
                 return true;
-            }
+            } 
         }
 
         for (final CircleMapObject circleObj : collisions.getByType(CircleMapObject.class)) {
@@ -465,11 +484,15 @@ public class ManagedMap {
             item.dispose();
         }
     }
+    
+    public Collection<NPC> getNPCs() {
+        return npcs.values();
+    }
 
     public Item getNearbyItems(final Player player) {
         final PositionInformation playerPos = player.getPositionInformation();
         final Direction facing = playerPos.getDirection();
-        final Rectangle searchRect = new Rectangle();
+        final Rectangle searchRect = searchRectangle;
         // start at the player
         searchRect.x = playerPos.getX();
         searchRect.y = playerPos.getY();
@@ -519,14 +542,14 @@ public class ManagedMap {
     public NPC getNearbyNPC(final Player player) {
         final PositionInformation playerPos = player.getPositionInformation();
         final Direction facing = playerPos.getDirection();
-        final Rectangle searchRect = new Rectangle();
+        final Rectangle searchRect = searchRectangle;
         // start at the player
         searchRect.x = playerPos.getX();
         searchRect.y = playerPos.getY();
 
         final PlayerGraphics playerGraphics = player.getPlayerGraphics();
-        searchRect.width = playerGraphics.getWidth();
-        searchRect.height = playerGraphics.getHeight();
+        searchRect.width = playerGraphics.getWidth() / 2;
+        searchRect.height = playerGraphics.getHeight() / 2;
 
         switch (facing) {
             case UP:
@@ -543,23 +566,41 @@ public class ManagedMap {
                 break;
         }
 
-        final MapLayer npcLayer = getNPCLayer();
-        final MapObjects npcObjects = npcLayer.getObjects();
         NPC res = null;
-
-        for (final RectangleMapObject obj : npcObjects.getByType(RectangleMapObject.class)) {
-            final MapProperties props = obj.getProperties();
-            final String id = props.get("id", String.class);
-            if (StringUtils.isBlank(id)) {
-                continue;
-            }
-            
-            final NPC npc = npcs.get(id);
-
+        for (final NPC npc : npcs.values()) {
             if (Intersector.overlaps(searchRect, npc.getRectangle())) {
                 res = npc;
                 break;
             }
+        }
+        
+        if (res != null) {
+            final float playerX = playerPos.getX();
+            final float playerY = playerPos.getY();
+                    
+            final Rectangle npcRect = res.getRectangle();
+            final float npcX = npcRect.x;
+            final float npcY = npcRect.y;
+            
+            final float xDiff = playerX - npcX;
+            final float yDiff = playerY - npcY;
+            
+            final Direction npcDirection;
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (xDiff > 0) {
+                    npcDirection = Direction.RIGHT;
+                } else {
+                    npcDirection = Direction.LEFT;
+                }
+            } else {
+                if (yDiff > 0) {
+                    npcDirection = Direction.UP;
+                } else {
+                    npcDirection = Direction.DOWN;
+                }
+            }
+            
+            res.getSprite().setCurrentDirection(npcDirection);
         }
 
         return res;
@@ -606,20 +647,12 @@ public class ManagedMap {
     }
 
     private void initializeNPCs() {
-        final MapLayer npcLayer = getNPCLayer();
-        if (npcLayer == null) {
-            log.debug("NPC Layer was null.");
-            return;
-        }
-
         final List<MapDetailNPCEntry> npcEntries = mapDetails.getNpcs();
         if (npcEntries == null) {
             log.debug("No NPC entries found on map details object.");
             return;
         }
         
-        final MapObjects npcObjects = npcLayer.getObjects();
-
         for (final MapDetailNPCEntry mapNpc : npcEntries) {
             final String id = mapNpc.getId();
             final UniversalDirectionalSprite sprite = mapAssets.getNPC(id);
@@ -630,23 +663,28 @@ public class ManagedMap {
             
             final int width = sprite.getWidth();
             final int height = sprite.getHeight();
-            final Rectangle rect = new Rectangle();
+            
             final Vector2 location = mapNpc.getLocation();
             
-            final int maxTileNum = this.mapHeight;
-            rect.x = location.x * tilePixelWidth;
-            rect.y = (maxTileNum - location.y) * tilePixelHeight;
-            rect.width = width;
-            rect.height = height;
+            final Rectangle rect = tileCoordsToWorldRect(location, width, height);
             
             final NPC npc = new NPC(id, sprite, rect);
+            final List<QuestDetails> npcQuests = questsByGiverId.get(id);
+            if (npcQuests != null) {
+                npc.setAvailableQuests(npcQuests);
+            }
             npcs.put(id, npc);
-            
-            final RectangleMapObject rectObj = new RectangleMapObject(rect.x, rect.y, width, height);
-            log.debug("Adding sprite {} at {}, {}", id, rect.x, rect.y);
-            rectObj.getProperties().put("id", id);
-            npcObjects.add(rectObj);
         }
+    }
+
+    private Rectangle tileCoordsToWorldRect(final Vector2 location, final int width, final int height) {
+        final Rectangle rect = new Rectangle();
+        final int maxTileNum = this.mapHeight;
+        rect.x = location.x * tilePixelWidth;
+        rect.y = (maxTileNum - location.y) * tilePixelHeight;
+        rect.width = width;
+        rect.height = height;
+        return rect;
     }
 
     private void initializeAnimations() {
@@ -827,6 +865,8 @@ public class ManagedMap {
     private final Map<String, Array<StaticTiledMapTile>> animatedTiles = new HashMap<String, Array<StaticTiledMapTile>>();
     private final Map<String, Array<Array<StaticTiledMapTile>>> randomizedAnimatedTiles = new HashMap<String, Array<Array<StaticTiledMapTile>>>();
     private final List<LightTile> lights = new ArrayList<LightTile>();
+    private final List<QuestDetails> availableQuests = new ArrayList<QuestDetails>();
+    private final Map<String, List<QuestDetails>> questsByGiverId = new HashMap<String, List<QuestDetails>>();
     private final TiledMap map;
     private final String name;
     private final MapDetails mapDetails;
@@ -841,4 +881,5 @@ public class ManagedMap {
     private final Color ambientLight;
 
     private final Rectangle characterRectangle;
+    private final Rectangle searchRectangle;
 }

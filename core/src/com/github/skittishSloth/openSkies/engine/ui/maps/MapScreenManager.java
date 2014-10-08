@@ -5,7 +5,6 @@
  */
 package com.github.skittishSloth.openSkies.engine.ui.maps;
 
-import com.badlogic.gdx.Gdx;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
 import com.github.skittishSloth.openSkies.engine.ui.AbstractScreen;

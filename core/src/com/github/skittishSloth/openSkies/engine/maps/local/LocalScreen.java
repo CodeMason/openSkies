@@ -16,6 +16,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -34,6 +35,10 @@ import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
+import com.github.skittishSloth.openSkies.engine.player.state.PlayerState;
+import com.github.skittishSloth.openSkies.engine.player.state.QuestState;
+import com.github.skittishSloth.openSkies.engine.quests.QuestDetails;
+import com.github.skittishSloth.openSkies.engine.quests.QuestManager;
 import com.github.skittishSloth.openSkies.engine.ui.AbstractScreen;
 import com.github.skittishSloth.openSkies.engine.ui.dialog.BaseDialog;
 import com.github.skittishSloth.openSkies.engine.ui.dialog.DialogOption;
@@ -58,7 +63,8 @@ public class LocalScreen extends AbstractScreen {
         currentArea = game.getCurrentArea();
 
         this.npcDetails = game.getNPCDetails();
-        
+        this.questManager = game.getQuestManager();
+        this.playerState = game.getPlayerState();
         camera = OrthographicCamera.class.cast(getStage().getCamera());
 
         width = Gdx.graphics.getWidth();
@@ -91,6 +97,7 @@ public class LocalScreen extends AbstractScreen {
         rayHandler.setBlurNum(3);
 
         fade = new FadeInOutEffect(getStage());
+        
     }
 
     public void setCurrentArea(final AreaDetails areaDetails) {
@@ -112,7 +119,7 @@ public class LocalScreen extends AbstractScreen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (!inTransition) {
+        if (!(inTransition || dialog.isVisible())) {
             handleMovement(delta);
 
             handleCollisions();
@@ -156,7 +163,7 @@ public class LocalScreen extends AbstractScreen {
 
     private void updateMap(final float deltaTime) {
         currentMap.updatePlayer(player, deltaTime);
-        currentMap.updateNPCs(deltaTime);
+        currentMap.updateNPCs(player, deltaTime);
         currentMap.updateItems();
     }
 
@@ -293,7 +300,15 @@ public class LocalScreen extends AbstractScreen {
 
         final NPC npc = currentMap.getNearbyNPC(player);
         if (npc != null) {
-            log.debug("NPC found...");
+            if (npc.hasAvailableQuests()) {
+                final QuestDetails quest = npc.getActiveQuest();
+                final QuestState questState = playerState.getQuestState();
+                if (questState.hasAlreadyAccepted(quest)) {
+                    log.debug("Already accepted.");
+                } else {
+                    displayQuestDialog(quest);
+                }
+            }
         }
     }
 
@@ -306,28 +321,41 @@ public class LocalScreen extends AbstractScreen {
         lbl.setY(itemRect.y);
         lbl.addAction(Actions.sequence(Actions.fadeIn(0.5f), Actions.delay(1.0f), Actions.fadeOut(0.5f)));
         getStage().addActor(lbl);
-        log.debug("You just got ", contains);
+        log.debug("You just got P{}", contains);
     }
-
-    private void displayNPCDialog(final String dialogText) {
+    
+    private void displayQuestDialog(final QuestDetails questDetails) {
         if (dialog.isVisible()) {
             return;
         }
 
-        dialog.setText(dialogText);
-        final DialogOption option = new DialogOption("Okay", getSkin());
-        option.addListener(new ClickListener() {
-            ;
+        final String text = questDetails.getDescription();
+        dialog.setText(text);
+        final DialogOption acceptQuest = new DialogOption("Accept", getSkin());
+        acceptQuest.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                log.debug("Clicked!");
+                playerState.getQuestState().setActiveQuest(questDetails);
+                dialog.setVisible(false);
+                uiStage.getActors().removeValue(dialog, false);
+                Gdx.input.setInputProcessor(getStage());
+                log.debug("You've accepted the quest '{}'", questDetails.getName());
+            }
+        });
+        
+        final DialogOption rejectQuest = new DialogOption("Reject", getSkin());
+        rejectQuest.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
                 dialog.setVisible(false);
                 uiStage.getActors().removeValue(dialog, false);
                 Gdx.input.setInputProcessor(getStage());
             }
+            
         });
 
-        dialog.setOptions(option);
+        dialog.setOptions(acceptQuest, rejectQuest);
         dialog.setVisible(true);
         uiStage.addActor(dialog);
         Gdx.input.setInputProcessor(uiStage);
@@ -339,7 +367,7 @@ public class LocalScreen extends AbstractScreen {
 
     private void initializeMap(final String nextMap, final String prevMap, final Integer mapIndex, final float deltaTime) {
         for (final MapDetails md : currentArea.getMaps()) {
-            mapManager.addMap(md.getName(), "gfx/maps/" + md.getRelativePath(), npcDetails, md);
+            mapManager.addMap(md.getName(), "gfx/maps/" + md.getRelativePath(), npcDetails, md, questManager);
         }
 
         final String mapName;
@@ -424,4 +452,8 @@ public class LocalScreen extends AbstractScreen {
     private final FadeInOutEffect fade;
     
     private final Map<String, NPCDetails> npcDetails;
+    private final QuestManager questManager;
+    private final PlayerState playerState;
+    
+    private Texture npcCollisionTexture;
 }

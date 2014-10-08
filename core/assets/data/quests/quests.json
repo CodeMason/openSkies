@@ -1,8 +1,26 @@
 {
-	name: "First Quest",
-	giver: {
-		type: NPC,
-		name: "Arthur"
-	},
-	description: "I need you to get my things from the boat.  I'll dig out your SCAR chip when you you get them."
+	quests: [
+		{
+			type: STORY,
+			id: 1,
+			name: "First Quest",
+			giver: {
+				type: NPC,
+				id: "arthur",
+				map: "island"
+			},
+			description: "I need you to get my things from the boat.  I'll dig out your SCAR chip when you you get them.",
+			actions: [
+				{
+					class: retrievalAction,
+					map: "island",
+					location: {
+						x: 50,
+						y: 71
+					},
+					itemName: "Arthur's Stuff."
+				}
+			]
+		}
+	]	
 }

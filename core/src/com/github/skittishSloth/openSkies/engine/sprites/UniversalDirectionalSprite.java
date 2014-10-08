@@ -98,6 +98,7 @@ public class UniversalDirectionalSprite implements Disposable {
 
         this.availableAnimations = availableAnimations;
 
+        Integer tempWidth = null, tempHeight = null;
         for (final AnimationState mState : this.availableAnimations) {
             final Map<Direction, Animation> directionAnimations = new EnumMap<Direction, Animation>(Direction.class);
             for (final Direction dir : Direction.values()) {
@@ -105,6 +106,13 @@ public class UniversalDirectionalSprite implements Disposable {
                     final TextureRegion idle = getIdleRegion(dir, baseTexture);
                     final Animation idleAnimation = new Animation(mState.getFrameDuration(), idle);
                     directionAnimations.put(dir, idleAnimation);
+                    if (tempWidth == null) {
+                        tempWidth = idle.getRegionWidth();
+                    }
+                    
+                    if (tempHeight == null) {
+                        tempHeight = idle.getRegionHeight();
+                    }
                 } else if (mState != AnimationState.HURT) {
                     final TextureRegion[] frames = getFrames(dir, mState, baseTexture);
                     final Animation anim = new Animation(mState.getFrameDuration(), frames);
@@ -116,6 +124,18 @@ public class UniversalDirectionalSprite implements Disposable {
                 }
             }
             this.animations.put(mState, directionAnimations);
+        }
+        
+        if (tempWidth == null) {
+            this.width = 0;
+        } else {
+            this.width = tempWidth;
+        }
+        
+        if (tempHeight == null) {
+            this.height = 0;
+        } else {
+            this.height = tempHeight;
         }
     }
 
@@ -131,9 +151,6 @@ public class UniversalDirectionalSprite implements Disposable {
         }
 
         final TextureRegion res = animation.getKeyFrame(movementTime, animationState.isLoopable());
-
-        this.width = res.getRegionWidth();
-        this.height = res.getRegionHeight();
         return res;
     }
 
@@ -260,7 +277,7 @@ public class UniversalDirectionalSprite implements Disposable {
 
     private boolean moving = false;
     private float movementTime = 0f;
-    private int width, height;
+    private final int width, height;
 
 //    private final float frameRate;
     private final Map<AnimationState, Map<Direction, Animation>> animations = new EnumMap<AnimationState, Map<Direction, Animation>>(AnimationState.class);

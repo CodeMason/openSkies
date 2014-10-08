@@ -12,11 +12,24 @@ import com.badlogic.gdx.utils.Json;
  *
  * @author mcory01
  */
-public class QuestLoader {
+public final class QuestLoader {
     private static final Json json = new Json();
+    
+    static {
+        json.addClassTag("retrievalAction", RetrievalAction.class);
+    }
+    
+    private QuestLoader() {
+        
+    }
     
     public static QuestDetails fromJson(final FileHandle file) {
         final QuestDetails res = json.fromJson(QuestDetails.class, file);
+        return res;
+    }
+    
+    public static QuestDetailsCollection listFromJson(final FileHandle file) {
+        final QuestDetailsCollection res = json.fromJson(QuestDetailsCollection.class, file);
         return res;
     }
 }

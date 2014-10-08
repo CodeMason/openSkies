@@ -6,7 +6,9 @@
 package com.github.skittishSloth.openSkies.engine.quests;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -14,10 +16,31 @@ import java.util.List;
  */
 public class QuestDetails {
     
+    public enum Type {
+        STORY,
+        OPTIONAL
+    }
+    
     public QuestDetails() {
         
     }
 
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(final Type type) {
+        this.type = type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(final int id) {
+        this.id = id;
+    }
+    
     public String getName() {
         return name;
     }
@@ -46,7 +69,7 @@ public class QuestDetails {
         return prerequisites;
     }
 
-    public void setPrerequisites(ArrayList<QuestDetails> prerequisites) {
+    public void setPrerequisites(Collection<QuestDetails> prerequisites) {
         if (this.prerequisites == null) {
             this.prerequisites = new ArrayList<QuestDetails>();
         } else {
@@ -57,9 +80,43 @@ public class QuestDetails {
             this.prerequisites.addAll(prerequisites);
         }
     }
+
+    public List<BaseQuestAction> getActions() {
+        return actions;
+    }
+
+    public void setActions(Collection<BaseQuestAction> actions) {
+        if (this.actions == null) {
+            this.actions = new ArrayList<BaseQuestAction>();
+        } else {
+            this.actions.clear();
+        }
+        
+        if (actions != null) {
+            this.actions.addAll(actions);
+        }
+    }
     
+    public List<MapSpecificAction> getMapSpecificActions(final String mapName) {
+        final List<MapSpecificAction> res = new ArrayList<MapSpecificAction>();
+        
+        for (final BaseQuestAction bqa : actions) {
+            if (bqa instanceof MapSpecificAction) {
+                final MapSpecificAction msa = MapSpecificAction.class.cast(bqa);
+                if (StringUtils.equalsIgnoreCase(msa.getMap(), mapName)) {
+                    res.add(msa);
+                }
+            }
+        }
+        
+        return res;
+    }
+
+    private Type type;
+    private int id;
     private String name;
     private QuestGiver giver;
     private String description;
     private ArrayList<QuestDetails> prerequisites;
+    private ArrayList<BaseQuestAction> actions;
 }

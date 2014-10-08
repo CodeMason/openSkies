@@ -13,6 +13,9 @@
  <tileset firstgid="3101" name="obj_misk_atlas" tilewidth="32" tileheight="32">
   <image source="../../tilesets/obj_misk_atlas.png" width="1024" height="1024"/>
  </tileset>
+ <tileset firstgid="4125" name="hyptosis_tile-art-batch-4" tilewidth="32" tileheight="32">
+  <image source="../../tilesets/hyptosis_tile-art-batch-4.png" width="960" height="960"/>
+ </tileset>
  <layer name="ground" width="75" height="75">
   <data encoding="base64" compression="zlib">
    eJztwzENAAAMA6BOT/37q4b9kNBLqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr4PusTG+g==
@@ -35,7 +38,7 @@
  </layer>
  <layer name="jungle" width="75" height="75">
   <data encoding="base64" compression="zlib">
-   eJztlP1OU0EQxbcFFbyboOLf5VH0SdBH4e0oKojyZYWm1dhQGoS2FlprQc9Nd9Nx2N6SGCzbnF9yspedZbJzcrbGEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghs0Uhb8wK9CI/7Zvcf17Bo9fQS3o1kVXnU+pXJTft29xvCu79rTFXt2Y9MaYIbYj1DfQ2mfbN/h/ag6LzQLKFv99Dn6CSWD9COzPmVSgTfk092IY+KA+K6swBVIW+iFX6tRu5Z5vJzUzIXPj1wH17Dyri+6s7U8moH86AX3u4+77KhMxFaPb07DFUh06ghtuXe6F66teR+/16F6FnZZEZnQX5LWdPz51DTagFtd2+3AvVG5G/x5rwSGdBfsvZ03NdqAf9hPpuX+6F6qlnn0W+YqPsZvfZKrl52ioXcnbpm/bE9/D7Xddb9/8WoVc1N7t+f33lgV+bAX+yfueqrrfufxqhV2U3+7j35/Pj156YecEas2hvnm2L/6+73rp/rLnS78q/PwMfcnZY9zkywpsn+H5qh561kr+zpn3U/WPM1Xfc+Szwrn6Iec/UrH7tQFfQNfRbeJuH5uzQy3G/a50IvbrAnS8Ds/wSuRlXH0APUH8IPbIjbx9Dic3uPYjQq6xczNvJdc+SHXn7zN6ud2xk5cLayfV/6R0roVxk1b2P45C1Sb1nmWXM+zxj5pgzQwghhBBCCCGEEEIIIYQQcpf8AZmXSpQ=
+   eJztlOtOU0EUhadFBD2TKMXf5VHwSdRHMb6cVbkoFytq00ogIlGgpVAuFVgnnUk3u9PTJkQP06wvWZnD7GFn9sqaGkMIIYQQQgghhBBCCCGEEEIIIYQQQgghhEwW5aIxC9BiMe+b3H9ewqNX0HN6NZIXzqfUr3oh79vcb8ru/b1mrsbmbWJMBXon1vfQhyTvm/0/tAcV54FkBX+vQl+gLbGuQesT5lUoE35NPfgIfVIeVNSZKtSAfohV+rURuWfLyWAmZC78WnXf3oO6+N52Z+oZ9W8T4Ncm7v5ZZULmIjR7evYntAf9gvbdvtwL1VO/vrvfr6UIPauJzOgsyG85e3ruEDqCmlDL7cu9UH0/8ve4KzzSWZDfcvb0XAc6g86hC7cv90L11LOvIl+xUXOz+2xtuXlaKhdydumb9sT38Psd11v334nQq103u35/F8oDvx4F/Mn6nWu43rr/7wi9qrnZh70/nx+/nomZZ60xj+zg2Zb4/z3XW/ePNVf6Xfn3Z+BDwfbqPkdGePMU33O251kzuZ017aPuH2Ou/uDOB4F3dSzmPVCz+rUN/YWuoGvhbRGasj0vh/2utSP06gR3Pg3McilyM6zehaZRfwjN2L63j6HEZvfuRuhVVi4e2NF1zxPb97Zkx+sdG1m5sHZ0/S69YyWUi6y693EYsjaq9yQzj3mfZcwcc2YIIYQQQgghhBBCCCEkb96U8r4BIeRfcgPZc0so
   </data>
  </layer>
  <layer name="jungle-2" width="75" height="75">
@@ -2956,15 +2959,6 @@
   <object x="1537" y="2098">
    <polygon points="0,0 31,0 31,13 -1,13 -1,2"/>
   </object>
-  <object x="1569" y="2098">
-   <polygon points="0,0 31,0 31,13 -1,13 -1,2"/>
-  </object>
-  <object x="1601" y="2098">
-   <polygon points="0,0 31,0 31,13 -1,13 -1,2"/>
-  </object>
-  <object x="1633" y="2098">
-   <polygon points="0,0 31,0 31,13 -1,13 -1,2"/>
-  </object>
   <object x="1697" y="2130">
    <polygon points="0,0 31,0 31,13 -1,13 -1,2"/>
   </object>
@@ -3653,7 +3647,6 @@
   <object x="2112" y="2080" width="32" height="32"/>
   <object x="2240" y="2080" width="32" height="32"/>
   <object x="64" y="2112" width="32" height="32"/>
-  <object x="1600" y="2112" width="32" height="32"/>
   <object x="2080" y="2112" width="32" height="32"/>
   <object x="2112" y="2112" width="32" height="32"/>
   <object x="2144" y="2112" width="32" height="32"/>
@@ -3986,8 +3979,6 @@
   <object x="32" y="2176" width="32" height="32"/>
   <object x="96" y="2176" width="32" height="32"/>
   <object x="1440" y="2176" width="32" height="32"/>
-  <object x="1568" y="2176" width="32" height="32"/>
-  <object x="1632" y="2176" width="32" height="32"/>
   <object x="1696" y="2176" width="32" height="32"/>
   <object x="2144" y="2176" width="32" height="32"/>
   <object x="2304" y="2176" width="32" height="32"/>
@@ -3996,7 +3987,6 @@
   <object x="32" y="2208" width="32" height="32"/>
   <object x="64" y="2208" width="32" height="32"/>
   <object x="96" y="2208" width="32" height="32"/>
-  <object x="1632" y="2208" width="32" height="32"/>
   <object x="1664" y="2208" width="32" height="32"/>
   <object x="2048" y="2208" width="32" height="32"/>
   <object x="2368" y="2208" width="32" height="32"/>
@@ -4008,7 +3998,6 @@
   <object x="416" y="2240" width="32" height="32"/>
   <object x="448" y="2240" width="32" height="32"/>
   <object x="1376" y="2240" width="32" height="32"/>
-  <object x="1600" y="2240" width="32" height="32"/>
   <object x="1664" y="2240" width="32" height="32"/>
   <object x="1760" y="2240" width="32" height="32"/>
   <object x="2176" y="2240" width="32" height="32"/>
@@ -4307,28 +4296,20 @@
   <object x="0" y="2112" width="32" height="32"/>
   <object x="96" y="2112" width="32" height="32"/>
   <object x="128" y="2112" width="32" height="32"/>
-  <object x="1568" y="2112" width="32" height="32"/>
-  <object x="1632" y="2112" width="32" height="32"/>
   <object x="2272" y="2112" width="32" height="32"/>
   <object x="2336" y="2112" width="32" height="32"/>
   <object x="64" y="2144" width="32" height="32"/>
   <object x="1504" y="2144" width="32" height="32"/>
-  <object x="1568" y="2144" width="32" height="32"/>
-  <object x="1600" y="2144" width="32" height="32"/>
-  <object x="1632" y="2144" width="32" height="32"/>
   <object x="1664" y="2144" width="32" height="32"/>
   <object x="64" y="2176" width="32" height="32"/>
   <object x="1472" y="2176" width="32" height="32"/>
   <object x="1504" y="2176" width="32" height="32"/>
-  <object x="1600" y="2176" width="32" height="32"/>
   <object x="2272" y="2176" width="32" height="32"/>
   <object x="128" y="2208" width="32" height="32"/>
   <object x="1408" y="2208" width="32" height="32"/>
   <object x="1440" y="2208" width="32" height="32"/>
   <object x="1472" y="2208" width="32" height="32"/>
   <object x="1536" y="2208" width="32" height="32"/>
-  <object x="1568" y="2208" width="32" height="32"/>
-  <object x="1600" y="2208" width="32" height="32"/>
   <object x="1696" y="2208" width="32" height="32"/>
   <object x="1728" y="2208" width="32" height="32"/>
   <object x="1760" y="2208" width="32" height="32"/>
@@ -4339,8 +4320,6 @@
   <object x="480" y="2240" width="32" height="32"/>
   <object x="1408" y="2240" width="32" height="32"/>
   <object x="1472" y="2240" width="32" height="32"/>
-  <object x="1568" y="2240" width="32" height="32"/>
-  <object x="1632" y="2240" width="32" height="32"/>
   <object x="2240" y="2240" width="32" height="32"/>
   <object x="2272" y="2240" width="32" height="32"/>
   <object x="2304" y="2240" width="32" height="32"/>
