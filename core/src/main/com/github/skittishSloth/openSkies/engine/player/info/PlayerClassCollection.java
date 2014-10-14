@@ -7,6 +7,7 @@ package com.github.skittishSloth.openSkies.engine.player.info;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -18,13 +19,13 @@ public class PlayerClassCollection {
         
     }
 
-    public Collection<PlayerClass> getClasses() {
+    public List<PlayerClass> getClasses() {
         return classes;
     }
 
-    public void setClasses(Collection<PlayerClass> classes) {
+    public void setClasses(final Collection<PlayerClass> classes) {
         if (this.classes == null) {
-            this.classes = new ArrayList<PlayerClass>();
+            this.classes = new ArrayList<>();
         } else {
             this.classes.clear();
         }

@@ -21,7 +21,7 @@ public class PlayerClass {
     public PlayerClass(final String name, final String description, final Collection<ClassModifier> modifiers) {
         this.name = name;
         this.description = description;
-        this.modifiers = new ArrayList<ClassModifier>();
+        this.modifiers = new ArrayList<>();
         if (modifiers != null) {
             for (final ClassModifier cm : modifiers) {
                 this.modifiers.add(cm);
@@ -51,7 +51,7 @@ public class PlayerClass {
 
     public void setModifiers(final Collection<ClassModifier> modifiers) {
         if (this.modifiers == null) {
-            this.modifiers = new ArrayList<ClassModifier>();
+            this.modifiers = new ArrayList<>();
         } else {
             this.modifiers.clear();
         }

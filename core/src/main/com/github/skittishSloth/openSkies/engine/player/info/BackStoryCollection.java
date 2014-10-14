@@ -7,19 +7,24 @@ package com.github.skittishSloth.openSkies.engine.player.info;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
  * @author mcory01
  */
 public class BackStoryCollection {
-    public Collection<BackStory> getBackStories() {
+    public BackStoryCollection() {
+        
+    }
+    
+    public List<BackStory> getBackStories() {
         return backStories;
     }
 
-    public void setBackStories(Collection<BackStory> classes) {
+    public void setBackStories(final Collection<BackStory> classes) {
         if (this.backStories == null) {
-            this.backStories = new ArrayList<BackStory>();
+            this.backStories = new ArrayList<>();
         } else {
             this.backStories.clear();
         }

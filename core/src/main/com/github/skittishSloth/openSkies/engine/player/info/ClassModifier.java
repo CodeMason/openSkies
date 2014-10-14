@@ -12,7 +12,6 @@ package com.github.skittishSloth.openSkies.engine.player.info;
 public class ClassModifier {
 
     public static enum Type {
-
         BONUS,
         PENALTY;
     }
