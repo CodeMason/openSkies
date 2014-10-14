@@ -3,6 +3,7 @@ package com.github.skittishSloth.openSkies;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
 import com.github.skittishSloth.openSkies.engine.inventory.Inventory;
 import com.github.skittishSloth.openSkies.engine.inventory.items.ItemDetailsCollection;
@@ -12,7 +13,6 @@ import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetails;
 import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetailsLoader;
 import com.github.skittishSloth.openSkies.engine.maps.local.LocalScreen;
 import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
-import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetailsCollection;
 import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetailsLoader;
 import com.github.skittishSloth.openSkies.engine.menu.MainMenuScreen;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
@@ -51,9 +51,9 @@ public final class OpenSkies extends Game {
         currentArea = AreaDetailsLoader.fromJson(areaDetailsFile);
 
         final FileHandle npcDetailsFile = Gdx.files.internal("data/npcs.json");
-        final NPCDetailsCollection npcColl = NPCDetailsLoader.fromJson(npcDetailsFile);
+        final DataCollection<NPCDetails> npcColl = NPCDetailsLoader.fromJson(npcDetailsFile);
         log.debug("Number of npcs: {}", npcColl.size());
-        final List<NPCDetails> npcDetailsList = npcColl.getNpcs();
+        final List<NPCDetails> npcDetailsList = npcColl.getData();
         for (final NPCDetails npc : npcDetailsList) {
             this.npcDetails.put(npc.getId(), npc);
         }

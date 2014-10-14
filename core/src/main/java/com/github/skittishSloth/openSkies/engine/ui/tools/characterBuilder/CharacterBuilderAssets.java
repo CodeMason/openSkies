@@ -9,6 +9,7 @@ import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppeara
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import com.github.skittishSloth.openSkies.engine.player.details.BaseDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterClothingData;
 import com.github.skittishSloth.openSkies.engine.player.details.ColoredDetails;
@@ -18,10 +19,9 @@ import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.ShirtDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.player.info.BackStory;
-import com.github.skittishSloth.openSkies.engine.player.info.BackStoryCollection;
+import com.github.skittishSloth.openSkies.engine.player.info.BackStoryLoader;
 import com.github.skittishSloth.openSkies.engine.player.info.PlayerClass;
-import com.github.skittishSloth.openSkies.engine.player.info.PlayerClassCollection;
-import com.github.skittishSloth.openSkies.engine.player.info.InformationLoader;
+import com.github.skittishSloth.openSkies.engine.player.info.PlayerClassLoader;
 import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.BaseGameAssets;
 import java.util.ArrayList;
@@ -55,6 +55,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     public CharacterBuilderAssets() {
         super();
+        this.facialHairStyleDetails = new ArrayList<>();
         registerAssets();
     }
 
@@ -244,7 +245,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         
         final Map<String, String> appearanceVars = appearance.getPatternVariables();
         final Map<String, String> clothingVars = clothing.getPatternVariables();
-        final Map<String, String> patternVars = new HashMap<String, String>(appearanceVars.size() + clothingVars.size());
+        final Map<String, String> patternVars = new HashMap<>(appearanceVars.size() + clothingVars.size());
         patternVars.putAll(appearanceVars);
         patternVars.putAll(clothingVars);
         
@@ -284,7 +285,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         
         final Map<String, String> appearanceVars = appearance.getPatternVariables();
         final Map<String, String> clothingVars = clothing.getPatternVariables();
-        final Map<String, String> patternVars = new HashMap<String, String>(appearanceVars.size() + clothingVars.size());
+        final Map<String, String> patternVars = new HashMap<>(appearanceVars.size() + clothingVars.size());
         patternVars.putAll(appearanceVars);
         patternVars.putAll(clothingVars);
         
@@ -324,7 +325,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         
         final Map<String, String> appearanceVars = appearance.getPatternVariables();
         final Map<String, String> clothingVars = clothing.getPatternVariables();
-        final Map<String, String> patternVars = new HashMap<String, String>(appearanceVars.size() + clothingVars.size());
+        final Map<String, String> patternVars = new HashMap<>(appearanceVars.size() + clothingVars.size());
         patternVars.putAll(appearanceVars);
         patternVars.putAll(clothingVars);
         
@@ -547,10 +548,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     private void loadPlayerClasses() {
         final FileHandle fh = Gdx.files.internal("data/char-building/class-descriptions.json");
-        final PlayerClassCollection classCollection = InformationLoader.playerClassesFromJsonFile(fh);
+        final DataCollection<PlayerClass> classCollection = PlayerClassLoader.playerClassesFromJsonFile(fh);
         playerClasses.clear();
         if (classCollection != null) {
-            final Collection<PlayerClass> classCollectionClasses = classCollection.getClasses();
+            final Collection<PlayerClass> classCollectionClasses = classCollection.getData();
             if (classCollectionClasses != null) {
                 playerClasses.addAll(classCollectionClasses);
             }
@@ -559,10 +560,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     private void loadBackStories() {
         final FileHandle fh = Gdx.files.internal("data/char-building/backstories.json");
-        final BackStoryCollection backStoryCollection = InformationLoader.backStoriesFromJsonFile(fh);
+        final DataCollection<BackStory> backStoryCollection = BackStoryLoader.backStoriesFromJsonFile(fh);
         backStories.clear();
         if (backStoryCollection != null) {
-            final Collection<BackStory> backStoryCollectionItems = backStoryCollection.getBackStories();
+            final Collection<BackStory> backStoryCollectionItems = backStoryCollection.getData();
             if (backStoryCollectionItems != null) {
                 backStories.addAll(backStoryCollectionItems);
             }
@@ -587,7 +588,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
     
     private void buildSkinColorAssociation() {
         for (final BaseDetails race : raceDetails) {
-            final List<SkinColorDetails> skinColors = new ArrayList<SkinColorDetails>();
+            final List<SkinColorDetails> skinColors = new ArrayList<>();
             for (final SkinColorDetails scDetails : skinColorDetails) {
                 if (scDetails.getRace().equalsIgnoreCase(race.getName())) {
                     skinColors.add(scDetails);
@@ -673,22 +674,22 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         return res;
     }
 
-    private final Set<String> loadedPaths = new HashSet<String>();
-    private final Collection<PlayerClass> playerClasses = new ArrayList<PlayerClass>();
-    private final Collection<BackStory> backStories = new ArrayList<BackStory>();
-    private final Collection<ColoredDetails> eyeDetails = new ArrayList<ColoredDetails>();
-    private final Collection<BaseDetails> earDetails = new ArrayList<BaseDetails>();
-    private final Collection<BaseDetails> raceDetails = new ArrayList<BaseDetails>();
-    private final Collection<SkinColorDetails> skinColorDetails = new ArrayList<SkinColorDetails>();
-    private final Collection<BaseDetails> noseDetails = new ArrayList<BaseDetails>();
-    private final Collection<ColoredDetails> shoeColorDetails = new ArrayList<ColoredDetails>();
-    private final Collection<ColoredDetails> pantsColorDetails = new ArrayList<ColoredDetails>();
-    private final Collection<ShirtDetails> shirtDetails = new ArrayList<ShirtDetails>();
-    private final Collection<ColoredDetails> shirtColorDetails = new ArrayList<ColoredDetails>();
-    private final Collection<BaseDetails> hairStyleDetails = new ArrayList<BaseDetails>();
-    private final Collection<BaseDetails> hairColorDetails = new ArrayList<BaseDetails>();
-    private final Collection<BaseDetails> facialHairStyleDetails = new ArrayList<BaseDetails>();
-    private final Collection<BaseDetails> facialHairColorDetails = new ArrayList<BaseDetails>();
+    private final Set<String> loadedPaths = new HashSet<>();
+    private final Collection<PlayerClass> playerClasses = new ArrayList<>();
+    private final Collection<BackStory> backStories = new ArrayList<>();
+    private final Collection<ColoredDetails> eyeDetails = new ArrayList<>();
+    private final Collection<BaseDetails> earDetails = new ArrayList<>();
+    private final Collection<BaseDetails> raceDetails = new ArrayList<>();
+    private final Collection<SkinColorDetails> skinColorDetails = new ArrayList<>();
+    private final Collection<BaseDetails> noseDetails = new ArrayList<>();
+    private final Collection<ColoredDetails> shoeColorDetails = new ArrayList<>();
+    private final Collection<ColoredDetails> pantsColorDetails = new ArrayList<>();
+    private final Collection<ShirtDetails> shirtDetails = new ArrayList<>();
+    private final Collection<ColoredDetails> shirtColorDetails = new ArrayList<>();
+    private final Collection<BaseDetails> hairStyleDetails = new ArrayList<>();
+    private final Collection<BaseDetails> hairColorDetails = new ArrayList<>();
+    private final Collection<BaseDetails> facialHairStyleDetails;
+    private final Collection<BaseDetails> facialHairColorDetails = new ArrayList<>();
     
-    private final Map<BaseDetails, List<SkinColorDetails>> skinColorsByRace = new HashMap<BaseDetails, List<SkinColorDetails>>();
+    private final Map<BaseDetails, List<SkinColorDetails>> skinColorsByRace = new HashMap<>();
 }

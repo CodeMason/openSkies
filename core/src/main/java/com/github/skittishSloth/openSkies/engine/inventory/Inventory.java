@@ -26,7 +26,7 @@ public class Inventory {
 
     public void setItems(final Collection<ItemDetails> items) {
         if (this.items == null) {
-            this.items = new ArrayList<ItemDetails>();
+            this.items = new ArrayList<>();
         } else {
             this.items.clear();
         }
@@ -38,7 +38,7 @@ public class Inventory {
     
     public void addItem(final ItemDetails item) {
         if (items == null) {
-            items = new ArrayList<ItemDetails>();
+            items = new ArrayList<>();
         }
         
         if (!items.contains(item)) {
@@ -57,7 +57,7 @@ public class Inventory {
 
     public void setQuestItems(final Collection<ItemDetails> questItems) {
         if (this.questItems == null) {
-            this.questItems = new ArrayList<ItemDetails>();
+            this.questItems = new ArrayList<>();
         } else {
             this.questItems.clear();
         }
@@ -69,7 +69,7 @@ public class Inventory {
     
     public void addQuestItem(final ItemDetails questItem) {
         if (questItems == null) {
-            questItems = new ArrayList<ItemDetails>();
+            questItems = new ArrayList<>();
         }
         
         if (!questItems.contains(questItem)) {
@@ -88,7 +88,7 @@ public class Inventory {
 
     public void setSpecialItems(final Collection<ItemDetails> specialItems) {
         if (this.specialItems == null) {
-            this.specialItems = new ArrayList<ItemDetails>();
+            this.specialItems = new ArrayList<>();
         } else {
             this.specialItems.clear();
         }
@@ -100,7 +100,7 @@ public class Inventory {
     
     public void addSpecialItem(final ItemDetails item) {
         if (specialItems == null) {
-            specialItems = new ArrayList<ItemDetails>();
+            specialItems = new ArrayList<>();
         }
         
         if (!specialItems.contains(item)) {
@@ -149,5 +149,5 @@ public class Inventory {
     private ArrayList<ItemDetails> questItems;
     private ArrayList<ItemDetails> specialItems;
     
-    private final List<AddItemListener> listeners = new ArrayList<AddItemListener>();
+    private final List<AddItemListener> listeners = new ArrayList<>();
 }

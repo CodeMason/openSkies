@@ -7,26 +7,18 @@ package com.github.skittishSloth.openSkies.engine.player.info;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 
 /**
  *
  * @author mcory01
  */
-public class InformationLoader {
+public class PlayerClassLoader {
     private static final Json json = new Json();
     
-    static {
-        json.addClassTag("backStories", BackStory.class);
-        json.addClassTag("classes", PlayerClass.class);
-    }
     
-    public static PlayerClassCollection playerClassesFromJsonFile(final FileHandle file) {
+    public static DataCollection<PlayerClass> playerClassesFromJsonFile(final FileHandle file) {
         final PlayerClassCollection res = json.fromJson(PlayerClassCollection.class, file);
-        return res;
-    }
-    
-    public static BackStoryCollection backStoriesFromJsonFile(final FileHandle file) {
-        final BackStoryCollection res = json.fromJson(BackStoryCollection.class, file);
         return res;
     }
 }

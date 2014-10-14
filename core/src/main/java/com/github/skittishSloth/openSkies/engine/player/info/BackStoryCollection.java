@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.info;
 
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,27 +14,30 @@ import java.util.List;
  *
  * @author mcory01
  */
-public class BackStoryCollection {
+public class BackStoryCollection implements DataCollection<BackStory> {
     public BackStoryCollection() {
         
     }
     
-    public List<BackStory> getBackStories() {
+    @Override
+    public List<BackStory> getData() {
         return backStories;
     }
 
-    public void setBackStories(final Collection<BackStory> classes) {
+    @Override
+    public void setData(final Collection<BackStory> backstories) {
         if (this.backStories == null) {
             this.backStories = new ArrayList<>();
         } else {
             this.backStories.clear();
         }
         
-        if (classes != null) {
-            this.backStories.addAll(classes);
+        if (backstories != null) {
+            this.backStories.addAll(backstories);
         }
     }
     
+    @Override
     public int size() {
         if (backStories == null) {
             return 0;

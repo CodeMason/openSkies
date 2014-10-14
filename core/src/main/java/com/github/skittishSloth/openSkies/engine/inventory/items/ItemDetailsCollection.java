@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.inventory.items;
 
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,18 +14,20 @@ import java.util.List;
  *
  * @author mcory01
  */
-public class ItemDetailsCollection {
+public class ItemDetailsCollection implements DataCollection<ItemDetails> {
 
     public ItemDetailsCollection() {
     }
 
-    public List<ItemDetails> getItems() {
+    @Override
+    public List<ItemDetails> getData() {
         return items;
     }
 
-    public void setItems(final Collection<ItemDetails> items) {
+    @Override
+    public void setData(final Collection<ItemDetails> items) {
         if (this.items == null) {
-            this.items = new ArrayList<ItemDetails>();
+            this.items = new ArrayList<>();
         } else {
             this.items.clear();
         }
@@ -34,6 +37,7 @@ public class ItemDetailsCollection {
         }
     }
 
+    @Override
     public int size() {
         if (items == null) {
             return 0;

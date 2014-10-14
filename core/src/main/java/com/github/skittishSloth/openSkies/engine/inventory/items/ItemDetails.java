@@ -5,6 +5,8 @@
  */
 package com.github.skittishSloth.openSkies.engine.inventory.items;
 
+import java.util.Objects;
+
 /**
  *
  * @author mcory01
@@ -12,6 +14,7 @@ package com.github.skittishSloth.openSkies.engine.inventory.items;
 public class ItemDetails {
 
     public enum Type {
+
         QUEST,
         SPECIAL,
         NORMAL;
@@ -28,11 +31,11 @@ public class ItemDetails {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(final int id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -44,7 +47,35 @@ public class ItemDetails {
         this.type = type;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.name);
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.type);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ItemDetails other = (ItemDetails) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        
+        return this.type == other.type;
+    }
+
     private String name;
-    private int id;
+    private Integer id;
     private Type type;
 }

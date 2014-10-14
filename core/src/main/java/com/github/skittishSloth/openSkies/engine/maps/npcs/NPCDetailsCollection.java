@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.npcs;
 
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,18 +14,20 @@ import java.util.List;
  *
  * @author mcory01
  */
-public class NPCDetailsCollection {
+public class NPCDetailsCollection implements DataCollection<NPCDetails> {
 
     public NPCDetailsCollection() {
     }
 
-    public List<NPCDetails> getNpcs() {
+    @Override
+    public List<NPCDetails> getData() {
         return npcs;
     }
 
-    public void setNpcs(final Collection<NPCDetails> npcs) {
+    @Override
+    public void setData(final Collection<NPCDetails> npcs) {
         if (this.npcs == null) {
-            this.npcs = new ArrayList<NPCDetails>();
+            this.npcs = new ArrayList<>();
         } else {
             this.npcs.clear();
         }
@@ -34,6 +37,7 @@ public class NPCDetailsCollection {
         }
     }
     
+    @Override
     public int size() {
         if (npcs == null) {
             return 0;

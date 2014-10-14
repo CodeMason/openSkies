@@ -5,14 +5,16 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.npcs;
 
+import java.util.Objects;
+
 /**
  *
  * @author mcory01
  */
 public class NPCDetails {
-    
+
     public NPCDetails() {
-        
+
     }
 
     public String getId() {
@@ -39,16 +41,48 @@ public class NPCDetails {
         this.description = description;
     }
 
-    public String getImageFile() {
-        return imageFile;
+    public String getImageFileName() {
+        return imageFileName;
     }
 
-    public void setImageFile(final String imageFile) {
-        this.imageFile = imageFile;
+    public void setImageFileName(final String imageFileName) {
+        this.imageFileName = imageFileName;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.id);
+        hash = 41 * hash + Objects.hashCode(this.name);
+        hash = 41 * hash + Objects.hashCode(this.description);
+        hash = 41 * hash + Objects.hashCode(this.imageFileName);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final NPCDetails other = (NPCDetails) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        
+        return Objects.equals(this.imageFileName, other.imageFileName);
     }
 
     private String id;
     private String name;
     private String description;
-    private String imageFile;
+    private String imageFileName;
 }

@@ -52,7 +52,7 @@ public class MapAssets extends BaseGameAssets {
                     continue;
                 }
                 
-                final String charPath = "gfx/characters/" + details.getImageFile();
+                final String charPath = "gfx/characters/" + details.getImageFileName();
                 getAssets().load(charPath, Texture.class);
                 npcPathsById.put(id, charPath);
             }

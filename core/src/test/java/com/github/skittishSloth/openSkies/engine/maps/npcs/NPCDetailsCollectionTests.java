@@ -3,23 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.skittishSloth.openSkies.engine.player.info;
+package com.github.skittishSloth.openSkies.engine.maps.npcs;
 
 import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import com.github.skittishSloth.openSkies.testUtils.DataCollectionTests;
+
 /**
  *
  * @author mcory01
  */
-public class PlayerClassCollectionTests extends DataCollectionTests<PlayerClass> {
+public class NPCDetailsCollectionTests extends DataCollectionTests<NPCDetails> {
 
     @Override
-    protected DataCollection<PlayerClass> buildWithDefaultConstructor() {
-        return new PlayerClassCollection();
+    protected DataCollection<NPCDetails> buildWithDefaultConstructor() {
+        return new NPCDetailsCollection();
     }
 
     @Override
-    protected PlayerClass buildItemInstance(int index) {
-        return new PlayerClass();
+    protected NPCDetails buildItemInstance(final int index) {
+        return new NPCDetails();
     }
+    
 }

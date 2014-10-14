@@ -19,11 +19,6 @@ public final class ItemDetailsLoader {
         
     }
     
-    public static ItemDetails fromJson(final FileHandle file) {
-        final ItemDetails res = json.fromJson(ItemDetails.class, file);
-        return res;
-    }
-    
     public static ItemDetailsCollection listFromJson(final FileHandle file) {
         final ItemDetailsCollection res = json.fromJson(ItemDetailsCollection.class, file);
         return res;

@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.info;
 
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,17 +14,19 @@ import java.util.List;
  *
  * @author mcory01
  */
-public class PlayerClassCollection {
+public class PlayerClassCollection implements DataCollection<PlayerClass> { 
     
     public PlayerClassCollection() {
         
     }
 
-    public List<PlayerClass> getClasses() {
+    @Override
+    public List<PlayerClass> getData() {
         return classes;
     }
 
-    public void setClasses(final Collection<PlayerClass> classes) {
+    @Override
+    public void setData(final Collection<PlayerClass> classes) {
         if (this.classes == null) {
             this.classes = new ArrayList<>();
         } else {
@@ -35,6 +38,7 @@ public class PlayerClassCollection {
         }
     }
     
+    @Override
     public int size() {
         if (classes == null) {
             return 0;

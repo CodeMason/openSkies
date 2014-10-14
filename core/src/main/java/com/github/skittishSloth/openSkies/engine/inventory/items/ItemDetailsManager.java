@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.inventory.items;
 
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -17,8 +18,8 @@ import java.util.Map;
  */
 public class ItemDetailsManager {
     
-    public ItemDetailsManager(final ItemDetailsCollection idc) {
-        final List<ItemDetails> items = idc.getItems();
+    public ItemDetailsManager(final DataCollection<ItemDetails> idc) {
+        final List<ItemDetails> items = idc.getData();
         
         for (final ItemDetails item : items) {
             itemsById.put(item.getId(), item);
@@ -28,7 +29,7 @@ public class ItemDetailsManager {
             if (itemsByType.containsKey(itemType)) {
                 typeItems = itemsByType.get(itemType);
             } else {
-                typeItems = new ArrayList<ItemDetails>();
+                typeItems = new ArrayList<>();
                 itemsByType.put(itemType, typeItems);
             }
             
@@ -44,6 +45,6 @@ public class ItemDetailsManager {
         return itemsByType.get(type);
     }
 
-    private final Map<ItemDetails.Type, List<ItemDetails>> itemsByType = new EnumMap<ItemDetails.Type, List<ItemDetails>>(ItemDetails.Type.class);
-    private final Map<Integer, ItemDetails> itemsById = new HashMap<Integer, ItemDetails>();
+    private final Map<ItemDetails.Type, List<ItemDetails>> itemsByType = new EnumMap<>(ItemDetails.Type.class);
+    private final Map<Integer, ItemDetails> itemsById = new HashMap<>();
 }
