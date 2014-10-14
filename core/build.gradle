@@ -1,12 +1,16 @@
 apply plugin: "java"
+apply plugin: "jacoco"
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/main/" ]
 sourceSets.test.java.srcDirs = [ "src/test/" ]
 
-
 eclipse.project {
     name = appName + "-core"
+}
+
+jacoco {
+    toolVersion = "0.7.1.201405082137"
 }

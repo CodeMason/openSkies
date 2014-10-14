@@ -16,3 +16,6 @@ hs_err_pid*
 .gradle/
 .nb-gradle/
 .DS_Store
+
+# Build stuff shouldn't be in git...
+build/
