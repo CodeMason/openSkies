@@ -142,7 +142,19 @@ public class BaseDetails {
     }
 
     public final boolean hasTexture() {
-        return (!(nullTexture) || StringUtils.isNotBlank(texturePathPattern) || StringUtils.isNotBlank(maleTexturePath) || StringUtils.isNotBlank(femaleTexturePath));
+        if (StringUtils.isNotBlank(texturePathPattern)) {
+            return true;
+        }
+        
+        if (StringUtils.isNotBlank(maleTexturePath)) {
+            return true;
+        }
+        
+        if (StringUtils.isNotBlank(femaleTexturePath)) {
+            return true;
+        }
+        
+        return !(nullTexture);
     }
 
     private String name;
