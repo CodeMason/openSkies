@@ -5,6 +5,8 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.info;
 
+import java.util.Objects;
+
 /**
  *
  * @author mcory01
@@ -12,6 +14,7 @@ package com.github.skittishSloth.openSkies.engine.player.info;
 public class ClassModifier {
 
     public static enum Type {
+
         BONUS,
         PENALTY;
     }
@@ -48,6 +51,34 @@ public class ClassModifier {
 
     public void setAmount(final String amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.type);
+        hash = 89 * hash + Objects.hashCode(this.area);
+        hash = 89 * hash + Objects.hashCode(this.amount);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ClassModifier other = (ClassModifier) obj;
+        if (this.type != other.type) {
+            return false;
+        }
+        if (!Objects.equals(this.area, other.area)) {
+            return false;
+        }
+        
+        return  Objects.equals(this.amount, other.amount);
     }
 
     private Type type;

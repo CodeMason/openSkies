@@ -1,0 +1,12 @@
+{
+	backStories: [
+		{
+			name: Vendetta,
+			description: "They killed your family.  They killed your dog.  They killed their only hope of survival."
+		},
+		{
+			name: Glory,
+			description: "You want your name in the books, and that's all that matters."
+		}
+	]
+}

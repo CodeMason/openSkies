@@ -7,15 +7,16 @@ package com.github.skittishSloth.openSkies.engine.player.info;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  *
  * @author mcory01
  */
 public class PlayerClass {
-    
+
     public PlayerClass() {
-        
+
     }
 
     public PlayerClass(final String name, final String description, final Collection<ClassModifier> modifiers) {
@@ -55,10 +56,38 @@ public class PlayerClass {
         } else {
             this.modifiers.clear();
         }
-        
+
         if (modifiers != null) {
             this.modifiers.addAll(modifiers);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 31 * hash + Objects.hashCode(this.name);
+        hash = 31 * hash + Objects.hashCode(this.description);
+        hash = 31 * hash + Objects.hashCode(this.modifiers);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PlayerClass other = (PlayerClass) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        
+        return Objects.equals(this.modifiers, other.modifiers);
     }
 
     private String name;

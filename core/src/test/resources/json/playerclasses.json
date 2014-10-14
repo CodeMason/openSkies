@@ -1,0 +1,35 @@
+{
+
+		classes: [
+					{
+						name : Mage,
+						description : "A brilliant mind who has embraced the world of magic.  Bonus for intelligence, but those robes don't protect against much.",
+						modifiers : [
+							{
+								type: BONUS,
+								area: intelligence,
+								amount: 1
+							},
+							{
+								type : PENALTY,
+								area : defense,
+								amount: 1
+							}
+						]
+					},
+					{
+						name : Engineer,
+						description : "Loves building things.",
+						modifiers : [
+							{
+								type: BONUS,
+								area: crafting,
+								amount: 1
+							}
+						]
+					}
+					
+		]
+	
+	
+}
