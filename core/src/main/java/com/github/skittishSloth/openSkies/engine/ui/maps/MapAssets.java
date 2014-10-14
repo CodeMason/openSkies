@@ -103,7 +103,7 @@ public class MapAssets extends BaseGameAssets {
         return texture;
     }
     
-    private final Map<String, String> npcPathsById = new HashMap<String, String>();
+    private final Map<String, String> npcPathsById = new HashMap<>();
 
     
 }

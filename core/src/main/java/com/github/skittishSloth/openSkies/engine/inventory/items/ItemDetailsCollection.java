@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author mcory01
  */
-public class ItemDetailsCollection implements DataCollection<ItemDetails> {
+class ItemDetailsCollection implements DataCollection<ItemDetails> {
 
     public ItemDetailsCollection() {
     }

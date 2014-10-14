@@ -134,7 +134,7 @@ public class BaseDetails {
         
         final Map<String, String> appearanceVars = appearanceData.getPatternVariables();
         final Map<String, String> clothingVars = clothingData.getPatternVariables();
-        final Map<String, String> patternVars = new HashMap<String, String>(appearanceVars.size() + clothingVars.size());
+        final Map<String, String> patternVars = new HashMap<>(appearanceVars.size() + clothingVars.size());
         patternVars.putAll(appearanceVars);
         patternVars.putAll(clothingVars);
         

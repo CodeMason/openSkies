@@ -25,7 +25,7 @@ public class PlayerClassLoaderTests extends DataCollectionLoaderTests<PlayerClas
 
     @Override
     protected DataCollection<PlayerClass> loadData(final FileHandle fh) {
-        return PlayerClassLoader.playerClassesFromJsonFile(fh);
+        return PlayerClassLoader.fromJson(fh);
     }
 
     @Override

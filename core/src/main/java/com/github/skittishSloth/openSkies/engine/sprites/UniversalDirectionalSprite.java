@@ -100,7 +100,7 @@ public class UniversalDirectionalSprite implements Disposable {
 
         Integer tempWidth = null, tempHeight = null;
         for (final AnimationState mState : this.availableAnimations) {
-            final Map<Direction, Animation> directionAnimations = new EnumMap<Direction, Animation>(Direction.class);
+            final Map<Direction, Animation> directionAnimations = new EnumMap<>(Direction.class);
             for (final Direction dir : Direction.values()) {
                 if (mState == AnimationState.IDLE) {
                     final TextureRegion idle = getIdleRegion(dir, baseTexture);
@@ -280,5 +280,5 @@ public class UniversalDirectionalSprite implements Disposable {
     private final int width, height;
 
 //    private final float frameRate;
-    private final Map<AnimationState, Map<Direction, Animation>> animations = new EnumMap<AnimationState, Map<Direction, Animation>>(AnimationState.class);
+    private final Map<AnimationState, Map<Direction, Animation>> animations = new EnumMap<>(AnimationState.class);
 }

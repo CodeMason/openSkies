@@ -26,7 +26,7 @@ public class RetrievalStep extends MapSpecificStep {
 
     public void setItems(final Collection<QuestItem> items) {
         if (this.items == null) {
-            this.items = new ArrayList<QuestItem>();
+            this.items = new ArrayList<>();
         } else {
             this.items.clear();
         }

@@ -24,7 +24,7 @@ public class BackStoryLoaderTests extends DataCollectionLoaderTests<BackStory> {
 
     @Override
     protected DataCollection<BackStory> loadData(FileHandle fh) {
-        return BackStoryLoader.backStoriesFromJsonFile(fh);
+        return BackStoryLoader.fromJson(fh);
     }
 
     @Override

@@ -7,6 +7,7 @@ package com.github.skittishSloth.openSkies.engine.quests;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 
 /**
  *
@@ -32,7 +33,7 @@ public final class QuestLoader {
         return res;
     }
     
-    public static QuestDetailsCollection listFromJson(final FileHandle file) {
+    public static DataCollection<QuestDetails> listFromJson(final FileHandle file) {
         final QuestDetailsCollection res = json.fromJson(QuestDetailsCollection.class, file);
         return res;
     }

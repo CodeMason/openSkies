@@ -17,7 +17,7 @@ public class BackStoryLoader {
     
     private static final Json json = new Json();
     
-    public static DataCollection<BackStory> backStoriesFromJsonFile(final FileHandle file) {
+    public static DataCollection<BackStory> fromJson(final FileHandle file) {
         final BackStoryCollection res = json.fromJson(BackStoryCollection.class, file);
         return res;
     }

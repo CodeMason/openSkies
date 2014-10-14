@@ -563,9 +563,9 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         }
 
         final Label styleLabel = new Label("Style:", skin);
-        final SelectBox<String> stylesSelection = new SelectBox<String>(skin);
-        final SelectBox<String> colorsSelection = new SelectBox<String>(skin);
-        final List<String> hairStylesList = new ArrayList<String>(availableHairStyles.size());
+        final SelectBox<String> stylesSelection = new SelectBox<>(skin);
+        final SelectBox<String> colorsSelection = new SelectBox<>(skin);
+        final List<String> hairStylesList = new ArrayList<>(availableHairStyles.size());
         for (final BaseDetails style : availableHairStyles) {
             final String dispName = style.getDisplayName();
             hairStylesList.add(dispName);
@@ -600,7 +600,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             colorsSelection.setDisabled(true);
         } else {
             colorsSelection.setDisabled(false);
-            final List<String> colorsList = new ArrayList<String>(availableHairColors.size());
+            final List<String> colorsList = new ArrayList<>(availableHairColors.size());
             for (final BaseDetails color : availableHairColors) {
                 final String dispName = color.getDisplayName();
                 colorsList.add(dispName);
@@ -643,9 +643,9 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
         }
 
         final Label styleLabel = new Label("Style:", skin);
-        final SelectBox<String> stylesSelection = new SelectBox<String>(skin);
-        final SelectBox<String> colorsSelection = new SelectBox<String>(skin);
-        final List<String> hairStylesList = new ArrayList<String>(availableFacialHairStyles.size());
+        final SelectBox<String> stylesSelection = new SelectBox<>(skin);
+        final SelectBox<String> colorsSelection = new SelectBox<>(skin);
+        final List<String> hairStylesList = new ArrayList<>(availableFacialHairStyles.size());
         for (final BaseDetails style : availableFacialHairStyles) {
             final String dispName = style.getDisplayName();
             hairStylesList.add(dispName);
@@ -680,7 +680,7 @@ public class CharacterAppearanceSettings extends Table implements Disposable {
             colorsSelection.setDisabled(true);
         } else {
             colorsSelection.setDisabled(false);
-            final List<String> colorsList = new ArrayList<String>(availableFacialHairColors.size());
+            final List<String> colorsList = new ArrayList<>(availableFacialHairColors.size());
             for (final BaseDetails color : availableFacialHairColors) {
                 final String dispName = color.getDisplayName();
                 colorsList.add(dispName);

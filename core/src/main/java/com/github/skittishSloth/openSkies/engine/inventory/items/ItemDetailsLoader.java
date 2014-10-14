@@ -7,6 +7,7 @@ package com.github.skittishSloth.openSkies.engine.inventory.items;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 
 /**
  *
@@ -19,7 +20,7 @@ public final class ItemDetailsLoader {
         
     }
     
-    public static ItemDetailsCollection listFromJson(final FileHandle file) {
+    public static DataCollection<ItemDetails> fromJson(final FileHandle file) {
         final ItemDetailsCollection res = json.fromJson(ItemDetailsCollection.class, file);
         return res;
     }

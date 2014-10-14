@@ -73,7 +73,7 @@ public class QuestDetails {
 
     public void setPrerequisites(final Collection<QuestDetails> prerequisites) {
         if (this.prerequisites == null) {
-            this.prerequisites = new ArrayList<QuestDetails>();
+            this.prerequisites = new ArrayList<>();
         } else {
             this.prerequisites.clear();
         }
@@ -89,7 +89,7 @@ public class QuestDetails {
 
     public void setSteps(final Collection<BaseQuestStep> steps) {
         if (this.steps == null) {
-            this.steps = new ArrayList<BaseQuestStep>();
+            this.steps = new ArrayList<>();
         } else {
             this.steps.clear();
         }
@@ -112,7 +112,7 @@ public class QuestDetails {
 
     public void setRewards(final Collection<Reward> rewards) {
         if (this.rewards == null) {
-            this.rewards = new ArrayList<Reward>();
+            this.rewards = new ArrayList<>();
         } else {
             this.rewards.clear();
         }
@@ -123,7 +123,7 @@ public class QuestDetails {
     }
 
     public List<MapSpecificStep> getMapSpecificSteps(final String mapName) {
-        final List<MapSpecificStep> res = new ArrayList<MapSpecificStep>();
+        final List<MapSpecificStep> res = new ArrayList<>();
 
         for (final BaseQuestStep bqs : steps) {
             if (bqs instanceof MapSpecificStep) {

@@ -103,7 +103,7 @@ public class CharacterAppearanceData {
     }
     
     public Map<String, String> getPatternVariables() {
-        final Map<String, String> res = new HashMap<String, String>();
+        final Map<String, String> res = new HashMap<>();
 
         res.put("${gender}", gender.name().toLowerCase());
         res.put("${race}", race.getName().toLowerCase());

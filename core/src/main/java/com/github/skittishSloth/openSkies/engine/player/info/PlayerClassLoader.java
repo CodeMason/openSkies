@@ -17,7 +17,7 @@ public class PlayerClassLoader {
     private static final Json json = new Json();
     
     
-    public static DataCollection<PlayerClass> playerClassesFromJsonFile(final FileHandle file) {
+    public static DataCollection<PlayerClass> fromJson(final FileHandle file) {
         final PlayerClassCollection res = json.fromJson(PlayerClassCollection.class, file);
         return res;
     }

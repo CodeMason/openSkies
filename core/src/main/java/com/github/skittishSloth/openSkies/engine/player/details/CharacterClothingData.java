@@ -47,7 +47,7 @@ public class CharacterClothingData {
     }
     
     public Map<String, String> getPatternVariables() {
-        final Map<String, String> res = new HashMap<String, String>();
+        final Map<String, String> res = new HashMap<>();
         
         res.put("${shirt}", shirt.getName().toLowerCase());
         

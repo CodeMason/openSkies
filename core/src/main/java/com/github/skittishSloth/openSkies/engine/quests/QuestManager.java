@@ -7,6 +7,7 @@ package com.github.skittishSloth.openSkies.engine.quests;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import com.github.skittishSloth.openSkies.engine.inventory.items.ItemDetails;
 import com.github.skittishSloth.openSkies.engine.inventory.items.ItemDetailsManager;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class QuestManager {
     
     public void loadQuests(final String path) {
         final FileHandle file = Gdx.files.internal(path);
-        final QuestDetailsCollection qdc = QuestLoader.listFromJson(file);
+        final DataCollection<QuestDetails> qdc = QuestLoader.listFromJson(file);
         registerTransientFields(qdc);
         setAvailableQuests(qdc);
     }
@@ -42,7 +43,7 @@ public class QuestManager {
     }
     
     public List<QuestDetails> getAvailableQuestsForMap(final String mapName) {
-        final List<QuestDetails> res = new ArrayList<QuestDetails>(availableQuests.size());
+        final List<QuestDetails> res = new ArrayList<>(availableQuests.size());
         
         for (final QuestDetails qd : availableQuests) {
             final QuestGiver giver = qd.getGiver();
@@ -54,14 +55,14 @@ public class QuestManager {
         return res;
     }
     
-    private void setAvailableQuests(final QuestDetailsCollection quests) {
+    private void setAvailableQuests(final DataCollection<QuestDetails> quests) {
         availableQuests.clear();
         
         if (quests == null) {
             return;
         }
         
-        final Collection<QuestDetails> questDetails = quests.getQuests();
+        final Collection<QuestDetails> questDetails = quests.getData();
         if (questDetails != null) {
             availableQuests.addAll(questDetails);
         }
@@ -80,8 +81,8 @@ public class QuestManager {
         }
     }
     
-    private void registerTransientFields(final QuestDetailsCollection qdc) {
-        final List<QuestDetails> quests = qdc.getQuests();
+    private void registerTransientFields(final DataCollection<QuestDetails> qdc) {
+        final List<QuestDetails> quests = qdc.getData();
         
         for (final QuestDetails quest : quests) {
             final List<BaseQuestStep> steps = quest.getSteps();
@@ -121,9 +122,9 @@ public class QuestManager {
         }
     }
     
-    private final List<QuestDetails> availableQuests = new ArrayList<QuestDetails>();
-    private final Map<Integer, QuestDetails> storyQuestsById = new HashMap<Integer, QuestDetails>();
-    private final Map<Integer, QuestDetails> optionalQuestsById = new HashMap<Integer, QuestDetails>();
+    private final List<QuestDetails> availableQuests = new ArrayList<>();
+    private final Map<Integer, QuestDetails> storyQuestsById = new HashMap<>();
+    private final Map<Integer, QuestDetails> optionalQuestsById = new HashMap<>();
 
     private final ItemDetailsManager itemDetailsManager;
 }

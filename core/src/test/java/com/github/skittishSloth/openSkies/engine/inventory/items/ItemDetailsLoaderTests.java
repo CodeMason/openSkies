@@ -24,7 +24,7 @@ public class ItemDetailsLoaderTests extends DataCollectionLoaderTests<ItemDetail
 
     @Override
     protected DataCollection loadData(FileHandle fh) {
-        return ItemDetailsLoader.listFromJson(fh);
+        return ItemDetailsLoader.fromJson(fh);
     }
 
     @Override

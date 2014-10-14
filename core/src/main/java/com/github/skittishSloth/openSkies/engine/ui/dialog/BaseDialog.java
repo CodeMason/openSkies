@@ -44,7 +44,7 @@ public class BaseDialog extends Window {
         add(textScroll).top().left();
         row();
         
-        options = new ArrayList<DialogOption>();
+        options = new ArrayList<>();
         optionsGroup = new VerticalGroup();
         optionsScroll = new ScrollPane(optionsGroup, skin);
         

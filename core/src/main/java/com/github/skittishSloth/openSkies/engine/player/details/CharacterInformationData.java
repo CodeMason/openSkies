@@ -13,9 +13,9 @@ import com.github.skittishSloth.openSkies.engine.player.info.PlayerClass;
  * @author mcory01
  */
 public class CharacterInformationData {
-    
+
     public CharacterInformationData() {
-        
+
     }
 
     public PlayerClass getSelectedClass() {
@@ -33,9 +33,7 @@ public class CharacterInformationData {
     public void setSelectedBackstory(final BackStory selectedBackstory) {
         this.selectedBackstory = selectedBackstory;
     }
-    
-    
-    
+
     private PlayerClass selectedClass;
     private BackStory selectedBackstory;
 }

@@ -26,7 +26,7 @@ public class SequenceStep extends BaseQuestStep {
 
     public void setSteps(final Collection<BaseQuestStep> steps) {
         if (this.steps == null) {
-            this.steps = new ArrayList<BaseQuestStep>();
+            this.steps = new ArrayList<>();
         } else {
             this.steps.clear();
         }
@@ -44,7 +44,7 @@ public class SequenceStep extends BaseQuestStep {
             return null;
         }
         
-        final List<MapSpecificStep> res = new ArrayList<MapSpecificStep>();
+        final List<MapSpecificStep> res = new ArrayList<>();
         for (final BaseQuestStep step : steps) {
             if (step instanceof MapSpecificStep) {
                 final MapSpecificStep mss = MapSpecificStep.class.cast(step);

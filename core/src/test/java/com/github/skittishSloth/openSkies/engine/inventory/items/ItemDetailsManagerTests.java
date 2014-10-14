@@ -35,7 +35,7 @@ public class ItemDetailsManagerTests {
         final File file = new File(fileUrl.toURI());
         final FileHandle fh = new FileHandle(file);
         
-        final DataCollection<ItemDetails> dataCollection = ItemDetailsLoader.listFromJson(fh);
+        final DataCollection<ItemDetails> dataCollection = ItemDetailsLoader.fromJson(fh);
         
         final ItemDetailsManager manager = new ItemDetailsManager(dataCollection);
         

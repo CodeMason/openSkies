@@ -6,7 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import com.github.skittishSloth.openSkies.engine.common.GdxUtils;
 import com.github.skittishSloth.openSkies.engine.inventory.Inventory;
-import com.github.skittishSloth.openSkies.engine.inventory.items.ItemDetailsCollection;
+import com.github.skittishSloth.openSkies.engine.inventory.items.ItemDetails;
 import com.github.skittishSloth.openSkies.engine.inventory.items.ItemDetailsLoader;
 import com.github.skittishSloth.openSkies.engine.inventory.items.ItemDetailsManager;
 import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetails;
@@ -39,7 +39,7 @@ public final class OpenSkies extends Game {
     @Override
     public void create() {
         final FileHandle itemDetailsFile = new FileHandle("data/items/items.json");
-        final ItemDetailsCollection itemColl = ItemDetailsLoader.listFromJson(itemDetailsFile);
+        final DataCollection<ItemDetails> itemColl = ItemDetailsLoader.fromJson(itemDetailsFile);
         itemDetailsManager = new ItemDetailsManager(itemColl);
         
         questManager = new QuestManager(itemDetailsManager);
@@ -124,7 +124,7 @@ public final class OpenSkies extends Game {
     
     private CharacterData characterData;
     private AreaDetails currentArea;
-    private final Map<String, NPCDetails> npcDetails = new HashMap<String, NPCDetails>();
+    private final Map<String, NPCDetails> npcDetails = new HashMap<>();
     
     private QuestManager questManager;
     private ItemDetailsManager itemDetailsManager;

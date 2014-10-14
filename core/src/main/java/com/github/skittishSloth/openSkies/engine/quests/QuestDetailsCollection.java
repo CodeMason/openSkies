@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.quests;
 
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,27 +14,30 @@ import java.util.List;
  *
  * @author mcory01
  */
-public class QuestDetailsCollection {
+class QuestDetailsCollection implements DataCollection<QuestDetails> {
 
     public QuestDetailsCollection() {
     }
 
-    public List<QuestDetails> getQuests() {
+    @Override
+    public List<QuestDetails> getData() {
         return quests;
     }
 
-    public void setQuests(final Collection<QuestDetails> quests) {
-        if (this.quests == null) {
-            this.quests = new ArrayList<QuestDetails>();
+    @Override
+    public void setData(final Collection<QuestDetails> data) {
+        if (quests == null) {
+            quests = new ArrayList<>();
         } else {
-            this.quests.clear();
+            quests.clear();
         }
         
-        if (quests != null) {
-            this.quests.addAll(quests);
+        if (data != null) {
+            quests.addAll(data);
         }
     }
     
+    @Override
     public int size() {
         if (quests == null) {
             return 0;

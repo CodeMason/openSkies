@@ -7,6 +7,7 @@ package com.github.skittishSloth.openSkies.engine.player.details;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 
 /**
  *
@@ -31,7 +32,7 @@ public class DetailsLoader {
         json.addClassTag("facialHairColorDetails", BaseDetails.class);
     }
     
-    public static final <T extends BaseDetails> DetailsCollection<T> fromJson(final Class<T> clazz, final FileHandle fh) {
+    public static final <T extends BaseDetails> DataCollection<T> fromJson(final Class<T> clazz, final FileHandle fh) {
         final DetailsCollection<T> res = json.fromJson(DetailsCollection.class, clazz, fh);
         return res;
     }

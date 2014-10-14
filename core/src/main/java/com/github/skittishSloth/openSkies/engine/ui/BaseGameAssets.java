@@ -24,7 +24,7 @@ public abstract class BaseGameAssets implements Disposable {
     
     protected BaseGameAssets() {
         assets = new AssetManager();
-        loadedPaths = new HashSet<String>();
+        loadedPaths = new HashSet<>();
         log = LoggerFactory.getLogger(getClass());
     }
     

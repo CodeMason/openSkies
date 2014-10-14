@@ -13,7 +13,6 @@ import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import com.github.skittishSloth.openSkies.engine.player.details.BaseDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterClothingData;
 import com.github.skittishSloth.openSkies.engine.player.details.ColoredDetails;
-import com.github.skittishSloth.openSkies.engine.player.details.DetailsCollection;
 import com.github.skittishSloth.openSkies.engine.player.details.DetailsLoader;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.ShirtDetails;
@@ -548,7 +547,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     private void loadPlayerClasses() {
         final FileHandle fh = Gdx.files.internal("data/char-building/class-descriptions.json");
-        final DataCollection<PlayerClass> classCollection = PlayerClassLoader.playerClassesFromJsonFile(fh);
+        final DataCollection<PlayerClass> classCollection = PlayerClassLoader.fromJson(fh);
         playerClasses.clear();
         if (classCollection != null) {
             final Collection<PlayerClass> classCollectionClasses = classCollection.getData();
@@ -560,7 +559,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
     private void loadBackStories() {
         final FileHandle fh = Gdx.files.internal("data/char-building/backstories.json");
-        final DataCollection<BackStory> backStoryCollection = BackStoryLoader.backStoriesFromJsonFile(fh);
+        final DataCollection<BackStory> backStoryCollection = BackStoryLoader.fromJson(fh);
         backStories.clear();
         if (backStoryCollection != null) {
             final Collection<BackStory> backStoryCollectionItems = backStoryCollection.getData();
@@ -648,10 +647,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
     
     private static <T extends BaseDetails> void loadAppearanceDetails(final String fileName, final Class<T> clazz, final Collection<T> collection) {
         final FileHandle fh = Gdx.files.internal("data/char-building/appearances/" + fileName);
-        final DetailsCollection<T> detailsCollection = DetailsLoader.fromJson(clazz, fh);
+        final DataCollection<T> detailsCollection = DetailsLoader.fromJson(clazz, fh);
         collection.clear();
         if (detailsCollection != null) {
-            final Collection<T> detailsCollectionItems = detailsCollection.getItems();
+            final Collection<T> detailsCollectionItems = detailsCollection.getData();
             if (detailsCollectionItems != null) {
                 collection.addAll(detailsCollectionItems);
             }

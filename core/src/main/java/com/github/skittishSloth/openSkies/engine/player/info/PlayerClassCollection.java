@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author mcory01
  */
-public class PlayerClassCollection implements DataCollection<PlayerClass> { 
+class PlayerClassCollection implements DataCollection<PlayerClass> { 
     
     public PlayerClassCollection() {
         

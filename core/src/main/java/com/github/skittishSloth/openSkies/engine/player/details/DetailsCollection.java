@@ -5,32 +5,38 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.details;
 
+import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
  * @author mcory01
+ * @param <T>
  */
-public class DetailsCollection<T extends BaseDetails> {
-    
-    public Collection<T> getItems() {
+class DetailsCollection<T extends BaseDetails> implements DataCollection<T> {
+
+    @Override
+    public List<T> getData() {
         return items;
     }
 
-    public void setItems(Collection<T> items) {
+    @Override
+    public void setData(final Collection<T> data) {
         if (this.items == null) {
-            this.items = new ArrayList<T>();
+            this.items = new ArrayList<>();
         } else {
             this.items.clear();
         }
 
-        if (items != null) {
-            this.items.addAll(items);
+        if (data != null) {
+            this.items.addAll(data);
         }
     }
 
-    public int size() {
+    @Override
+    public final int size() {
         if (items == null) {
             return 0;
         }

@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author mcory01
  */
-public class NPCDetailsCollection implements DataCollection<NPCDetails> {
+class NPCDetailsCollection implements DataCollection<NPCDetails> {
 
     public NPCDetailsCollection() {
     }

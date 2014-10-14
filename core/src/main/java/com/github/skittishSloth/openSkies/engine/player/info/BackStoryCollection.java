@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author mcory01
  */
-public class BackStoryCollection implements DataCollection<BackStory> {
+class BackStoryCollection implements DataCollection<BackStory> {
     public BackStoryCollection() {
         
     }
