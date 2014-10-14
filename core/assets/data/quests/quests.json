@@ -15,15 +15,38 @@
 					description: "You might move on to more meaningful quests."
 				}
 			],
-			actions: [
+			steps: [
 				{
-					class: retrievalAction,
-					map: "island",
-					location: {
-						x: 50,
-						y: 71
-					},
-					itemName: "Arthur's Stuff."
+					class: sequenceStep,
+					id: 1,
+					steps: [
+						{
+							class: retrievalStep,
+							id: 1,
+							map: "island",
+							description: "Get Arthur's stuff.",
+							items: [
+								{
+									class: staticItem,
+									itemId: 1,
+									location: {
+										x: 50,
+										y: 71
+									}
+								}	
+							]
+						},
+						{
+							class: returnStep,
+							id: 2,
+							map: island,
+							description: "Take it back to Arthur.",
+							destination: {
+								class: npcDestination,
+								npcId: "arthur"
+							}
+						}
+					]
 				}
 			]
 		}

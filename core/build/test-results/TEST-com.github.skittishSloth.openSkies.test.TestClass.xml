@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.github.skittishSloth.openSkies.test.TestClass" tests="1" failures="0" errors="0" timestamp="2014-10-14T14:37:27" hostname="LMBHN00002605.local" time="0.001">
+  <properties/>
+  <testcase name="shouldPass" classname="com.github.skittishSloth.openSkies.test.TestClass" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

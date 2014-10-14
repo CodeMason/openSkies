@@ -15,7 +15,6 @@ allprojects {
     ext {
         appName = 'Open Skies'
         gdxVersion = '1.3.2-SNAPSHOT'
-//        gdxVersionSnapshot = '1.3.2-SNAPSHOT'
         roboVMVersion = '0.0.14'
         slf4jVersion = '1.7.7'
     }
@@ -53,6 +52,8 @@ project(":desktop") {
         
         runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
         
+        testCompile "junit:junit:4.11"
+        
     }
 }
 
@@ -67,6 +68,8 @@ project(":core") {
         
         compile "org.apache.commons:commons-lang3:3.3.2"
         compile "org.slf4j:slf4j-api:$slf4jVersion"
+        
+        testCompile "junit:junit:4.11"
     }
 }
 
