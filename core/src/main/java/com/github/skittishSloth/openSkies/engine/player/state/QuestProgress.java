@@ -63,7 +63,7 @@ public class QuestProgress {
 
     public void setStepProgress(final Collection<StepProgress> stepProgress) {
         if (this.stepProgress == null) {
-            this.stepProgress = new ArrayList<StepProgress>();
+            this.stepProgress = new ArrayList<>();
         } else {
             this.stepProgress.clear();
         }
@@ -122,7 +122,7 @@ public class QuestProgress {
     private ArrayList<StepProgress> stepProgress;
 
     private transient QuestDetails quest;
-    private final Map<BaseQuestStep, StepProgress> stepProgressMap = new HashMap<BaseQuestStep, StepProgress>();
+    private final Map<BaseQuestStep, StepProgress> stepProgressMap = new HashMap<>();
     
     protected final Logger log = LoggerFactory.getLogger(getClass());
 }

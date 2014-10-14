@@ -5,8 +5,6 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.state;
 
-import com.github.skittishSloth.openSkies.engine.inventory.AddItemListener;
-import com.github.skittishSloth.openSkies.engine.inventory.items.ItemDetails;
 import com.github.skittishSloth.openSkies.engine.quests.BaseQuestStep;
 import com.github.skittishSloth.openSkies.engine.quests.QuestItem;
 import com.github.skittishSloth.openSkies.engine.quests.RetrievalStep;
@@ -49,7 +47,7 @@ public class RetrievalStepProgress extends StepProgress {
 
     public final void setFoundItems(Collection<QuestItem> foundItems) {
         if (this.foundItems == null) {
-            this.foundItems = new ArrayList<QuestItem>();
+            this.foundItems = new ArrayList<>();
         } else {
             this.foundItems.clear();
         }
@@ -61,7 +59,7 @@ public class RetrievalStepProgress extends StepProgress {
 
     protected final void addFoundItem(final QuestItem item) {
         if (foundItems == null) {
-            foundItems = new ArrayList<QuestItem>();
+            foundItems = new ArrayList<>();
         }
 
         if (!foundItems.contains(item)) {

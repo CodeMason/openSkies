@@ -8,6 +8,7 @@ package com.github.skittishSloth.openSkies.engine.maps.areas;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -38,16 +39,44 @@ public class MapDetails {
         return npcs;
     }
 
-    public void setNpcs(Collection<MapDetailNPCEntry> npcs) {
+    public void setNpcs(final Collection<MapDetailNPCEntry> npcs) {
         if (this.npcs == null) {
-            this.npcs = new ArrayList<MapDetailNPCEntry>();
+            this.npcs = new ArrayList<>();
         } else {
             this.npcs.clear();
         }
-        
+
         if (npcs != null) {
             this.npcs.addAll(npcs);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.name);
+        hash = 89 * hash + Objects.hashCode(this.relativePath);
+        hash = 89 * hash + Objects.hashCode(this.npcs);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MapDetails other = (MapDetails) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.relativePath, other.relativePath)) {
+            return false;
+        }
+        
+        return Objects.equals(this.npcs, other.npcs);
     }
 
     private String name;

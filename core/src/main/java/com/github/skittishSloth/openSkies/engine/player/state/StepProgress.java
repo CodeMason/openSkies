@@ -43,7 +43,7 @@ public class StepProgress {
 
     public void setChildStepProgress(final Collection<StepProgress> childStepProgress) {
         if (this.childStepProgress == null) {
-            this.childStepProgress = new ArrayList<StepProgress>();
+            this.childStepProgress = new ArrayList<>();
         } else {
             this.childStepProgress.clear();
         }

@@ -1,0 +1,24 @@
+{
+
+	name: "Island",
+	startingMap: "island",
+	maps: [
+		{
+			name: "island",
+			relativePath: "island/island.tmx",
+			npcs: [
+				{
+					id: arthur,
+					location: {
+						x: 54,
+						y: 54
+					}
+				}
+			]
+		},
+		{
+			name: "arthurs_tent",
+			relativePath: "island/arthurs_tent.tmx"
+		}
+	]
+}

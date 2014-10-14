@@ -34,7 +34,7 @@ public class QuestState {
 
     public void setCurrentQuests(final Collection<QuestDetails> currentQuests) {
         if (this.currentQuests == null) {
-            this.currentQuests = new ArrayList<QuestDetails>();
+            this.currentQuests = new ArrayList<>();
         } else {
             this.currentQuests.clear();
         }
@@ -46,7 +46,7 @@ public class QuestState {
 
     public void addQuest(final QuestDetails quest) {
         if (currentQuests == null) {
-            currentQuests = new ArrayList<QuestDetails>();
+            currentQuests = new ArrayList<>();
         }
 
         if (currentQuests.contains(quest)) {
@@ -61,7 +61,7 @@ public class QuestState {
         progress.setQuest(quest);
         final List<BaseQuestStep> steps = quest.getSteps();
         if ((steps != null) && (!steps.isEmpty())) {
-            final Collection<StepProgress> stepProgresses = new ArrayList<StepProgress>(steps.size());
+            final Collection<StepProgress> stepProgresses = new ArrayList<>(steps.size());
             for (final BaseQuestStep step : steps) {
                 final StepProgress prog = buildStepProgress(step);
                 prog.setStepId(step.getId());
@@ -80,7 +80,7 @@ public class QuestState {
 
     public void setQuestProgresses(final Collection<QuestProgress> questProgresses) {
         if (this.questProgresses == null) {
-            this.questProgresses = new ArrayList<QuestProgress>();
+            this.questProgresses = new ArrayList<>();
         } else {
             this.questProgresses.clear();
         }
@@ -92,7 +92,7 @@ public class QuestState {
 
     public void addProgress(final QuestProgress progress) {
         if (questProgresses == null) {
-            questProgresses = new ArrayList<QuestProgress>();
+            questProgresses = new ArrayList<>();
         }
 
         if (questProgresses.contains(progress)) {
@@ -183,7 +183,7 @@ public class QuestState {
         if ((childSteps == null) || (childSteps.isEmpty())) {
             res = null;
         } else {
-            res = new ArrayList<StepProgress>(childSteps.size());
+            res = new ArrayList<>(childSteps.size());
             for (final BaseQuestStep childStep : childSteps) {
                 log.debug("Building child progresses for childStep {}, {}, {}.", childStep.getDescription(), childStep.getClass().getSimpleName(), childStep.getId());
                 final StepProgress prog = buildStepProgress(childStep);
