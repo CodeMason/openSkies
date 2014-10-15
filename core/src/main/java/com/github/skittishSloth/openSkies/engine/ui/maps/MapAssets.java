@@ -55,7 +55,8 @@ public class MapAssets extends BaseGameAssets {
                 }
                 
                 final String imgFileName = details.getImageFileName();
-                final String charPath = "gfx/characters/" + imgFileName.replace(".png", ".pack");
+//                final String charPath = "gfx/characters/" + imgFileName.replace(".png", ".pack");
+                final String charPath = "gfx/characters/" + imgFileName;
                 
                 getAssets().load(charPath, TextureAtlas.class);
                 npcPathsById.put(id, charPath);
@@ -82,8 +83,8 @@ public class MapAssets extends BaseGameAssets {
             return null;
         }
         
-        final String atlasPath = path.replace(".png", ".pack");
-        
+//        final String atlasPath = path.replace(".png", ".pack");
+        final String atlasPath = path;
         if (!getAssets().isLoaded(atlasPath)) {
             log.warn("Atlas Path {} has not been loaded.", atlasPath);
             return null;

@@ -7,18 +7,18 @@
 		{
 			class: "noseDetails",
 			name: Big,
-			texturePathPattern: "gfx/char-building/body/${gender}/${race}/nose/bignose_${skinColor}.png"
+			textureAtlasPathPattern: "gfx/char-building/body/${gender}/${race}/nose/bignose_${skinColor}.pack"
 		},
 		{
 			class: "noseDetails",
 			name: Button,
-			texturePathPattern: "gfx/char-building/body/${gender}/${race}/nose/buttonnose_${skinColor}.png"
+			textureAtlasPathPattern: "gfx/char-building/body/${gender}/${race}/nose/buttonnose_${skinColor}.pack"
 		},
 		{
 			class: "noseDetails",
 			name: Straight,
 			defaultDetails: true,
-			texturePathPattern: "gfx/char-building/body/${gender}/${race}/nose/straightnose_${skinColor}.png"
+			textureAtlasPathPattern: "gfx/char-building/body/${gender}/${race}/nose/straightnose_${skinColor}.pack"
 		}
 	]
 }

@@ -5,57 +5,57 @@
 			name: Blue,
 			sampleColorRgb: "5187b3",
 			defaultDetails: true,
-			maleTexturePath: "gfx/char-building/body/male/eyes/blue.png",
-			femaleTexturePath: "gfx/char-building/body/female/eyes/blue.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/eyes/blue.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/eyes/blue.pack"
 		},
 		{
 			class: "eyeDetails",
 			name: Brown,
 			sampleColorRgb: "544c2e",
-			maleTexturePath: "gfx/char-building/body/male/eyes/brown.png",
-			femaleTexturePath: "gfx/char-building/body/female/eyes/brown.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/eyes/brown.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/eyes/brown.pack"
 		},
 		{
 			class: "eyeDetails",
 			name: Gray,
 			sampleColorRgb: "8b8979",
-			maleTexturePath: "gfx/char-building/body/male/eyes/gray.png",
-			femaleTexturePath: "gfx/char-building/body/female/eyes/gray.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/eyes/gray.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/eyes/gray.pack"
 		},
 		{
 			class: "eyeDetails",
 			name: Green,
 			sampleColorRgb: "53b351",
-			maleTexturePath: "gfx/char-building/body/male/eyes/green.png",
-			femaleTexturePath: "gfx/char-building/body/female/eyes/green.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/eyes/green.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/eyes/green.pack"
 		},
 		{
 			class: "eyeDetails",
 			name: Orange,
 			sampleColorRgb: "b26237",
-			maleTexturePath: "gfx/char-building/body/male/eyes/orange.png",
-			femaleTexturePath: "gfx/char-building/body/female/eyes/orange.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/eyes/orange.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/eyes/orange.pack"
 		},
 		{
 			class: "eyeDetails",
 			name: Purple,
 			sampleColorRgb: "b90da0",
-			maleTexturePath: "gfx/char-building/body/male/eyes/purple.png",
-			femaleTexturePath: "gfx/char-building/body/female/eyes/purple.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/eyes/purple.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/eyes/purple.pack"
 		},
 		{
 			class: "eyeDetails",
 			name: Red,
 			sampleColorRgb: "cb4a39",
-			maleTexturePath: "gfx/char-building/body/male/eyes/red.png",
-			femaleTexturePath: "gfx/char-building/body/female/eyes/red.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/eyes/red.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/eyes/red.pack"
 		},
 		{
 			class: "eyeDetails",
 			name: Yellow,
 			sampleColorRgb: "d9bf46",
-			maleTexturePath: "gfx/char-building/body/male/eyes/yellow.png",
-			femaleTexturePath: "gfx/char-building/body/female/eyes/yellow.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/eyes/yellow.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/eyes/yellow.pack"
 		}
 	]
 }

@@ -34,7 +34,7 @@ public class NPCDetailsLoaderTests extends DataCollectionLoaderTests<NPCDetails>
         final String id = "arthur";
         final String name = "Arthur";
         final String description = "Researcher in charge of your expedition to the island.";
-        final String imageFileName = "researcher.png";
+        final String imageFileName = "researcher.pack";
         
         final NPCDetails npc = new NPCDetails();
         npc.setId(id);

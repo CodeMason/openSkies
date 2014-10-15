@@ -1,150 +1,150 @@
 {
 	items: [
 		{
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 			name: Black,
 			defaultDetails: true,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/black.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/black.pack"
 		},
 		{
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Blonde,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/blonde.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/blonde.pack"
 		},
 		{
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "Blonde2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/blonde2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/blonde2.pack"
 		},
 		{
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Blue,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/blue.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/blue.pack"
 		},
 		{
-		    class: "hairColorDetails",
+		    class: "facialHairColorDetails",
 		    name: "Blue2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/blue2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/blue2.pack"
 		},
 		{
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Brown,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/brown.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/brown.pack"
 		},	
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "Brown2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/brown2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/brown2.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Brunette,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/brunette.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/brunette.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "Brunette2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/brunette2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/brunette2.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Dark_blonde,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/dark_blonde.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/dark_blonde.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Gold,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/gold.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/gold.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Gray,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/gray.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/gray.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "Gray2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/gray2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/gray2.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Green,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/green.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/green.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "Green2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/green2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/green2.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Light_blonde,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/light_blonde.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/light_blonde.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "Light_blonde2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/light_blonde2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/light_blonde2.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Pink,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/pink.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/pink.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "Pink2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/pink2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/pink2.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Purple,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/purple.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/purple.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Raven,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/raven.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/raven.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "Raven2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/raven2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/raven2.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Redhead,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/redhead.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/redhead.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "Redhead2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/redhead2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/redhead2.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: Ruby_red,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/ruby_red.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/ruby_red.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: White_blonde,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/white_blonde.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/white_blonde.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: "White_blonde2",
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/white_blonde2.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/white_blonde2.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: White_cyan,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/white_cyan.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/white_cyan.pack"
 		},
 	    {
-			class: "hairColorDetails",
+			class: "facialHairColorDetails",
 		    name: White,
-			texturePathPattern: "gfx/char-building/facial/${gender}/${facialHair}/white.png"
+			textureAtlasPathPattern: "gfx/char-building/facial/${gender}/${facialHair}/white.pack"
 		}
 	]
 }

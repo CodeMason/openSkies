@@ -22,10 +22,10 @@ public class BaseDetailsTests {
         final BaseDetails bd = new BaseDetails();
         
         assertNull(bd.getDisplayName());
-        assertNull(bd.getFemaleTexturePath());
-        assertNull(bd.getMaleTexturePath());
+        assertNull(bd.getFemaleTextureAtlasPath());
+        assertNull(bd.getMaleTextureAtlasPath());
         assertNull(bd.getName());
-        assertNull(bd.getTexturePathPattern());
+        assertNull(bd.getTextureAtlasPathPattern());
         assertFalse(bd.isDefaultDetails());
         assertFalse(bd.isNullTexture());
     }
@@ -45,18 +45,18 @@ public class BaseDetailsTests {
         bd.setDisplayName(displayName);
         bd.setDefaultDetails(defaultDetails);
         bd.setNullTexture(nullTexture);
-        bd.setFemaleTexturePath(femaleTexturePath);
-        bd.setMaleTexturePath(maleTexturePath);
+        bd.setFemaleTextureAtlasPath(femaleTexturePath);
+        bd.setMaleTextureAtlasPath(maleTexturePath);
         bd.setName(name);
-        bd.setTexturePathPattern(texturePathPattern);
+        bd.setTextureAtlasPathPattern(texturePathPattern);
         
         assertEquals(displayName, bd.getDisplayName());
         assertEquals(defaultDetails, bd.isDefaultDetails());
         assertEquals(nullTexture, bd.isNullTexture());
-        assertEquals(femaleTexturePath, bd.getFemaleTexturePath());
-        assertEquals(maleTexturePath, bd.getMaleTexturePath());
+        assertEquals(femaleTexturePath, bd.getFemaleTextureAtlasPath());
+        assertEquals(maleTexturePath, bd.getMaleTextureAtlasPath());
         assertEquals(name, bd.getName());
-        assertEquals(texturePathPattern, bd.getTexturePathPattern());
+        assertEquals(texturePathPattern, bd.getTextureAtlasPathPattern());
     }
     
     @Test
@@ -74,22 +74,22 @@ public class BaseDetailsTests {
         // null texture is true, so should return false
         assertFalse(bd.hasTexture());
         
-        bd.setFemaleTexturePath(femaleTexturePath);
+        bd.setFemaleTextureAtlasPath(femaleTexturePath);
         assertTrue(bd.hasTexture());
         
-        bd.setFemaleTexturePath(null);
+        bd.setFemaleTextureAtlasPath(null);
         assertFalse(bd.hasTexture());
         
-        bd.setMaleTexturePath(maleTexturePath);
+        bd.setMaleTextureAtlasPath(maleTexturePath);
         assertTrue(bd.hasTexture());
         
-        bd.setMaleTexturePath(null);
+        bd.setMaleTextureAtlasPath(null);
         assertFalse(bd.hasTexture());
         
-        bd.setTexturePathPattern(texturePathPattern);
+        bd.setTextureAtlasPathPattern(texturePathPattern);
         assertTrue(bd.hasTexture());
         
-        bd.setTexturePathPattern(null);
+        bd.setTextureAtlasPathPattern(null);
         assertFalse(bd.hasTexture());
         
         bd.setNullTexture(false);
@@ -114,31 +114,31 @@ public class BaseDetailsTests {
         assertFalse(bd.isValidForGender(Gender.FEMALE));
         assertFalse(bd.isValidForGender(Gender.NEUTRAL));
         
-        bd.setTexturePathPattern(texturePathPattern);
+        bd.setTextureAtlasPathPattern(texturePathPattern);
         assertTrue(bd.isValidForGender(Gender.MALE));
         assertTrue(bd.isValidForGender(Gender.FEMALE));
         
-        bd.setTexturePathPattern(null);
+        bd.setTextureAtlasPathPattern(null);
         assertFalse(bd.isValidForGender(Gender.MALE));
         assertFalse(bd.isValidForGender(Gender.FEMALE));
         assertFalse(bd.isValidForGender(Gender.NEUTRAL));
         
-        bd.setFemaleTexturePath(femaleTexturePath);
+        bd.setFemaleTextureAtlasPath(femaleTexturePath);
         assertFalse(bd.isValidForGender(Gender.MALE));
         assertTrue(bd.isValidForGender(Gender.FEMALE));
         assertFalse(bd.isValidForGender(Gender.NEUTRAL));
         
-        bd.setFemaleTexturePath(null);
+        bd.setFemaleTextureAtlasPath(null);
         assertFalse(bd.isValidForGender(Gender.MALE));
         assertFalse(bd.isValidForGender(Gender.FEMALE));
         assertFalse(bd.isValidForGender(Gender.NEUTRAL));
         
-        bd.setMaleTexturePath(maleTexturePath);
+        bd.setMaleTextureAtlasPath(maleTexturePath);
         assertTrue(bd.isValidForGender(Gender.MALE));
         assertFalse(bd.isValidForGender(Gender.FEMALE));
         assertFalse(bd.isValidForGender(Gender.NEUTRAL));
         
-        bd.setMaleTexturePath(null);
+        bd.setMaleTextureAtlasPath(null);
         assertFalse(bd.isValidForGender(Gender.MALE));
         assertFalse(bd.isValidForGender(Gender.FEMALE));
         assertFalse(bd.isValidForGender(Gender.NEUTRAL));
@@ -158,21 +158,21 @@ public class BaseDetailsTests {
         assertFalse(bd.hasTexture());
         
         final Map<String, String> params = new HashMap<>();
-        assertNull(bd.getTexturePath(Gender.MALE, params));
+        assertNull(bd.getTextureAtlasPath(Gender.MALE, params));
         
         bd.setNullTexture(false);
-        bd.setMaleTexturePath(maleTexturePath);
-        bd.setFemaleTexturePath(femaleTexturePath);
+        bd.setMaleTextureAtlasPath(maleTexturePath);
+        bd.setFemaleTextureAtlasPath(femaleTexturePath);
         
-        assertEquals(femaleTexturePath, bd.getTexturePath(Gender.FEMALE, params));
-        assertEquals(maleTexturePath, bd.getTexturePath(Gender.MALE, params));
+        assertEquals(femaleTexturePath, bd.getTextureAtlasPath(Gender.FEMALE, params));
+        assertEquals(maleTexturePath, bd.getTextureAtlasPath(Gender.MALE, params));
         
-        assertNull(bd.getTexturePath(Gender.NEUTRAL, params));
+        assertNull(bd.getTextureAtlasPath(Gender.NEUTRAL, params));
         
-        bd.setTexturePathPattern(texturePathPattern);
+        bd.setTextureAtlasPathPattern(texturePathPattern);
         
         params.put("${replace}", "target");
         final String expTexturePathPattern = "Texture Path Pattern target";
-        assertEquals(expTexturePathPattern, bd.getTexturePath(Gender.MALE, params));
+        assertEquals(expTexturePathPattern, bd.getTextureAtlasPath(Gender.MALE, params));
     }
 }

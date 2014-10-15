@@ -47,28 +47,28 @@ public class BaseDetails {
         this.defaultDetails = defaultDetails;
     }
 
-    public final String getTexturePathPattern() {
-        return texturePathPattern;
+    public final String getTextureAtlasPathPattern() {
+        return textureAtlasPathPattern;
     }
 
-    public final void setTexturePathPattern(final String texturePathPattern) {
-        this.texturePathPattern = texturePathPattern;
+    public final void setTextureAtlasPathPattern(final String textureAtlasPathPattern) {
+        this.textureAtlasPathPattern = textureAtlasPathPattern;
     }
 
-    public final String getMaleTexturePath() {
-        return maleTexturePath;
+    public final String getMaleTextureAtlasPath() {
+        return maleTextureAtlasPath;
     }
 
-    public final void setMaleTexturePath(final String maleTexturePath) {
-        this.maleTexturePath = maleTexturePath;
+    public final void setMaleTextureAtlasPath(final String maleTextureAtlasPath) {
+        this.maleTextureAtlasPath = maleTextureAtlasPath;
     }
 
-    public final String getFemaleTexturePath() {
-        return femaleTexturePath;
+    public final String getFemaleTextureAtlasPath() {
+        return femaleTextureAtlasPath;
     }
 
-    public final void setFemaleTexturePath(final String femaleTexturePath) {
-        this.femaleTexturePath = femaleTexturePath;
+    public final void setFemaleTextureAtlasPath(final String femaleTextureAtlasPath) {
+        this.femaleTextureAtlasPath = femaleTextureAtlasPath;
     }
 
     public boolean isNullTexture() {
@@ -80,17 +80,17 @@ public class BaseDetails {
     }
     
     public final boolean isValidForGender(final Gender gender) {
-        if (StringUtils.isNotBlank(texturePathPattern) || nullTexture) {
+        if (StringUtils.isNotBlank(textureAtlasPathPattern) || nullTexture) {
             return true;
         }
 
         boolean res;
         switch (gender) {
             case MALE:
-                res = StringUtils.isNotBlank(maleTexturePath);
+                res = StringUtils.isNotBlank(maleTextureAtlasPath);
                 break;
             case FEMALE:
-                res = StringUtils.isNotBlank(femaleTexturePath);
+                res = StringUtils.isNotBlank(femaleTextureAtlasPath);
                 break;
             default:
                 res = false;
@@ -100,13 +100,13 @@ public class BaseDetails {
         return res;
     }
     
-    public final String getTexturePath(final Gender gender, final Map<String, String> patternVariables) {
+    public final String getTextureAtlasPath(final Gender gender, final Map<String, String> patternVariables) {
         if (!hasTexture()) {
             return null;
         }
         
-        if (StringUtils.isNotBlank(texturePathPattern)) {
-            String res = texturePathPattern;
+        if (StringUtils.isNotBlank(textureAtlasPathPattern)) {
+            String res = textureAtlasPathPattern;
             for (final String patternVar : patternVariables.keySet()) {
                 res = res.replace(patternVar, patternVariables.get(patternVar));
             }
@@ -114,16 +114,16 @@ public class BaseDetails {
             return res;
         } else {
             if (gender == Gender.MALE) {
-                return maleTexturePath;
+                return maleTextureAtlasPath;
             } else if (gender == Gender.FEMALE) {
-                return femaleTexturePath;
+                return femaleTextureAtlasPath;
             }
         }
         
         return null;
     }
 
-    public final String getTexturePath(final CharacterData characterData) {
+    public final String getTextureAtlasPath(final CharacterData characterData) {
         if (!hasTexture()) {
             return null;
         }
@@ -138,19 +138,19 @@ public class BaseDetails {
         patternVars.putAll(appearanceVars);
         patternVars.putAll(clothingVars);
         
-        return getTexturePath(gender, patternVars);
+        return getTextureAtlasPath(gender, patternVars);
     }
 
     public final boolean hasTexture() {
-        if (StringUtils.isNotBlank(texturePathPattern)) {
+        if (StringUtils.isNotBlank(textureAtlasPathPattern)) {
             return true;
         }
         
-        if (StringUtils.isNotBlank(maleTexturePath)) {
+        if (StringUtils.isNotBlank(maleTextureAtlasPath)) {
             return true;
         }
         
-        if (StringUtils.isNotBlank(femaleTexturePath)) {
+        if (StringUtils.isNotBlank(femaleTextureAtlasPath)) {
             return true;
         }
         
@@ -160,8 +160,8 @@ public class BaseDetails {
     private String name;
     private String displayName;
     private boolean defaultDetails;
-    private String texturePathPattern;
-    private String maleTexturePath;
-    private String femaleTexturePath;
+    private String textureAtlasPathPattern;
+    private String maleTextureAtlasPath;
+    private String femaleTextureAtlasPath;
     private boolean nullTexture;
 }

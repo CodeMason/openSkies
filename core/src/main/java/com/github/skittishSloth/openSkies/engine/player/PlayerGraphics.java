@@ -126,7 +126,7 @@ public class PlayerGraphics {
             return null;
         }
         
-        final String texturePath = details.getTexturePath(characterData);
+        final String texturePath = details.getTextureAtlasPath(characterData);
         if (!assets.isLoaded(texturePath, Texture.class)) {
             assets.load(texturePath, Texture.class);
             assets.finishLoading();
@@ -143,8 +143,8 @@ public class PlayerGraphics {
             return null;
         }
         
-        final String texturePath = details.getTexturePath(characterData);
-        final String textureAtlasPath = texturePath.replace(".png", ".pack");
+        final String textureAtlasPath = details.getTextureAtlasPath(characterData);
+//        final String textureAtlasPath = texturePath.replace(".png", ".pack");
         if (!assets.isLoaded(textureAtlasPath, TextureAtlas.class)) {
             assets.load(textureAtlasPath, TextureAtlas.class);
             assets.finishLoading();

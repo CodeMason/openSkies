@@ -5,19 +5,19 @@
 			name: Black,
 			sampleColorRgb: "313131",
 			defaultDetails: true,
-			texturePathPattern: "gfx/char-building/feet/shoes/${gender}/black_shoes_${gender}.png"
+			textureAtlasPathPattern: "gfx/char-building/feet/shoes/${gender}/black_shoes_${gender}.pack"
 		},
 		{
 			class: "shoeColorDetails",
 			name: Brown,
 			sampleColorRgb: "865e40",
-			texturePathPattern: "gfx/char-building/feet/shoes/${gender}/brown_shoes_${gender}.png"
+			textureAtlasPathPattern: "gfx/char-building/feet/shoes/${gender}/brown_shoes_${gender}.pack"
 		},
 		{
 			class: "shoeColorDetails",
 			name: Maroon,
 			sampleColorRgb: "83534e",
-			texturePathPattern: "gfx/char-building/feet/shoes/${gender}/maroon_shoes_${gender}.png"
+			textureAtlasPathPattern: "gfx/char-building/feet/shoes/${gender}/maroon_shoes_${gender}.pack"
 		}
 	]
 }

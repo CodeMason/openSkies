@@ -4,147 +4,147 @@
 			class: "hairColorDetails",
 			name: Black,
 			defaultDetails: true,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/black.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/black.pack"
 		},
 		{
 			class: "hairColorDetails",
 		    name: Blonde,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/blonde.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/blonde.pack"
 		},
 		{
 			class: "hairColorDetails",
 		    name: "Blonde2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/blonde2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/blonde2.pack"
 		},
 		{
 			class: "hairColorDetails",
 		    name: Blue,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/blue.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/blue.pack"
 		},
 		{
 		    class: "hairColorDetails",
 		    name: "Blue2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/blue2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/blue2.pack"
 		},
 		{
 			class: "hairColorDetails",
 		    name: Brown,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/brown.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/brown.pack"
 		},	
 	    {
 			class: "hairColorDetails",
 		    name: "Brown2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/brown2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/brown2.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Brunette,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/brunette.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/brunette.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: "Brunette2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/brunette2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/brunette2.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Dark_blonde,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/dark_blonde.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/dark_blonde.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Gold,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/gold.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/gold.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Gray,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/gray.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/gray.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: "Gray2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/gray2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/gray2.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Green,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/green.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/green.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: "Green2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/green2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/green2.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Light_blonde,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/light_blonde.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/light_blonde.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: "Light_blonde2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/light_blonde2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/light_blonde2.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Pink,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/pink.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/pink.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: "Pink2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/pink2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/pink2.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Purple,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/purple.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/purple.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Raven,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/raven.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/raven.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: "Raven2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/raven2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/raven2.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Redhead,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/redhead.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/redhead.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: "Redhead2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/redhead2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/redhead2.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: Ruby_red,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/ruby_red.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/ruby_red.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: White_blonde,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/white_blonde.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/white_blonde.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: "White_blonde2",
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/white_blonde2.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/white_blonde2.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: White_cyan,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/white_cyan.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/white_cyan.pack"
 		},
 	    {
 			class: "hairColorDetails",
 		    name: White,
-			texturePathPattern: "gfx/char-building/hair/${gender}/${hair}/white.png"
+			textureAtlasPathPattern: "gfx/char-building/hair/${gender}/${hair}/white.pack"
 		}
 	]
 }

@@ -6,56 +6,56 @@
 			sampleColorRgb: "fdd5b7",
 			race: Human,
 			defaultDetails: true,
-			maleTexturePath: "gfx/char-building/body/male/human/body/light.png",
-			femaleTexturePath: "gfx/char-building/body/female/human/body/light.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/human/body/light.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/human/body/light.pack"
 		},
 		{
 			class: "skinColorDetails",
 			name: Tanned,
 			sampleColorRgb: "fdd082",
 			race: Human,
-			maleTexturePath: "gfx/char-building/body/male/human/body/tanned.png",
-			femaleTexturePath: "gfx/char-building/body/female/human/body/tanned.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/human/body/tanned.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/human/body/tanned.pack"
 		},
 		{
 			class: "skinColorDetails",
 			name: "Tanned2",
 			sampleColorRgb: "ecc479",
 			race: Human,
-			maleTexturePath: "gfx/char-building/body/male/human/body/tanned2.png",
-			femaleTexturePath: "gfx/char-building/body/female/human/body/tanned2.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/human/body/tanned2.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/human/body/tanned2.pack"
 		},
 		{
 			class: "skinColorDetails",
 			name: Dark,
 			sampleColorRgb: "ba8454",
 			race: Human,
-			maleTexturePath: "gfx/char-building/body/male/human/body/dark.png",
-			femaleTexturePath: "gfx/char-building/body/female/human/body/dark.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/human/body/dark.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/human/body/dark.pack"
 		},
 		{
 			class: "skinColorDetails",
 			name: "Dark2",
 			sampleColorRgb: "9c663e",
 			race: Human,
-			maleTexturePath: "gfx/char-building/body/male/human/body/dark2.png",
-			femaleTexturePath: "gfx/char-building/body/female/human/body/dark2.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/human/body/dark2.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/human/body/dark2.pack"
 		},
 		{
 			class: "skinColorDetails",
 			name: DarkElf,
 			sampleColorRgb: "aeb3ca",
 			race: Elf,
-			maleTexturePath: "gfx/char-building/body/male/elf/body/darkelf.png",
-			femaleTexturePath: "gfx/char-building/body/female/elf/body/darkelf.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/elf/body/darkelf.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/elf/body/darkelf.pack"
 		},
 		{
 			class: "skinColorDetails",
 			name: "DarkElf2",
 			sampleColorRgb: "c9d0ee",
 			race: Elf,
-			maleTexturePath: "gfx/char-building/body/male/elf/body/darkelf2.png",
-			femaleTexturePath: "gfx/char-building/body/female/elf/body/darkelf2.png"
+			maleTextureAtlasPath: "gfx/char-building/body/male/elf/body/darkelf2.pack",
+			femaleTextureAtlasPath: "gfx/char-building/body/female/elf/body/darkelf2.pack"
 		}
 	]
 }

@@ -5,25 +5,25 @@
 			name: Brown,
 			sampleColorRgb: "744b30",
 			defaultDetails: true,
-			texturePathPattern: "gfx/char-building/torso/shirts/${shirt}/${gender}/brown_${shirt}.png"
+			textureAtlasPathPattern: "gfx/char-building/torso/shirts/${shirt}/${gender}/brown_${shirt}.pack"
 		},
 		{
 			class: "shirtColorDetails",
 			name: Maroon,
 			sampleColorRgb: "641f1f",
-			texturePathPattern: "gfx/char-building/torso/shirts/${shirt}/${gender}/maroon_${shirt}.png"
+			textureAtlasPathPattern: "gfx/char-building/torso/shirts/${shirt}/${gender}/maroon_${shirt}.pack"
 		},
 		{
 			class: "shirtColorDetails",
 			name: Teal,
 			sampleColorRgb: "28b2c6",
-			texturePathPattern: "gfx/char-building/torso/shirts/${shirt}/${gender}/teal_${shirt}.png"
+			textureAtlasPathPattern: "gfx/char-building/torso/shirts/${shirt}/${gender}/teal_${shirt}.pack"
 		},
 		{
 			class: "shirtColorDetails",
 			name: White,
 			sampleColorRgb: "e5e6c7",
-			texturePathPattern: "gfx/char-building/torso/shirts/${shirt}/${gender}/white_${shirt}.png"
+			textureAtlasPathPattern: "gfx/char-building/torso/shirts/${shirt}/${gender}/white_${shirt}.pack"
 		}
 	]
 }

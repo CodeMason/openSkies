@@ -563,8 +563,9 @@ public class CharacterBuilderAssets extends BaseGameAssets {
     }
 
     private DirectionalSprite buildSprite(final BaseDetails details, final Gender gender, final Map<String, String> patternVars) {
-        final String texturePath = details.getTexturePath(gender, patternVars);
-        final String atlasPath = texturePath.replace(".png", ".pack");
+        final String texturePath = details.getTextureAtlasPath(gender, patternVars);
+//        final String atlasPath = texturePath.replace(".png", ".pack");
+        final String atlasPath = texturePath;
         if (!isTexturePathAvailable(atlasPath)) {
             return null;
         }
