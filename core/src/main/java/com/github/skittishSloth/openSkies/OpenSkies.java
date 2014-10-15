@@ -20,7 +20,6 @@ import com.github.skittishSloth.openSkies.engine.player.details.DetailsLoader;
 import com.github.skittishSloth.openSkies.engine.player.state.PlayerState;
 import com.github.skittishSloth.openSkies.engine.player.state.QuestState;
 import com.github.skittishSloth.openSkies.engine.quests.QuestManager;
-import com.github.skittishSloth.openSkies.engine.ui.dialog.DialogTestScreen;
 import com.github.skittishSloth.openSkies.engine.ui.maps.MapScreenManager;
 import java.util.HashMap;
 import java.util.List;
@@ -41,9 +40,9 @@ public final class OpenSkies extends Game {
         final FileHandle itemDetailsFile = new FileHandle("data/items/items.json");
         final DataCollection<ItemDetails> itemColl = ItemDetailsLoader.fromJson(itemDetailsFile);
         itemDetailsManager = new ItemDetailsManager(itemColl);
-        
+
         questManager = new QuestManager(itemDetailsManager);
-        
+
         final FileHandle outputFile = new FileHandle("/Users/mcory01/character.json");
         this.characterData = DetailsLoader.loadCharacterData(outputFile);
 
@@ -57,26 +56,26 @@ public final class OpenSkies extends Game {
         for (final NPCDetails npc : npcDetailsList) {
             this.npcDetails.put(npc.getId(), npc);
         }
-        
+
         final QuestState questState = new QuestState();
         final Inventory inventory = new Inventory();
-        
+
         playerState = new PlayerState();
         playerState.setQuestState(questState);
         playerState.setInventory(inventory);
-        
+
         final String questPath = "data/quests/quests.json";
         questManager.loadQuests(questPath);
         log.debug("Number of quests: {}", questManager.getAvailableQuests().size());
 
         mapScreenManager = new MapScreenManager(this);
 
-//        dlgTest = new DialogTestScreen(this);
-//        setScreen(dlgTest);
-        
         localScreen = new LocalScreen(this, mapScreenManager.getMapAssets());
         mapScreenManager.setAfterLoadingScreen(localScreen);
         mapScreenManager.start();
+        
+//        spriteScreen = new AnimatedSpriteScreen(this);
+//        setScreen(spriteScreen);
 
 //        mainMenu = new MainMenuScreen(this);
 //        setScreen(mainMenu);
@@ -93,11 +92,11 @@ public final class OpenSkies extends Game {
     public Map<String, NPCDetails> getNPCDetails() {
         return npcDetails;
     }
-    
+
     public QuestManager getQuestManager() {
         return questManager;
     }
-    
+
     public PlayerState getPlayerState() {
         return playerState;
     }
@@ -109,25 +108,24 @@ public final class OpenSkies extends Game {
         GdxUtils.safeScreenDispose(localScreen);
         GdxUtils.safeDispose(mapScreenManager);
 
-        GdxUtils.safeScreenDispose(dlgTest);
+        GdxUtils.safeScreenDispose(spriteScreen);
 
         super.dispose();
     }
 
-
     private MainMenuScreen mainMenu;
     private LocalScreen localScreen;
 
-    private DialogTestScreen dlgTest;
-
     private MapScreenManager mapScreenManager;
-    
+
     private CharacterData characterData;
     private AreaDetails currentArea;
     private final Map<String, NPCDetails> npcDetails = new HashMap<>();
-    
+
     private QuestManager questManager;
     private ItemDetailsManager itemDetailsManager;
-    
+
     private PlayerState playerState;
+
+    private AnimatedSpriteScreen spriteScreen;
 }

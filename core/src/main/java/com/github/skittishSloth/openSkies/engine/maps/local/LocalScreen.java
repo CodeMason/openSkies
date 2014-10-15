@@ -478,9 +478,9 @@ public class LocalScreen extends AbstractScreen {
     private final World world;
     private final RayHandler rayHandler;
 
-    private final Map<Vector2, Light> currentLights = new HashMap<Vector2, Light>();
-    private final Map<LightTile, LightingAnimation> lightingAnimations = new HashMap<LightTile, LightingAnimation>();
-    private final Map<String, LightTile> lightingTilesByName = new HashMap<String, LightTile>();
+    private final Map<Vector2, Light> currentLights = new HashMap<>();
+    private final Map<LightTile, LightingAnimation> lightingAnimations = new HashMap<>();
+    private final Map<String, LightTile> lightingTilesByName = new HashMap<>();
 
     private final FadeInOutEffect fade;
 

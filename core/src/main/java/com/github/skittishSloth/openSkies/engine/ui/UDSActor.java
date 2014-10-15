@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.github.skittishSloth.openSkies.engine.common.Direction;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
-import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.DirectionalSprite;
 
 /**
  *
@@ -23,7 +23,7 @@ public class UDSActor extends Actor {
         super();
     }
     
-    public UDSActor(final UniversalDirectionalSprite sprite) {
+    public UDSActor(final DirectionalSprite sprite) {
         this();
         this.sprite = sprite;
     }
@@ -50,39 +50,39 @@ public class UDSActor extends Actor {
         }
     }
     
-    public void setSprite(final UniversalDirectionalSprite sprite) {
+    public void setSprite(final DirectionalSprite sprite) {
         this.sprite = sprite;
     }
     
-    public void setEyeSprite(final UniversalDirectionalSprite eyeSprite) {
+    public void setEyeSprite(final DirectionalSprite eyeSprite) {
         this.eyeSprite = eyeSprite;
     }
     
-    public void setEarSprite(final UniversalDirectionalSprite earSprite) {
+    public void setEarSprite(final DirectionalSprite earSprite) {
         this.earSprite = earSprite;
     }
     
-    public void setNoseSprite(final UniversalDirectionalSprite noseSprite) {
+    public void setNoseSprite(final DirectionalSprite noseSprite) {
         this.noseSprite = noseSprite;
     }
     
-    public void setHairSprite(final UniversalDirectionalSprite hairSprite) {
+    public void setHairSprite(final DirectionalSprite hairSprite) {
         this.hairSprite = hairSprite;
     }
     
-    public void setFacialHairSprite(final UniversalDirectionalSprite hairSprite) {
+    public void setFacialHairSprite(final DirectionalSprite hairSprite) {
         this.facialHairSprite = hairSprite;
     }
     
-    public void setShirtSprite(final UniversalDirectionalSprite shirtSprite) {
+    public void setShirtSprite(final DirectionalSprite shirtSprite) {
         this.shirtSprite = shirtSprite;
     }
     
-    public void setPantsSprite(final UniversalDirectionalSprite pantsSprite) {
+    public void setPantsSprite(final DirectionalSprite pantsSprite) {
         this.pantsSprite = pantsSprite;
     }
     
-    public void setShoeSprite(final UniversalDirectionalSprite shoeSprite) {
+    public void setShoeSprite(final DirectionalSprite shoeSprite) {
         this.shoeSprite = shoeSprite;
     }
 
@@ -104,7 +104,7 @@ public class UDSActor extends Actor {
         safeDraw(batch, hairSprite);
     }
     
-    private void safeDraw(final Batch batch, final UniversalDirectionalSprite spriteToDraw) {
+    private void safeDraw(final Batch batch, final DirectionalSprite spriteToDraw) {
         if (spriteToDraw != null) {
             final TextureRegion region = spriteToDraw.getTextureRegion(deltaTime);
             batch.draw(region, getX(), getY());
@@ -112,5 +112,5 @@ public class UDSActor extends Actor {
     }
     
     private float deltaTime = 0f;
-    private UniversalDirectionalSprite sprite, eyeSprite, earSprite, noseSprite, hairSprite, facialHairSprite, shirtSprite, pantsSprite, shoeSprite;
+    private DirectionalSprite sprite, eyeSprite, earSprite, noseSprite, hairSprite, facialHairSprite, shirtSprite, pantsSprite, shoeSprite;
 }

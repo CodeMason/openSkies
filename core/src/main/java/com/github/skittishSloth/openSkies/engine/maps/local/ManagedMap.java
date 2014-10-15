@@ -50,7 +50,7 @@ import com.github.skittishSloth.openSkies.engine.quests.QuestGiver;
 import com.github.skittishSloth.openSkies.engine.quests.QuestItem;
 import com.github.skittishSloth.openSkies.engine.quests.QuestManager;
 import com.github.skittishSloth.openSkies.engine.quests.RetrievalStep;
-import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.DirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.maps.MapAssets;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -112,7 +112,7 @@ public class ManagedMap {
             if (questsByGiverId.containsKey(id)) {
                 giverQuests = questsByGiverId.get(id);
             } else {
-                giverQuests = new ArrayList<QuestDetails>();
+                giverQuests = new ArrayList<>();
                 questsByGiverId.put(id, giverQuests);
             }
             giverQuests.add(qd);
@@ -338,7 +338,7 @@ public class ManagedMap {
         final MapLayer objectsLayer = getObjectsLayer();
         final MapObjects objects = objectsLayer.getObjects();
         
-        final Map<String, QuestItem> itemsByName = new HashMap<String, QuestItem>();
+        final Map<String, QuestItem> itemsByName = new HashMap<>();
         for (final QuestDetails quest : currentQuests) {
             final List<MapSpecificStep> mapSpecificSteps = quest.getMapSpecificSteps(name);
             if (CollectionUtils.isEmpty(mapSpecificSteps)) {
@@ -807,7 +807,7 @@ public class ManagedMap {
         
         for (final MapDetailNPCEntry mapNpc : npcEntries) {
             final String id = mapNpc.getId();
-            final UniversalDirectionalSprite sprite = mapAssets.getNPC(id);
+            final DirectionalSprite sprite = mapAssets.getNPC(id);
             if (sprite == null) {
                 log.warn("Sprite was null for id '{}'", id);
                 continue;
@@ -842,7 +842,7 @@ public class ManagedMap {
     private void initializeAnimations() {
         // get all tile sets in the map.
         final TiledMapTileSets allSets = map.getTileSets();
-        final Map<String, Array<StaticTiledMapTile>> randomTemp = new HashMap<String, Array<StaticTiledMapTile>>();
+        final Map<String, Array<StaticTiledMapTile>> randomTemp = new HashMap<>();
         for (final TiledMapTileSet tileSet : allSets) {
             for (final TiledMapTile tile : tileSet) {
                 final MapProperties properties = tile.getProperties();
@@ -855,7 +855,7 @@ public class ManagedMap {
                 if (animatedTiles.containsKey(animation)) {
                     tiles = animatedTiles.get(animation);
                 } else {
-                    tiles = new Array<StaticTiledMapTile>();
+                    tiles = new Array<>();
                     animatedTiles.put(animation, tiles);
                 }
 
@@ -878,12 +878,12 @@ public class ManagedMap {
             if (randomizedAnimatedTiles.containsKey(animName)) {
                 shuffled = randomizedAnimatedTiles.get(animName);
             } else {
-                shuffled = new Array<Array<StaticTiledMapTile>>(numTiles);
+                shuffled = new Array<>(numTiles);
                 randomizedAnimatedTiles.put(animName, shuffled);
             }
 
             for (int i = 0; i < numTiles; ++i) {
-                final Array<StaticTiledMapTile> copy = new Array<StaticTiledMapTile>(tiles);
+                final Array<StaticTiledMapTile> copy = new Array<>(tiles);
                 copy.shuffle();
                 shuffled.add(copy);
             }
@@ -1012,13 +1012,13 @@ public class ManagedMap {
         }
     }
 
-    private final Map<String, Item> items = new HashMap<String, Item>();
-    private final Map<String, NPC> npcs = new HashMap<String, NPC>();
-    private final Map<String, Array<StaticTiledMapTile>> animatedTiles = new HashMap<String, Array<StaticTiledMapTile>>();
-    private final Map<String, Array<Array<StaticTiledMapTile>>> randomizedAnimatedTiles = new HashMap<String, Array<Array<StaticTiledMapTile>>>();
-    private final List<LightTile> lights = new ArrayList<LightTile>();
-    private final List<QuestDetails> availableQuests = new ArrayList<QuestDetails>();
-    private final Map<String, List<QuestDetails>> questsByGiverId = new HashMap<String, List<QuestDetails>>();
+    private final Map<String, Item> items = new HashMap<>();
+    private final Map<String, NPC> npcs = new HashMap<>();
+    private final Map<String, Array<StaticTiledMapTile>> animatedTiles = new HashMap<>();
+    private final Map<String, Array<Array<StaticTiledMapTile>>> randomizedAnimatedTiles = new HashMap<>();
+    private final List<LightTile> lights = new ArrayList<>();
+    private final List<QuestDetails> availableQuests = new ArrayList<>();
+    private final Map<String, List<QuestDetails>> questsByGiverId = new HashMap<>();
     private final TiledMap map;
     private final String name;
     private final MapDetails mapDetails;
@@ -1035,5 +1035,5 @@ public class ManagedMap {
     private final Rectangle characterRectangle;
     private final Rectangle searchRectangle;
     private final QuestState questState;
-    private final Map<String, QuestItem> availableQuestItems = new HashMap<String, QuestItem>();
+    private final Map<String, QuestItem> availableQuestItems = new HashMap<>();
 }

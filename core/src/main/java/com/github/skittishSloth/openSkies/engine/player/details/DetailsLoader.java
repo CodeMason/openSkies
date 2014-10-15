@@ -7,6 +7,7 @@ package com.github.skittishSloth.openSkies.engine.player.details;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 
 /**
@@ -43,6 +44,7 @@ public class DetailsLoader {
     }
     
     public static void saveJson(final Object obj, final FileHandle outputFile) {
+        json.setOutputType(JsonWriter.OutputType.json);
         json.toJson(obj, outputFile);
     }
 }

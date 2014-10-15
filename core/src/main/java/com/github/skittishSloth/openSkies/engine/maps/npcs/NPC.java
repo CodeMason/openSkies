@@ -7,7 +7,7 @@ package com.github.skittishSloth.openSkies.engine.maps.npcs;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.github.skittishSloth.openSkies.engine.quests.QuestDetails;
-import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.DirectionalSprite;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class NPC {
     
-    public NPC(final String npcName, final UniversalDirectionalSprite sprite, final Rectangle rectangle) {
+    public NPC(final String npcName, final DirectionalSprite sprite, final Rectangle rectangle) {
         this.npcName = npcName;
         this.sprite = sprite;
         
@@ -34,7 +34,7 @@ public class NPC {
         return npcName;
     }
 
-    public UniversalDirectionalSprite getSprite() {
+    public DirectionalSprite getSprite() {
         return sprite;
     }
 
@@ -70,7 +70,7 @@ public class NPC {
     }
 
     private final String npcName;
-    private final UniversalDirectionalSprite sprite;
+    private final DirectionalSprite sprite;
     private final Rectangle rectangle, collisionRectangle;
-    private final List<QuestDetails> availableQuests = new ArrayList<QuestDetails>();
+    private final List<QuestDetails> availableQuests = new ArrayList<>();
 }

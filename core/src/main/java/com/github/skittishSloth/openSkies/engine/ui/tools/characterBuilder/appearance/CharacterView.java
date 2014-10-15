@@ -16,7 +16,7 @@ import com.github.skittishSloth.openSkies.engine.player.details.ColoredDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.Gender;
 import com.github.skittishSloth.openSkies.engine.player.details.SkinColorDetails;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
-import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.DirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.UDSActor;
 import com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder.CharacterBuilderAssets;
 import java.util.Collection;
@@ -236,31 +236,31 @@ public final class CharacterView extends Table implements Disposable {
     }
 
     private void updateCurrentSprite() {
-        final UniversalDirectionalSprite sprite = assets.getBodySprite(appearanceData);
+        final DirectionalSprite sprite = assets.getBodySprite(appearanceData);
         initSpriteState(sprite);
 
-        final UniversalDirectionalSprite eyes = assets.getEyeDetailsSprite(appearanceData);
+        final DirectionalSprite eyes = assets.getEyeDetailsSprite(appearanceData);
         initSpriteState(eyes);
 
-        final UniversalDirectionalSprite nose = assets.getNoseSprite(appearanceData);
+        final DirectionalSprite nose = assets.getNoseSprite(appearanceData);
         initSpriteState(nose);
 
-        final UniversalDirectionalSprite ears = assets.getEarDetailsSprite(appearanceData);
+        final DirectionalSprite ears = assets.getEarDetailsSprite(appearanceData);
         initSpriteState(ears);
 
-        final UniversalDirectionalSprite hair = assets.getHairSprite(appearanceData);
+        final DirectionalSprite hair = assets.getHairSprite(appearanceData);
         initSpriteState(hair);
         
-        final UniversalDirectionalSprite facialHair = assets.getFacialHairSprite(appearanceData);
+        final DirectionalSprite facialHair = assets.getFacialHairSprite(appearanceData);
         initSpriteState(facialHair);
 
-        final UniversalDirectionalSprite shirt = assets.getShirtSprite(appearanceData, clothing);
+        final DirectionalSprite shirt = assets.getShirtSprite(appearanceData, clothing);
         initSpriteState(shirt);
 
-        final UniversalDirectionalSprite pants = assets.getPantsSprite(appearanceData, clothing);
+        final DirectionalSprite pants = assets.getPantsSprite(appearanceData, clothing);
         initSpriteState(pants);
 
-        final UniversalDirectionalSprite shoes = assets.getShoeSprite(appearanceData, clothing);
+        final DirectionalSprite shoes = assets.getShoeSprite(appearanceData, clothing);
         initSpriteState(shoes);
 
         spriteActor.setSprite(sprite);
@@ -274,7 +274,7 @@ public final class CharacterView extends Table implements Disposable {
         spriteActor.setShoeSprite(shoes);
     }
 
-    private void initSpriteState(final UniversalDirectionalSprite sprite) {
+    private void initSpriteState(final DirectionalSprite sprite) {
         if (sprite == null) {
             return;
         }

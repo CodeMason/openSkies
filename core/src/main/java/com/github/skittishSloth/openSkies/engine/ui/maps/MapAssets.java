@@ -6,13 +6,15 @@
 package com.github.skittishSloth.openSkies.engine.ui.maps;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetails;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetailNPCEntry;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
 import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
-import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.AtlasSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.DirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.BaseGameAssets;
 import java.util.HashMap;
 import java.util.List;
@@ -52,8 +54,10 @@ public class MapAssets extends BaseGameAssets {
                     continue;
                 }
                 
-                final String charPath = "gfx/characters/" + details.getImageFileName();
-                getAssets().load(charPath, Texture.class);
+                final String imgFileName = details.getImageFileName();
+                final String charPath = "gfx/characters/" + imgFileName.replace(".png", ".pack");
+                
+                getAssets().load(charPath, TextureAtlas.class);
                 npcPathsById.put(id, charPath);
             }
         }
@@ -71,20 +75,22 @@ public class MapAssets extends BaseGameAssets {
         return res;
     }
     
-    public UniversalDirectionalSprite getNPC(final String id) {
+    public DirectionalSprite getNPC(final String id) {
         final String path = npcPathsById.get(id);
         if (path == null) {
             log.warn("No character path registered for id '{}", id);
             return null;
         }
         
-        if (!getAssets().isLoaded(path)) {
-            log.warn("Path {} has not been loaded.", path);
+        final String atlasPath = path.replace(".png", ".pack");
+        
+        if (!getAssets().isLoaded(atlasPath)) {
+            log.warn("Atlas Path {} has not been loaded.", atlasPath);
             return null;
         }
         
-        final Texture texture = getAssets().get(path, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
+        final TextureAtlas texture = getAssets().get(atlasPath, TextureAtlas.class);
+        final DirectionalSprite res = new AtlasSprite(texture);
         return res;
     }
     

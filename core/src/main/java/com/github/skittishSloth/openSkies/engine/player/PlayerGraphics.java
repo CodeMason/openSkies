@@ -7,6 +7,7 @@ package com.github.skittishSloth.openSkies.engine.player;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.github.skittishSloth.openSkies.engine.common.Direction;
 import com.github.skittishSloth.openSkies.engine.player.details.BaseDetails;
@@ -14,7 +15,8 @@ import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppeara
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterClothingData;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterData;
 import com.github.skittishSloth.openSkies.engine.sprites.AnimationState;
-import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.AtlasSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.DirectionalSprite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +71,7 @@ public class PlayerGraphics {
         return (!(isAllAnimationFinished()));
     }
 
-    public UniversalDirectionalSprite getMergedSprite() {
+    public DirectionalSprite getMergedSprite() {
         if ((mergedSprite == null) || (updateTextureRequired)) {
             mergeSprites();
         }
@@ -93,17 +95,17 @@ public class PlayerGraphics {
             return;
         }
         
-        final Texture body = getAppearanceTexture(appearance.getSkinColor());
-        final Texture ears = getAppearanceTexture(appearance.getEarDetails());
-        final Texture hair = getAppearanceTexture(appearance.getHairColor());
-        final Texture eyes = getAppearanceTexture(appearance.getEyeDetails());
-        final Texture nose = getAppearanceTexture(appearance.getNose());
+        final TextureAtlas body = getAppearanceTextureAtlas(appearance.getSkinColor());
+        final TextureAtlas ears = getAppearanceTextureAtlas(appearance.getEarDetails());
+        final TextureAtlas hair = getAppearanceTextureAtlas(appearance.getHairColor());
+        final TextureAtlas eyes = getAppearanceTextureAtlas(appearance.getEyeDetails());
+        final TextureAtlas nose = getAppearanceTextureAtlas(appearance.getNose());
         
-        final Texture torso = getAppearanceTexture(clothing.getShirtColor());
-        final Texture legs = getAppearanceTexture(clothing.getPantsColor());
-        final Texture feet = getAppearanceTexture(clothing.getShoeColor());
+        final TextureAtlas torso = getAppearanceTextureAtlas(clothing.getShirtColor());
+        final TextureAtlas legs = getAppearanceTextureAtlas(clothing.getPantsColor());
+        final TextureAtlas feet = getAppearanceTextureAtlas(clothing.getShoeColor());
         
-        final Texture[] textures = new Texture[]{
+        final TextureAtlas[] atlases = new TextureAtlas[]{
             body,
             ears,
             hair,
@@ -114,7 +116,8 @@ public class PlayerGraphics {
             feet
         };
 
-        mergedSprite = UniversalDirectionalSprite.createdMergedSprite(textures);
+//        mergedSprite = UniversalDirectionalSprite.createdMergedSprite(textures);
+        mergedSprite = AtlasSprite.createdMergedSprite(atlases);
         updateTextureRequired = false;
     }
     
@@ -135,7 +138,25 @@ public class PlayerGraphics {
         return assets.get(texturePath, Texture.class);
     }
     
-    private UniversalDirectionalSprite mergedSprite;
+    private TextureAtlas getAppearanceTextureAtlas(final BaseDetails details) {
+        if (details == null) {
+            return null;
+        }
+        
+        final String texturePath = details.getTexturePath(characterData);
+        final String textureAtlasPath = texturePath.replace(".png", ".pack");
+        if (!assets.isLoaded(textureAtlasPath, TextureAtlas.class)) {
+            assets.load(textureAtlasPath, TextureAtlas.class);
+            assets.finishLoading();
+            if (!assets.isLoaded(textureAtlasPath, TextureAtlas.class)) {
+                return null;
+            }
+        }
+        
+        return assets.get(textureAtlasPath, TextureAtlas.class);
+    }
+    
+    private DirectionalSprite mergedSprite;
     private boolean updateTextureRequired;
     private AnimationState currentAnimation = AnimationState.IDLE;
     

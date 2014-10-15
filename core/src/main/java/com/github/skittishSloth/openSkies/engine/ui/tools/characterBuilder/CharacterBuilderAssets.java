@@ -8,7 +8,7 @@ package com.github.skittishSloth.openSkies.engine.ui.tools.characterBuilder;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterAppearanceData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.github.skittishSloth.openSkies.engine.common.DataCollection;
 import com.github.skittishSloth.openSkies.engine.player.details.BaseDetails;
 import com.github.skittishSloth.openSkies.engine.player.details.CharacterClothingData;
@@ -21,7 +21,8 @@ import com.github.skittishSloth.openSkies.engine.player.info.BackStory;
 import com.github.skittishSloth.openSkies.engine.player.info.BackStoryLoader;
 import com.github.skittishSloth.openSkies.engine.player.info.PlayerClass;
 import com.github.skittishSloth.openSkies.engine.player.info.PlayerClassLoader;
-import com.github.skittishSloth.openSkies.engine.sprites.UniversalDirectionalSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.AtlasSprite;
+import com.github.skittishSloth.openSkies.engine.sprites.DirectionalSprite;
 import com.github.skittishSloth.openSkies.engine.ui.BaseGameAssets;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,7 +59,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         registerAssets();
     }
 
-    public UniversalDirectionalSprite getBodySprite(final CharacterAppearanceData appearance) {
+    public DirectionalSprite getBodySprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
             log.warn("Appearance data was null.");
             return null;
@@ -75,17 +76,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
 
         final SkinColorDetails actualColor = normalizeColorForRace(skinColor, race);
 
-        final String assetPath = actualColor.getTexturePath(gender, appearance.getPatternVariables());
-        if (!isTexturePathAvailable(assetPath)) {
-            return null;
-        }
-        
-        final Texture texture = getAssets().get(assetPath, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
-        return res;
+        return buildSprite(actualColor, gender, appearance.getPatternVariables());
     }
 
-    public UniversalDirectionalSprite getEyeDetailsSprite(final CharacterAppearanceData appearance) {
+    public DirectionalSprite getEyeDetailsSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
             log.warn("Appearance data was null.");
             return null;
@@ -98,22 +92,14 @@ public class CharacterBuilderAssets extends BaseGameAssets {
             return null;
         }
         
-        final String assetPath = buildDataEyes.getTexturePath(gender, appearance.getPatternVariables());
-        
-        if (!isTexturePathAvailable(assetPath)) {
-            return null;
-        }
-
-        final Texture texture = getAssets().get(assetPath, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
-        return res;
+        return buildSprite(buildDataEyes, gender, appearance.getPatternVariables());
     }
 
     public Collection<BaseDetails> getAvailableNoses() {
         return noseDetails;
     }
 
-    public UniversalDirectionalSprite getNoseSprite(final CharacterAppearanceData appearance) {
+    public DirectionalSprite getNoseSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
             log.warn("Appearance data was null.");
             return null;
@@ -139,19 +125,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
             return null;
         }
 
-        final String texturePath = buildNoseDetails.getTexturePath(gender, appearance.getPatternVariables());
-        if (!isTexturePathAvailable(texturePath)) {
-            log.warn("Didn't have path loaded: {}", texturePath);
-            return null;
-        }
-        
-        final Texture texture = getAssets().get(texturePath, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
-
-        return res;
+        return buildSprite(buildNoseDetails, gender, appearance.getPatternVariables());
     }
     
-    public UniversalDirectionalSprite getEarDetailsSprite(final CharacterAppearanceData appearance) {
+    public DirectionalSprite getEarDetailsSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
             log.warn("Appearance data was null.");
             return null;
@@ -177,18 +154,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
             return null;
         }
         
-        final String texturePath = buildEarDetails.getTexturePath(gender, appearance.getPatternVariables());
-        if (!isTexturePathAvailable(texturePath)) {
-            return null;
-        }
-        
-        final Texture texture = getAssets().get(texturePath, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
-
-        return res;
+        return buildSprite(buildEarDetails, gender, appearance.getPatternVariables());
     }
 
-    public UniversalDirectionalSprite getHairSprite(final CharacterAppearanceData appearance) {
+    public DirectionalSprite getHairSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
             log.warn("Appearance data was null.");
             return null;
@@ -207,18 +176,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
             return null;
         }
         
-        final String texturePath = color.getTexturePath(gender, appearance.getPatternVariables());
-        if (!isTexturePathAvailable(texturePath)) {
-            return null;
-        }
-        
-        final Texture texture = getAssets().get(texturePath, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
-
-        return res;
+        return buildSprite(color, gender, appearance.getPatternVariables());
     }
 
-    public UniversalDirectionalSprite getShirtSprite(final CharacterAppearanceData appearance, final CharacterClothingData clothing) {
+    public DirectionalSprite getShirtSprite(final CharacterAppearanceData appearance, final CharacterClothingData clothing) {
         if (appearance == null) {
             log.warn("Appearance data was null.");
             return null;
@@ -248,18 +209,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         patternVars.putAll(appearanceVars);
         patternVars.putAll(clothingVars);
         
-        final String texturePath = color.getTexturePath(gender, patternVars);
-        if (!isTexturePathAvailable(texturePath)) {
-            return null;
-        }
-        
-        final Texture texture = getAssets().get(texturePath, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
-
-        return res;
+        return buildSprite(color, gender, patternVars);
     }
 
-    public UniversalDirectionalSprite getPantsSprite(final CharacterAppearanceData appearance, final CharacterClothingData clothing) {
+    public DirectionalSprite getPantsSprite(final CharacterAppearanceData appearance, final CharacterClothingData clothing) {
         if (appearance == null) {
             log.warn("Appearance data was null.");
             return null;
@@ -288,18 +241,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         patternVars.putAll(appearanceVars);
         patternVars.putAll(clothingVars);
         
-        final String texturePath = color.getTexturePath(gender, patternVars);
-        if (!isTexturePathAvailable(texturePath)) {
-            return null;
-        }
-        
-        final Texture texture = getAssets().get(texturePath, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
-
-        return res;
+        return buildSprite(color, gender, patternVars);
     }
 
-    public UniversalDirectionalSprite getShoeSprite(final CharacterAppearanceData appearance, final CharacterClothingData clothing) {
+    public DirectionalSprite getShoeSprite(final CharacterAppearanceData appearance, final CharacterClothingData clothing) {
         if (appearance == null) {
             log.warn("Appearance data was null.");
             return null;
@@ -328,18 +273,10 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         patternVars.putAll(appearanceVars);
         patternVars.putAll(clothingVars);
         
-        final String texturePath = color.getTexturePath(gender, patternVars);
-        if (!isTexturePathAvailable(texturePath)) {
-            return null;
-        }
-        
-        final Texture texture = getAssets().get(texturePath, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
-
-        return res;
+        return buildSprite(color, gender, patternVars);
     }
     
-    public UniversalDirectionalSprite getFacialHairSprite(final CharacterAppearanceData appearance) {
+    public DirectionalSprite getFacialHairSprite(final CharacterAppearanceData appearance) {
         if (appearance == null) {
             log.warn("Appearance data was null.");
             return null;
@@ -358,15 +295,7 @@ public class CharacterBuilderAssets extends BaseGameAssets {
             return null;
         }
         
-        final String texturePath = color.getTexturePath(gender, appearance.getPatternVariables());
-        if (!isTexturePathAvailable(texturePath)) {
-            return null;
-        }
-        
-        final Texture texture = getAssets().get(texturePath, Texture.class);
-        final UniversalDirectionalSprite res = new UniversalDirectionalSprite(texture);
-
-        return res;
+        return buildSprite(color, gender, appearance.getPatternVariables());
     }
     
     public Collection<SkinColorDetails> getAvailableSkinColors(final BaseDetails race) {
@@ -500,17 +429,17 @@ public class CharacterBuilderAssets extends BaseGameAssets {
         final String elfPath = "/elf";
         final String humanPath = "/human";
 
-        loadPngFilesInPath(FEMALE_BODY_PATH + elfPath);
-        loadPngFilesInPath(MALE_BODY_PATH + elfPath);
+        loadPackFilesInPath(FEMALE_BODY_PATH + elfPath);
+        loadPackFilesInPath(MALE_BODY_PATH + elfPath);
 
-        loadPngFilesInPath(FEMALE_BODY_PATH + humanPath);
-        loadPngFilesInPath(MALE_BODY_PATH + humanPath);
+        loadPackFilesInPath(FEMALE_BODY_PATH + humanPath);
+        loadPackFilesInPath(MALE_BODY_PATH + humanPath);
 
-        loadPngFilesInPath(SHIRT_PATH);
+        loadPackFilesInPath(SHIRT_PATH);
 
-        loadPngFilesInPath(PANTS_PATH);
+        loadPackFilesInPath(PANTS_PATH);
 
-        loadPngFilesInPath(SHOE_PATH);
+        loadPackFilesInPath(SHOE_PATH);
 
         loadPlayerClasses();
 
@@ -631,6 +560,19 @@ public class CharacterBuilderAssets extends BaseGameAssets {
     
     private void loadFacialHairStyleDetails() {
         loadAppearanceDetails("facialHairStyles.json", BaseDetails.class, facialHairStyleDetails);
+    }
+
+    private DirectionalSprite buildSprite(final BaseDetails details, final Gender gender, final Map<String, String> patternVars) {
+        final String texturePath = details.getTexturePath(gender, patternVars);
+        final String atlasPath = texturePath.replace(".png", ".pack");
+        if (!isTexturePathAvailable(atlasPath)) {
+            return null;
+        }
+        
+        final TextureAtlas texture = getAssets().get(atlasPath, TextureAtlas.class);
+        final DirectionalSprite res = new AtlasSprite(texture);
+
+        return res;
     }
     
     private static <T extends BaseDetails> T getDefaultDetails(final Collection<T> detailCollection) {

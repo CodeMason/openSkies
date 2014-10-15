@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,7 +54,7 @@ public abstract class BaseGameAssets implements Disposable {
         return assets;
     }
     
-    protected final void loadPngFilesInPath(final String path) {
+    protected final void loadPackFilesInPath(final String path) {
         final FileHandle dir = Gdx.files.internal(path);
         for (final FileHandle file : dir.list()) {
             final String filePath = file.path();
@@ -61,11 +62,11 @@ public abstract class BaseGameAssets implements Disposable {
                 continue;
             }
 
-            if (file.extension().equalsIgnoreCase("png")) {
-                assets.load(file.path(), Texture.class);
+            if (file.extension().equalsIgnoreCase("pack")) {
+                assets.load(file.path(), TextureAtlas.class);
                 loadedPaths.add(file.path());
             } else if (file.isDirectory() && !(file.name().endsWith("_ignore"))) {
-                loadPngFilesInPath(file.path());
+                loadPackFilesInPath(file.path());
             } else {
                 log.warn("Unrecognized file: {}", file.name());
             }

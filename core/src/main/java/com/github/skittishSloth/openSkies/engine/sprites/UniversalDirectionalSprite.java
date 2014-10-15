@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.github.skittishSloth.openSkies.engine.common.Direction;
 import java.util.EnumMap;
@@ -22,7 +21,7 @@ import java.util.Map;
  *
  * @author mcory01
  */
-public class UniversalDirectionalSprite implements Disposable {
+class UniversalDirectionalSprite implements DirectionalSprite {
 
     public static final int SPRITE_WIDTH = 64;
     public static final int SPRITE_HEIGHT = 64;
@@ -143,6 +142,7 @@ public class UniversalDirectionalSprite implements Disposable {
         this(new Texture(imgName), availableAnimations);
     }
 
+    @Override
     public TextureRegion getTextureRegion(final float deltaTime) {
         final Map<Direction, Animation> stateAnimations = animations.get(animationState);
         final Animation animation = stateAnimations.get(currentDirection);
@@ -159,26 +159,32 @@ public class UniversalDirectionalSprite implements Disposable {
         baseTexture.dispose();
     }
 
+    @Override
     public Direction getCurrentDirection() {
         return currentDirection;
     }
 
+    @Override
     public void setCurrentDirection(final Direction currentDirection) {
         this.currentDirection = currentDirection;
     }
 
+    @Override
     public AnimationState getAnimationState() {
         return animationState;
     }
 
+    @Override
     public void setAnimationState(final AnimationState animationState) {
         this.animationState = animationState;
     }
 
+    @Override
     public boolean isMoving() {
         return moving;
     }
 
+    @Override
     public void setMoving(final boolean moving) {
         if (!moving) {
             if (animationState == AnimationState.WALKING) {
@@ -207,18 +213,22 @@ public class UniversalDirectionalSprite implements Disposable {
         this.moving = moving;
     }
 
+    @Override
     public int getWidth() {
         return width;
     }
 
+    @Override
     public int getHeight() {
         return height;
     }
 
+    @Override
     public boolean isMoveable() {
         return animationState.isMoveable();
     }
 
+    @Override
     public boolean isAnimationFinished() {
         final Map<Direction, Animation> stateAnimations = animations.get(animationState);
         final Animation animation = stateAnimations.get(currentDirection);
@@ -279,6 +289,5 @@ public class UniversalDirectionalSprite implements Disposable {
     private float movementTime = 0f;
     private final int width, height;
 
-//    private final float frameRate;
     private final Map<AnimationState, Map<Direction, Animation>> animations = new EnumMap<>(AnimationState.class);
 }
