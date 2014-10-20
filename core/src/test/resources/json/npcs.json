@@ -4,7 +4,7 @@
 			id: arthur,
 			name: Arthur,
 			description: "Researcher in charge of your expedition to the island.",
-			imageFileName: researcher.png
+			imageFileName: researcher.pack
 		}
 	]
 }

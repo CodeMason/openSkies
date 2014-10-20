@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.info;
 
+import com.github.skittishSloth.openSkies.testUtils.SimpleBeanTests;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -13,15 +14,7 @@ import org.junit.Test;
  *
  * @author mcory01
  */
-public class BackStoryTests {
-    
-    @Test
-    public void ensureDefaultConstructorDoesNotInitializeAnything() {
-        final BackStory bs = new BackStory();
-        
-        assertNull(bs.getDescription());
-        assertNull(bs.getName());
-    }
+public class BackStoryTests extends SimpleBeanTests {
     
     @Test
     public void ensureParameterizedConstructorProperlyInitializesFields() {
@@ -34,20 +27,8 @@ public class BackStoryTests {
         assertEquals(desc, bs.getDescription());
     }
     
-    @Test
-    public void ensureSettersWorkAppropriately() {
-        final BackStory bs = new BackStory();
-        
-        assertNull(bs.getDescription());
-        assertNull(bs.getName());
-        
-        final String name = "Name";
-        final String desc = "Description";
-        
-        bs.setName(name);
-        bs.setDescription(desc);
-        
-        assertEquals(name, bs.getName());
-        assertEquals(desc, bs.getDescription());
+    @Override
+    protected Class<?> getClassForTest() {
+        return BackStory.class;
     }
 }

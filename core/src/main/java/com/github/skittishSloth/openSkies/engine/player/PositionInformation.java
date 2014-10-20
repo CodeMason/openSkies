@@ -14,7 +14,7 @@ import com.github.skittishSloth.openSkies.engine.common.Direction;
 public class PositionInformation {
 
     public PositionInformation() {
-        direction = Direction.UP;
+        
     }
 
     public float getX() {

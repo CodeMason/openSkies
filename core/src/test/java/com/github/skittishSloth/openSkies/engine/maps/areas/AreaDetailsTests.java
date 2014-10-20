@@ -5,44 +5,20 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.areas;
 
+import com.github.skittishSloth.openSkies.testUtils.SimpleBeanTests;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
  *
  * @author mcory01
  */
-public class AreaDetailsTests {
-    
-    @Test
-    public void ensureDefaultConstructorDoesNothing() {
-        final AreaDetails ad = new AreaDetails();
-        
-        assertNull(ad.getName());
-        assertNull(ad.getStartingMap());
-        assertNull(ad.getMaps());
-    }
-    
-    @Test
-    public void ensureNameAndStartingMapSettersWorkProperly() {
-        final AreaDetails ad = new AreaDetails();
-        
-        assertNull(ad.getName());
-        assertNull(ad.getStartingMap());
-        
-        final String name = "Name";
-        final String startingMap = "Starting Map";
-        
-        ad.setName(name);
-        ad.setStartingMap(startingMap);
-        
-        assertEquals(name, ad.getName());
-        assertEquals(startingMap, ad.getStartingMap());
-    }
+public class AreaDetailsTests extends SimpleBeanTests {
     
     @Test
     public void ensureMapsSetterProperlyInitializesCollectionEvenWithNullInput() {
@@ -112,5 +88,10 @@ public class AreaDetailsTests {
         final List<MapDetails> nullResMaps = ad.getMaps();
         assertNotNull(nullResMaps);
         assertEquals(0, nullResMaps.size());
+    }
+
+    @Override
+    protected Class<?> getClassForTest() {
+        return AreaDetails.class;
     }
 }

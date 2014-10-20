@@ -6,7 +6,8 @@
 package com.github.skittishSloth.openSkies.engine.maps.areas;
 
 import com.badlogic.gdx.math.Vector2;
-import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  *
@@ -36,26 +37,12 @@ public class MapDetailNPCEntry {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.id);
-        hash = 23 * hash + Objects.hashCode(this.location);
-        return hash;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final MapDetailNPCEntry other = (MapDetailNPCEntry) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        
-        return Objects.equals(this.location, other.location);
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     private String id;

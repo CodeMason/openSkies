@@ -1,0 +1,75 @@
+{
+    "appearanceData": {
+        "gender": "MALE",
+        "skinColor": {
+            "defaultDetails": true,
+            "maleTextureAtlasPath": "gfx/char-building/body/male/human/body/light.pack",
+            "name": "Light",
+            "race": "Human",
+            "femaleTextureAtlasPath": "gfx/char-building/body/female/human/body/light.pack",
+            "sampleColorRgb": "fdd5b7"
+        },
+        "name": "Skittish Sloth",
+        "race": {
+            "defaultDetails": true,
+            "name": "Human"
+        },
+        "nose": {
+            "defaultDetails": true,
+            "name": "Straight",
+            "textureAtlasPathPattern": "gfx/char-building/body/${gender}/${race}/nose/straightnose_${skinColor}.pack"
+        }
+    },
+    "clothingData": {
+        "pantsColor": {
+            "defaultDetails": true,
+            "name": "Magenta",
+            "sampleColorRgb": "ae687f",
+            "textureAtlasPathPattern": "gfx/char-building/legs/pants/${gender}/magenta_pants_${gender}.pack"
+        },
+        "shirtColor": {
+            "defaultDetails": true,
+            "name": "Brown",
+            "sampleColorRgb": "744b30",
+            "textureAtlasPathPattern": "gfx/char-building/torso/shirts/${shirt}/${gender}/brown_${shirt}.pack"
+        },
+        "shirt": {
+            "gender": "FEMALE",
+            "name": "Sleeveless",
+            "defaultDetails": true
+        },
+        "shoeColor": {
+            "defaultDetails": true,
+            "name": "Black",
+            "sampleColorRgb": "313131",
+            "textureAtlasPathPattern": "gfx/char-building/feet/shoes/${gender}/black_shoes_${gender}.pack"
+        }
+    },
+    "informationData": {
+        "selectedBackstory": {
+            "name": "Vendetta",
+            "description": "They killed your family.  They killed your dog.  They killed their only hope of survival."
+        },
+        "selectedClass": {
+            "name": "Tank",
+            "modifiers": [{
+                    "area": "defense",
+                    "amount": "1",
+                    "type": "BONUS"
+                }, {
+                    "area": "melee",
+                    "amount": "1",
+                    "type": "BONUS"
+                }, {
+                    "area": "health",
+                    "amount": "1",
+                    "type": "BONUS"
+                }, {
+                    "area": "intelligence",
+                    "amount": "1",
+                    "type": "PENALTY"
+                }],
+            "description": "High health, high defense, and likes to pummel stuff.  Kinda slow on the uptake though, so don't expect the Tank to learn quickly."
+        }
+    }
+}

@@ -5,59 +5,25 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.details;
 
+import com.badlogic.gdx.files.FileHandle;
+import com.github.skittishSloth.openSkies.testUtils.SimpleBeanTests;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
  *
  * @author mcory01
  */
-public class BaseDetailsTests {
-    
-    @Test
-    public void ensureDefaultConstructorInitializesNothing() {
-        final BaseDetails bd = new BaseDetails();
-        
-        assertNull(bd.getDisplayName());
-        assertNull(bd.getFemaleTextureAtlasPath());
-        assertNull(bd.getMaleTextureAtlasPath());
-        assertNull(bd.getName());
-        assertNull(bd.getTextureAtlasPathPattern());
-        assertFalse(bd.isDefaultDetails());
-        assertFalse(bd.isNullTexture());
-    }
-    
-    @Test
-    public void ensureSettersWorkProperly() {
-        final BaseDetails bd = new BaseDetails();
-        
-        final String displayName = "Display Name";
-        final String femaleTexturePath = "Female Texture Path";
-        final String maleTexturePath = "Male Texture Path";
-        final String name = "Name";
-        final String texturePathPattern = "Texture Path Pattern";
-        final boolean defaultDetails = true;
-        final boolean nullTexture = true;
-        
-        bd.setDisplayName(displayName);
-        bd.setDefaultDetails(defaultDetails);
-        bd.setNullTexture(nullTexture);
-        bd.setFemaleTextureAtlasPath(femaleTexturePath);
-        bd.setMaleTextureAtlasPath(maleTexturePath);
-        bd.setName(name);
-        bd.setTextureAtlasPathPattern(texturePathPattern);
-        
-        assertEquals(displayName, bd.getDisplayName());
-        assertEquals(defaultDetails, bd.isDefaultDetails());
-        assertEquals(nullTexture, bd.isNullTexture());
-        assertEquals(femaleTexturePath, bd.getFemaleTextureAtlasPath());
-        assertEquals(maleTexturePath, bd.getMaleTextureAtlasPath());
-        assertEquals(name, bd.getName());
-        assertEquals(texturePathPattern, bd.getTextureAtlasPathPattern());
-    }
+public class BaseDetailsTests extends SimpleBeanTests {
     
     @Test
     public void ensureHasTextureReturnsAppropriateResult() {
@@ -174,5 +140,61 @@ public class BaseDetailsTests {
         params.put("${replace}", "target");
         final String expTexturePathPattern = "Texture Path Pattern target";
         assertEquals(expTexturePathPattern, bd.getTextureAtlasPath(Gender.MALE, params));
+    }
+    
+    @Test
+    public void ensureGetTextureAtlasPathReturnsNullIfHasTextureIsFalse() {
+        final BaseDetails bd = new BaseDetails();
+        bd.setNullTexture(true);
+        assertFalse(bd.hasTexture());
+        
+        final CharacterData cd = new CharacterData();
+        
+        assertNull(bd.getTextureAtlasPath(cd));
+    }
+    
+    @Test
+    public void ensureGetTextureAtlasPathWorkCorrectlyIfPassedAppropriateCharacterData() throws URISyntaxException {
+        final BaseDetails bd = new BaseDetails();
+        
+        final String femaleTexturePath = "Female Texture Path";
+        final String maleTexturePath = "Male Texture Path";
+        
+        final boolean nullTexture = true;
+        
+        bd.setNullTexture(nullTexture);
+        assertFalse(bd.hasTexture());
+        
+        bd.setNullTexture(false);
+        bd.setMaleTextureAtlasPath(maleTexturePath);
+        bd.setFemaleTextureAtlasPath(femaleTexturePath);
+        
+        final FileHandle ffh = getFileHandle("/json/female-character-data.json");
+        final CharacterData femaleChar = DetailsLoader.loadCharacterData(ffh);
+        
+        assertEquals(Gender.FEMALE, femaleChar.getAppearanceData().getGender());
+        final String actFemaleTextureAtlasPath = bd.getTextureAtlasPath(femaleChar);
+        assertNotNull(actFemaleTextureAtlasPath);
+        assertEquals(femaleTexturePath, actFemaleTextureAtlasPath);
+        
+        final FileHandle mfh = getFileHandle("/json/male-character-data.json");
+        final CharacterData maleChar = DetailsLoader.loadCharacterData(mfh);
+        assertEquals(Gender.MALE, maleChar.getAppearanceData().getGender());
+        final String actMaleTextureAtlasPath = bd.getTextureAtlasPath(maleChar);
+        assertNotNull(actMaleTextureAtlasPath);
+        assertEquals(maleTexturePath, actMaleTextureAtlasPath);
+    }
+
+    protected final FileHandle getFileHandle(final String path) throws URISyntaxException {
+        final URL fileUrl = getClass().getResource(path);
+        final File file = new File(fileUrl.toURI());
+        final FileHandle fh = new FileHandle(file);
+
+        return fh;
+    }
+
+    @Override
+    protected Class<?> getClassForTest() {
+        return BaseDetails.class;
     }
 }

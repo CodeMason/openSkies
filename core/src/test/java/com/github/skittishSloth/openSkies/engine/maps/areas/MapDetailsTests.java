@@ -6,44 +6,20 @@
 package com.github.skittishSloth.openSkies.engine.maps.areas;
 
 import com.badlogic.gdx.math.Vector2;
+import com.github.skittishSloth.openSkies.testUtils.SimpleBeanTests;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
  *
  * @author mcory01
  */
-public class MapDetailsTests {
-    
-    @Test
-    public void ensureDefaultConstructorDoesNothing() {
-        final MapDetails md = new MapDetails();
-        
-        assertNull(md.getName());
-        assertNull(md.getRelativePath());
-        assertNull(md.getNpcs());
-    }
-    
-    @Test
-    public void ensureNameAndRelativePathSettersWorkProperly() {
-        final MapDetails md = new MapDetails();
-        
-        assertNull(md.getName());
-        assertNull(md.getRelativePath());
-        
-        final String name = "Name";
-        final String relativePath = "/relative/path";
-        
-        md.setName(name);
-        md.setRelativePath(relativePath);
-        
-        assertEquals(name, md.getName());
-        assertEquals(relativePath, md.getRelativePath());
-    }
+public class MapDetailsTests extends SimpleBeanTests {
     
     @Test
     public void ensureNpcsSetterProperlyInitializesCollectionEvenWithNullInput() {
@@ -117,5 +93,10 @@ public class MapDetailsTests {
         final List<MapDetailNPCEntry> nullResNpcs = md.getNpcs();
         assertNotNull(nullResNpcs);
         assertEquals(0, nullResNpcs.size());
+    }
+
+    @Override
+    protected Class<?> getClassForTest() {
+        return MapDetails.class;
     }
 }

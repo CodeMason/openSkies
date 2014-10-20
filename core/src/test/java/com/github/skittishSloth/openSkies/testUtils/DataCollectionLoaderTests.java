@@ -19,6 +19,7 @@ import java.util.List;
 /**
  *
  * @author mcory01
+ * @param <T>
  */
 public abstract class DataCollectionLoaderTests<T> {
 
@@ -38,14 +39,12 @@ public abstract class DataCollectionLoaderTests<T> {
         assertEquals(size, data.size());
 
         for (int i = 0; i < size; ++i) {
-            assertEquals(expData.get(i), data.get(i));
+            final T exp = expData.get(i);
+            final T act = data.get(i);
+            assertEquals("Exp: " + exp + ", Act: " + act, exp, act);
         }
     }
 
-    ;
-    
-    
-    
     protected final FileHandle getFileHandle(final String path) throws URISyntaxException {
         final URL fileUrl = getClass().getResource(path);
         final File file = new File(fileUrl.toURI());

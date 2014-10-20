@@ -5,85 +5,88 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.details;
 
+import com.github.skittishSloth.openSkies.testUtils.SimpleBeanTests;
 import java.util.Map;
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
  *
  * @author mcory01
  */
-public class CharacterAppearanceDataTests {
-    @Test
-    public void ensureDefaultConstructorInitializesNothing() {
-        final CharacterAppearanceData cad = new CharacterAppearanceData();
-        
-        assertNull(cad.getEarDetails());
-        assertNull(cad.getEyeDetails());
-        assertNull(cad.getFacialHairColor());
-        assertNull(cad.getFacialHairStyle());
-        assertNull(cad.getGender());
-        assertNull(cad.getHairColor());
-        assertNull(cad.getHairStyle());
-        assertNull(cad.getName());
-        assertNull(cad.getNose());
-        assertNull(cad.getRace());
-        assertNull(cad.getSkinColor());
-    }
-    
-    @Test
-    public void ensureSettersWorkProperly() {
-        final CharacterAppearanceData cad = new CharacterAppearanceData();
-        
-        assertNull(cad.getEarDetails());
-        assertNull(cad.getEyeDetails());
-        assertNull(cad.getFacialHairColor());
-        assertNull(cad.getFacialHairStyle());
-        assertNull(cad.getGender());
-        assertNull(cad.getHairColor());
-        assertNull(cad.getHairStyle());
-        assertNull(cad.getName());
-        assertNull(cad.getNose());
-        assertNull(cad.getRace());
-        assertNull(cad.getSkinColor());
-        
-        final BaseDetails earDetails = new BaseDetails();
-        final ColoredDetails eyeDetails = new ColoredDetails();
-        final BaseDetails facialHairColor = new BaseDetails();
-        final BaseDetails facialHairStyle = new BaseDetails();
-        final Gender gender = Gender.MALE;
-        final BaseDetails hairColor = new BaseDetails();
-        final BaseDetails hairStyle = new BaseDetails();
-        final String name = "Name";
-        final BaseDetails nose = new BaseDetails();
-        final BaseDetails race = new BaseDetails();
-        final SkinColorDetails skinColor = new SkinColorDetails();
-        
-        cad.setEarDetails(earDetails);
-        cad.setEyeDetails(eyeDetails);
-        cad.setFacialHairColor(facialHairColor);
-        cad.setFacialHairStyle(facialHairStyle);
-        cad.setGender(gender);
-        cad.setHairColor(hairColor);
-        cad.setHairStyle(hairStyle);
-        cad.setName(name);
-        cad.setNose(nose);
-        cad.setRace(race);
-        cad.setSkinColor(skinColor);
-        
-        assertEquals(earDetails, cad.getEarDetails());
-        assertEquals(eyeDetails, cad.getEyeDetails());
-        assertEquals(facialHairColor, cad.getFacialHairColor());
-        assertEquals(facialHairStyle, cad.getFacialHairStyle());
-        assertEquals(gender, cad.getGender());
-        assertEquals(hairColor, cad.getHairColor());
-        assertEquals(hairStyle, cad.getHairStyle());
-        assertEquals(name, cad.getName());
-        assertEquals(nose, cad.getNose());
-        assertEquals(race, cad.getRace());
-        assertEquals(skinColor, cad.getSkinColor());
-    }
+public class CharacterAppearanceDataTests extends SimpleBeanTests {
+//    @Test
+//    public void ensureDefaultConstructorInitializesNothing() {
+//        final CharacterAppearanceData cad = new CharacterAppearanceData();
+//        
+//        assertNull(cad.getEarDetails());
+//        assertNull(cad.getEyeDetails());
+//        assertNull(cad.getFacialHairColor());
+//        assertNull(cad.getFacialHairStyle());
+//        assertNull(cad.getGender());
+//        assertNull(cad.getHairColor());
+//        assertNull(cad.getHairStyle());
+//        assertNull(cad.getName());
+//        assertNull(cad.getNose());
+//        assertNull(cad.getRace());
+//        assertNull(cad.getSkinColor());
+//    }
+//    
+//    @Test
+//    public void ensureSettersWorkProperly() {
+//        final CharacterAppearanceData cad = new CharacterAppearanceData();
+//        
+//        assertNull(cad.getEarDetails());
+//        assertNull(cad.getEyeDetails());
+//        assertNull(cad.getFacialHairColor());
+//        assertNull(cad.getFacialHairStyle());
+//        assertNull(cad.getGender());
+//        assertNull(cad.getHairColor());
+//        assertNull(cad.getHairStyle());
+//        assertNull(cad.getName());
+//        assertNull(cad.getNose());
+//        assertNull(cad.getRace());
+//        assertNull(cad.getSkinColor());
+//        
+//        final BaseDetails earDetails = new BaseDetails();
+//        final ColoredDetails eyeDetails = new ColoredDetails();
+//        final BaseDetails facialHairColor = new BaseDetails();
+//        final BaseDetails facialHairStyle = new BaseDetails();
+//        final Gender gender = Gender.MALE;
+//        final BaseDetails hairColor = new BaseDetails();
+//        final BaseDetails hairStyle = new BaseDetails();
+//        final String name = "Name";
+//        final BaseDetails nose = new BaseDetails();
+//        final BaseDetails race = new BaseDetails();
+//        final SkinColorDetails skinColor = new SkinColorDetails();
+//        
+//        cad.setEarDetails(earDetails);
+//        cad.setEyeDetails(eyeDetails);
+//        cad.setFacialHairColor(facialHairColor);
+//        cad.setFacialHairStyle(facialHairStyle);
+//        cad.setGender(gender);
+//        cad.setHairColor(hairColor);
+//        cad.setHairStyle(hairStyle);
+//        cad.setName(name);
+//        cad.setNose(nose);
+//        cad.setRace(race);
+//        cad.setSkinColor(skinColor);
+//        
+//        assertEquals(earDetails, cad.getEarDetails());
+//        assertEquals(eyeDetails, cad.getEyeDetails());
+//        assertEquals(facialHairColor, cad.getFacialHairColor());
+//        assertEquals(facialHairStyle, cad.getFacialHairStyle());
+//        assertEquals(gender, cad.getGender());
+//        assertEquals(hairColor, cad.getHairColor());
+//        assertEquals(hairStyle, cad.getHairStyle());
+//        assertEquals(name, cad.getName());
+//        assertEquals(nose, cad.getNose());
+//        assertEquals(race, cad.getRace());
+//        assertEquals(skinColor, cad.getSkinColor());
+//    }
     
     @Test
     public void ensureGetPatternVariablesReturnsAppropriateResult() {
@@ -159,5 +162,10 @@ public class CharacterAppearanceDataTests {
         
         assertTrue(varsWithAllHair.containsKey("${facialHair}"));
         assertEquals(facialHairStyle.getName().toLowerCase(), varsWithAllHair.get("${facialHair}"));
+    }
+
+    @Override
+    protected Class<?> getClassForTest() {
+        return CharacterAppearanceData.class;
     }
 }

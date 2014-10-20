@@ -10,4 +10,8 @@ package com.github.skittishSloth.openSkies.engine.quests;
  * @author mcory01
  */
 public class StaticItem extends QuestItem {
+    
+    public StaticItem() {
+        super();
+    }
 }

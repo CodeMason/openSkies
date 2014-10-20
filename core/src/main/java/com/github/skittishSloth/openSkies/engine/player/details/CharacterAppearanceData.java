@@ -103,20 +103,53 @@ public class CharacterAppearanceData {
     }
     
     public Map<String, String> getPatternVariables() {
+        if (isInvalidForPatternVariables()) {
+            return null;
+        }
+        
         final Map<String, String> res = new HashMap<>();
-
+        
         res.put("${gender}", gender.name().toLowerCase());
         res.put("${race}", race.getName().toLowerCase());
         res.put("${skinColor}", skinColor.getName().toLowerCase());
         
-        if ((hairStyle != null) && (hairStyle.hasTexture())) {
+        if (hasTexture(hairStyle)) {
             res.put("${hair}", hairStyle.getName().toLowerCase());
         }
         
-        if ((facialHairStyle != null) && (facialHairStyle.hasTexture())) {
+        if (hasTexture(facialHairStyle)) {
             res.put("${facialHair}", facialHairStyle.getName().toLowerCase());
         }
 
+        return res;
+    }
+    
+    private static boolean hasTexture(final BaseDetails details) {
+        final boolean res;
+        if (details == null) {
+            res = false;
+        } else {
+            res = details.hasTexture();
+        }
+        
+        return res;
+    }
+    
+    private boolean isInvalidForPatternVariables() {
+        boolean res = false;
+        
+        if (gender == null) {
+            res = true;
+        }
+        
+        if (race == null) {
+            res = true;
+        }
+        
+        if (skinColor == null) {
+            res = true;
+        }
+        
         return res;
     }
 

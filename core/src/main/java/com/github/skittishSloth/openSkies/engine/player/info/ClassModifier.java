@@ -6,6 +6,8 @@
 package com.github.skittishSloth.openSkies.engine.player.info;
 
 import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  *
@@ -14,7 +16,6 @@ import java.util.Objects;
 public class ClassModifier {
 
     public static enum Type {
-
         BONUS,
         PENALTY;
     }
@@ -55,30 +56,12 @@ public class ClassModifier {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.type);
-        hash = 89 * hash + Objects.hashCode(this.area);
-        hash = 89 * hash + Objects.hashCode(this.amount);
-        return hash;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ClassModifier other = (ClassModifier) obj;
-        if (this.type != other.type) {
-            return false;
-        }
-        if (!Objects.equals(this.area, other.area)) {
-            return false;
-        }
-        
-        return  Objects.equals(this.amount, other.amount);
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     private Type type;

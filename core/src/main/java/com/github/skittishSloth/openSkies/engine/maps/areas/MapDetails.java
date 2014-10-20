@@ -8,7 +8,8 @@ package com.github.skittishSloth.openSkies.engine.maps.areas;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  *
@@ -53,30 +54,12 @@ public class MapDetails {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.name);
-        hash = 89 * hash + Objects.hashCode(this.relativePath);
-        hash = 89 * hash + Objects.hashCode(this.npcs);
-        return hash;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final MapDetails other = (MapDetails) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.relativePath, other.relativePath)) {
-            return false;
-        }
-        
-        return Objects.equals(this.npcs, other.npcs);
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     private String name;

@@ -5,8 +5,6 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.local;
 
-import com.github.skittishSloth.openSkies.engine.maps.npcs.NPC;
-import com.github.skittishSloth.openSkies.engine.lighting.LightTile;
 import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
@@ -27,10 +25,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.skittishSloth.openSkies.OpenSkies;
 import com.github.skittishSloth.openSkies.engine.inventory.AddItemListener;
 import com.github.skittishSloth.openSkies.engine.inventory.items.ItemDetails;
+import com.github.skittishSloth.openSkies.engine.lighting.LightTile;
 import com.github.skittishSloth.openSkies.engine.lighting.LightingAnimation;
 import com.github.skittishSloth.openSkies.engine.lighting.LightingAnimationFactory;
 import com.github.skittishSloth.openSkies.engine.maps.areas.AreaDetails;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPC;
 import com.github.skittishSloth.openSkies.engine.maps.npcs.NPCDetails;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
@@ -80,7 +80,7 @@ public class LocalScreen extends AbstractScreen {
 
         final CharacterData currentCharacterData = game.getCurrentCharacter();
         player = new Player(currentCharacterData);
-
+        
         playerGraphics = new PlayerGraphics(playerGraphicsAssets);
         player.setPlayerGraphics(playerGraphics);
 

@@ -5,6 +5,8 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.info;
 
+import com.github.skittishSloth.openSkies.testUtils.SimpleBeanTests;
+import org.apache.commons.lang3.RandomUtils;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -13,16 +15,7 @@ import org.junit.Test;
  *
  * @author mcory01
  */
-public class ClassModifierTests {
-    
-    @Test
-    public void ensureDefaultConstructorDoesNothing() {
-        final ClassModifier mod = new ClassModifier();
-        
-        assertNull(mod.getAmount());
-        assertNull(mod.getArea());
-        assertNull(mod.getType());
-    }
+public class ClassModifierTests extends SimpleBeanTests {
     
     @Test
     public void ensureParameterizedConstructorProperlyInitializesFields() {
@@ -36,25 +29,20 @@ public class ClassModifierTests {
         assertEquals(amount, mod.getAmount());
         assertEquals(area, mod.getArea());
     }
+
+    @Override
+    protected Object createObjectInstance(Class<?> type) {
+        if (type == ClassModifier.Type.class) {
+            final ClassModifier.Type[] vals = ClassModifier.Type.values();
+            final int numVals = vals.length;
+            final int idx = RandomUtils.nextInt(0, numVals - 1);
+            return vals[idx];
+        }
+        return super.createObjectInstance(type); //To change body of generated methods, choose Tools | Templates.
+    }
     
-    @Test
-    public void ensureSettersWorkCorrectly() {
-        final ClassModifier mod = new ClassModifier();
-        
-        assertNull(mod.getAmount());
-        assertNull(mod.getArea());
-        assertNull(mod.getType());
-        
-        final ClassModifier.Type type = ClassModifier.Type.BONUS;
-        final String amount = "The Amount";
-        final String area = "The Area";
-        
-        mod.setType(type);
-        mod.setArea(area);
-        mod.setAmount(amount);
-        
-        assertEquals(type, mod.getType());
-        assertEquals(amount, mod.getAmount());
-        assertEquals(area, mod.getArea());
+    @Override
+    protected Class<?> getClassForTest() {
+        return ClassModifier.class;
     }
 }

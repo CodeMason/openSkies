@@ -5,8 +5,6 @@
  */
 package com.github.skittishSloth.openSkies.engine.maps.local;
 
-import com.github.skittishSloth.openSkies.engine.maps.npcs.NPC;
-import com.github.skittishSloth.openSkies.engine.lighting.LightTile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -37,9 +35,11 @@ import com.badlogic.gdx.utils.Array;
 import com.github.skittishSloth.openSkies.engine.common.CollectionUtils;
 import com.github.skittishSloth.openSkies.engine.common.Direction;
 import com.github.skittishSloth.openSkies.engine.lighting.FlickerLightTile;
+import com.github.skittishSloth.openSkies.engine.lighting.LightTile;
 import com.github.skittishSloth.openSkies.engine.lighting.PulsingLightTile;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetailNPCEntry;
 import com.github.skittishSloth.openSkies.engine.maps.areas.MapDetails;
+import com.github.skittishSloth.openSkies.engine.maps.npcs.NPC;
 import com.github.skittishSloth.openSkies.engine.player.Player;
 import com.github.skittishSloth.openSkies.engine.player.PlayerGraphics;
 import com.github.skittishSloth.openSkies.engine.player.PositionInformation;
@@ -693,7 +693,14 @@ public class ManagedMap {
 
     public NPC getNearbyNPC(final Player player) {
         final PositionInformation playerPos = player.getPositionInformation();
+        if (playerPos == null) {
+            return null;
+        }
+        
         final Direction facing = playerPos.getDirection();
+        if (facing == null) {
+            return null;
+        }
         final Rectangle searchRect = searchRectangle;
         // start at the player
         searchRect.x = playerPos.getX();

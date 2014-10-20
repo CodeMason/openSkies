@@ -24,11 +24,21 @@ public class ShirtDetails extends BaseDetails {
     }
     
     public boolean isDefaultDetails(final Gender forGender) {
-        if ((gender == null) || (gender == Gender.NEUTRAL)) {
+        if (isInvalidGenderForDefault()) {
             return isDefaultDetails();
         }
         
         return (isDefaultDetails() && (forGender == gender));
+    }
+    
+    private boolean isInvalidGenderForDefault() {
+        final boolean res;
+        if (gender == null) {
+            res = true;
+        } else {
+            res = (gender == Gender.NEUTRAL);
+        }
+        return res;
     }
 
     private Gender gender;

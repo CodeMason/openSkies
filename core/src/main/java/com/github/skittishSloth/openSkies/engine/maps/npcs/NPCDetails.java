@@ -77,8 +77,13 @@ public class NPCDetails {
         if (!Objects.equals(this.description, other.description)) {
             return false;
         }
-        
+
         return Objects.equals(this.imageFileName, other.imageFileName);
+    }
+
+    @Override
+    public String toString() {
+        return "NPCDetails{" + "id=" + id + ", name=" + name + ", description=" + description + ", imageFileName=" + imageFileName + '}';
     }
 
     private String id;

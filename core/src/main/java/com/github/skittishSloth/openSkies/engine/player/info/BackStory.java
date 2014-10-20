@@ -6,6 +6,8 @@
 package com.github.skittishSloth.openSkies.engine.player.info;
 
 import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  *
@@ -39,26 +41,12 @@ public class BackStory {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.name);
-        hash = 59 * hash + Objects.hashCode(this.description);
-        return hash;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final BackStory other = (BackStory) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        
-        return Objects.equals(this.description, other.description);
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     private String name;

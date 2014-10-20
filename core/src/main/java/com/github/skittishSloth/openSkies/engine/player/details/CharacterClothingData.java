@@ -13,6 +13,10 @@ import java.util.Map;
  * @author mcory01
  */
 public class CharacterClothingData {
+    
+    public CharacterClothingData() {
+        
+    }
 
     public ShirtDetails getShirt() {
         return shirt;
@@ -49,7 +53,9 @@ public class CharacterClothingData {
     public Map<String, String> getPatternVariables() {
         final Map<String, String> res = new HashMap<>();
         
-        res.put("${shirt}", shirt.getName().toLowerCase());
+        if (shirt != null) {
+            res.put("${shirt}", shirt.getName().toLowerCase());
+        }
         
         return res;
     }

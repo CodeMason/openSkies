@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.skittishSloth.openSkies.engine.maps.areas;
+package com.github.skittishSloth.openSkies.engine.player.state;
 
 import com.github.skittishSloth.openSkies.testUtils.SimpleBeanTests;
 
@@ -11,10 +11,10 @@ import com.github.skittishSloth.openSkies.testUtils.SimpleBeanTests;
  *
  * @author mcory01
  */
-public class MapDetailNPCEntryTests extends SimpleBeanTests {
-    
+public class StepProgressTests extends SimpleBeanTests {
+
     @Override
     protected Class<?> getClassForTest() {
-        return MapDetailNPCEntry.class;
+        return StepProgress.class;
     }
 }

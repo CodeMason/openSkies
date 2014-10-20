@@ -7,7 +7,8 @@ package com.github.skittishSloth.openSkies.engine.player.info;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  *
@@ -24,9 +25,9 @@ public class PlayerClass {
         this.description = description;
         this.modifiers = new ArrayList<>();
         if (modifiers != null) {
-            for (final ClassModifier cm : modifiers) {
+            modifiers.stream().forEach((cm) -> {
                 this.modifiers.add(cm);
-            }
+            });
         }
     }
 
@@ -64,30 +65,12 @@ public class PlayerClass {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 31 * hash + Objects.hashCode(this.name);
-        hash = 31 * hash + Objects.hashCode(this.description);
-        hash = 31 * hash + Objects.hashCode(this.modifiers);
-        return hash;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PlayerClass other = (PlayerClass) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.description, other.description)) {
-            return false;
-        }
-        
-        return Objects.equals(this.modifiers, other.modifiers);
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     private String name;

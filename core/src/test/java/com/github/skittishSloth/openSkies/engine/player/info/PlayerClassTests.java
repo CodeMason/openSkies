@@ -5,6 +5,7 @@
  */
 package com.github.skittishSloth.openSkies.engine.player.info;
 
+import com.github.skittishSloth.openSkies.testUtils.SimpleBeanTests;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,16 +17,16 @@ import org.junit.Test;
  *
  * @author mcory01
  */
-public class PlayerClassTests {
+public class PlayerClassTests extends SimpleBeanTests {
     
-    @Test
-    public void ensureDefaultConstructorDoesNothing() {
-        final PlayerClass playerClass = new PlayerClass();
-        
-        assertNull(playerClass.getModifiers());
-        assertNull(playerClass.getName());
-        assertNull(playerClass.getDescription());
-    }
+//    @Test
+//    public void ensureDefaultConstructorDoesNothing() {
+//        final PlayerClass playerClass = new PlayerClass();
+//        
+//        assertNull(playerClass.getModifiers());
+//        assertNull(playerClass.getName());
+//        assertNull(playerClass.getDescription());
+//    }
     
     @Test
     public void ensureConstructorWithStringsAndNullCollectionProperlyInitializesFields() {
@@ -78,22 +79,22 @@ public class PlayerClassTests {
         }
     }
     
-    @Test
-    public void ensureNameAndDescriptionSettersWorkAppropriately() {
-        final PlayerClass playerClass = new PlayerClass();
-        
-        assertNull(playerClass.getName());
-        assertNull(playerClass.getDescription());
-        
-        final String name = "The name";
-        final String desc = "Description";
-        
-        playerClass.setName(name);
-        playerClass.setDescription(desc);
-        
-        assertEquals(name, playerClass.getName());
-        assertEquals(desc, playerClass.getDescription());
-    }
+//    @Test
+//    public void ensureNameAndDescriptionSettersWorkAppropriately() {
+//        final PlayerClass playerClass = new PlayerClass();
+//        
+//        assertNull(playerClass.getName());
+//        assertNull(playerClass.getDescription());
+//        
+//        final String name = "The name";
+//        final String desc = "Description";
+//        
+//        playerClass.setName(name);
+//        playerClass.setDescription(desc);
+//        
+//        assertEquals(name, playerClass.getName());
+//        assertEquals(desc, playerClass.getDescription());
+//    }
     
     @Test
     public void ensureModifierSetterInitializesUnderlyingCollectionEvenIfPassedNull() {
@@ -162,5 +163,10 @@ public class PlayerClassTests {
         final List<ClassModifier> resModsFromNull = new ArrayList<>(playerClass.getModifiers());
         assertNotNull(resModsFromNull);
         assertEquals(0, resModsFromNull.size());
+    }
+
+    @Override
+    protected Class<?> getClassForTest() {
+        return PlayerClass.class;
     }
 }
